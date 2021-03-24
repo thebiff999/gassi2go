@@ -11,6 +11,12 @@ module.exports = {
     '@typescript-eslint/member-ordering': 'error',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
-    '@typescript-eslint/no-var-requires': 'off'
+    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/no-duplicate-imports': 'error',
+    //'@typescript-eslint/complexity': 'error',
+    '@typescript-eslint/no-empty-function': 'warn',
+    //'@typescript-eslint/curly': 'error',
+    //'@typescript-eslint/yoda': 'warn',
+    //'@typescript-eslint/max-len': ['warn', {"code": 150 ,"ignoreUrls": true}]
   }
 };
