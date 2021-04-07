@@ -11,8 +11,13 @@
     "e2e": "tsc && node e2e/jasmine"
   },
   "nyc": {
-    "exclude": ["src/**/*.spec.js"],
-    "reporter": ["text", "html"]
+    "exclude": [
+      "src/**/*.spec.js"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ]
   },
   "keywords": [],
   "author": "",

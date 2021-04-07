@@ -1,10 +1,24 @@
 /* Autor: TODO */
 
-import { customElement, html, LitElement } from 'lit-element';
+import { css, customElement, html, internalProperty, LitElement, unsafeCSS } from 'lit-element';
 import { router } from '../../router';
+
+const appComponentSCSS = require("./app.component.scss");
 
 @customElement('app-root')
 class AppComponent extends LitElement {
+
+static styles= [
+  css`${unsafeCSS(appComponentSCSS)}`
+]
+
+  @internalProperty()
+  title = 'Gassi2Go';
+
+  @internalProperty()
+  linkItems = [
+  ];
+
   renderRouterOutlet() {
     return router.select(
       {
@@ -15,6 +29,10 @@ class AppComponent extends LitElement {
   }
 
   render() {
-    return html` <div class="main_container">${this.renderRouterOutlet()}</div> `;
+    return html`
+    <app-header title="${this.title}"> </app-header>
+    <div class="main_container">${this.renderRouterOutlet()}</div>
+    `;
   }
+
 }
