@@ -8,9 +8,9 @@
 
 nav{
     display: flex;
-    justify-content: space-evenly;
+    justify-content:space-around;
     align-items: center;
-    min-height: 7vh;
+    min-height: 9vh;
     background-color: #2a895b;
     font-family: Avantgarde;
 }
@@ -21,4 +21,44 @@ nav{
     text-transform: uppercase;
     letter-spacing: 3px;
 
+}
+
+.nav-links{
+    display: flex;
+    justify-content: space-around;
+    width: 20%;
+}
+
+.nav-links li{
+    list-style: none;
+}
+
+.nav-links a{
+    letter-spacing: 3px;
+    font-size: 20px;
+    color: white;
+}
+
+.arrow{
+    display: flex;
+}
+
+.leftLine{
+    position: relative;
+    transform: rotate(45deg);
+    left: 6px;
+}
+
+.rightLine{
+    position: relative;
+    transform: rotate(-45deg);
+    left: -5px;
+
+}
+
+.arrow div{
+    display: flex;
+    width: 25px;
+    height: 5px; 
+    background-color: white;
 }

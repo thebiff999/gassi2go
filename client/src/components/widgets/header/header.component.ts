@@ -24,11 +24,15 @@ class Header extends LitElement{
             <div class="logo">
                 <h2>${this.title}</h2>
             </div>
-            <ul>
+            <ul class="nav-links">
                 <li><a href="#">Sign-In</a></li>
                 <li><a href="#">Sign-Out</a></li>
                 <li><a href="#">Log-Out</a></li>
             </ul>
+            <div class="arrow">
+                <div class="leftLine"></div>
+                <div class="rightLine"></div>
+            </div>
         </nav>
         `;
     }
