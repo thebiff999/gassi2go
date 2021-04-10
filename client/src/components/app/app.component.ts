@@ -13,7 +13,7 @@ static styles= [
 ]
 
   @internalProperty()
-  title = 'Gassi2Go';
+  title = 'Auftrag erstellen';
 
   @internalProperty()
   linkItems = [
