@@ -1,9 +1,17 @@
 .entries {
-    display: flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 20px;
     padding: 5%;
 }
 
 .entry {
-    border: solid black 2px;
-    margin-bottom: 50px;
+    border: solid black 1px;
+    border-radius: 25px;
+}
+
+.entry img {
+    object-fit: cover;
+    border-radius: 25px 25px 0 0;
 }
