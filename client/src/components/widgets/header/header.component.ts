@@ -18,6 +18,7 @@ class Header extends LitElement{
         super();
     }
 
+
     render(){
         return html`
         <nav>
@@ -39,48 +40,54 @@ class Header extends LitElement{
 
             <div class="header-right">
 
-                <div class="arrow">
+                <div class="arrow" @click="${this.toggleDropdown}">
                     <div class="leftLine"></div>
                     <div class="rightLine"></div>
                 </div>
 
                 <div class="profil">
-                    <img id="profil-img" src="./../../../../resources/images/own_profil_icon_v2.png">
+                    <a href="#">
+                        <img id="profil-img" src="./../../../../resources/images/own_profil_icon_v2.png">
+                    </a>
                 </div>
 
-                <ul class="auftrag-link">
-                    <li><a href="#">Auftrag erstellen</a></li>
-                </ul>
+                <a href="#" class="auftrag-link">
+                    <h3>Auftrag erstellen</h3>
+                </a>
             </div>
 
-            <ul class="toggle-links">
+            <ul class="toggle-links" part="toggle-links-part">
                 <li><a href="#">Auftrag suchen</a></li>
                 <li><a href="#">Meine Aufträge</a></li>
                 <li><a href="#">Meine Hunde</a></li>
                 <li><a href="#">Abmelden</a></li>
-            </ul>
-
+             </ul>
 
         </nav>
         `;
     }
+
+
+    toggleDropdown = () => {
+        const root = document.querySelector("app-root");
+        const header = root?.shadowRoot?.querySelector("app-header");
+        const links = header?.shadowRoot?.querySelector(".toggle-links");
+        const toggleLinks = header?.shadowRoot?.querySelectorAll<HTMLElement>(".toggle-links li");
+        const arrow = header?.shadowRoot?.querySelector(".arrow");
+
+        links?.classList.toggle("toggle-active");
+        
+        arrow?.classList.toggle("flip");
+
+        toggleLinks?.forEach((link, index) => {
+            if(link.style.animation){
+                link.style.animation = '';
+            }
+            else{
+                link.style.animation = `toggleLinkAnimation 1s ease forwards ${index/4 + 0.6}s`;
+            }
+        });
+
+    }
+
 }
-
-// .auftrag-link{
-//     display: flex;
-//     justify-content: space-around;
-//     width: 100%;
-//     margin-left: 15px;
-//     margin-right: 15px;
-// }
-
-// .auftrag-link li{
-//     list-style: none;
-// }
-
-// .auftrag-link a{
-//     letter-spacing: 3px;
-//     font-size: 25px;
-//     color: white;
-//     text-decoration: none;
-// }

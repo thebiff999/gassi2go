@@ -13,7 +13,7 @@ static styles= [
 ]
 
   @internalProperty()
-  title = 'Auftrag erstellen';
+  title = 'Auftragssuche';
 
   @internalProperty()
   linkItems = [
