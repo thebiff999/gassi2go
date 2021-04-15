@@ -146,9 +146,10 @@ nav{
 
 .toggle-links a{
     letter-spacing: 2px;
-    font-size: 20px;
+    font-size: 16px;
     color: white;
     text-decoration: none;
+    text-transform: uppercase;
 }
 
 //Abschnitt: Animationen
@@ -181,13 +182,17 @@ nav{
 
 //Abschnitt: Media
 
-@media screen and (max-width: 1120px) {
+@media screen and (max-width: 1150px) {
     .logo{
         margin: 0px;
     }
 
     .gassi2go{
         display: none;
+    }
+
+    .toggle-links{
+        width: 30%;
     }
 }
 
@@ -204,9 +209,10 @@ nav{
         display: none;
     }
 
-    .auftrag-link a{
-        font-size: 23px;
+    .toggle-links{
+        width: 40%;
     }
+
 }
 
 @media screen and (max-width: 700px){
@@ -214,5 +220,9 @@ nav{
         letter-spacing: 1px;
         font-size: 20px;
         width: 20%;
+    }
+
+    .toggle-links{
+        width: 50%;
     }
 }
