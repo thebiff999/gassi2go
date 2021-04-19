@@ -47,11 +47,11 @@ class Header extends LitElement{
 
                 <div class="profil">
                     <a href="#">
-                        <img id="profil-img" src="./../../../../resources/images/own_profil_icon_v2.png">
+                        <img id="profil-img" src="./../../../../resources/images/logo_user_dog.PNG">
                     </a>
                 </div>
 
-                <a href="#" class="auftrag-link">
+                <a href='/auftrag/new' class="auftrag-link">
                     <h3>Auftrag erstellen</h3>
                 </a>
             </div>
@@ -88,5 +88,4 @@ class Header extends LitElement{
             }
         });
     }
-
 }

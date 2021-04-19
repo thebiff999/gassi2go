@@ -1,0 +1,30 @@
+/* Autor: Simon Flathmann */
+
+*{
+    box-sizing: border-box;
+    font-family: Verdana;
+}
+
+
+form{
+    margin: 5vw;
+    width: 90vw;
+    text-align: left;
+}
+
+div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(120deg, white, LightGreen);
+}
+
+.fieldset1{
+    border: 3px solid darkgreen;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+legend{
+    font-size: 20px;
+}
