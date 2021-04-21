@@ -36,7 +36,7 @@ render() {
         <input class="form-control" type="password" required id="password" name="password" />
         <div class="invalid-feedback">Die Vergabe eines Passwortes ist zwingend</div>
       </div>
-      <button class="btn btn-primary" type="button" @click="${this.submit}">Login</button>
+      <button class="btn btn-primary" type="button" @click="${this.onsubmit}">Login</button>
     </form>
   `;
 }
@@ -44,5 +44,4 @@ render() {
 
 }
 
-}
 }

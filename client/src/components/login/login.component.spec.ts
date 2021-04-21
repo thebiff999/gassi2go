@@ -1,9 +1,7 @@
 /* Autor: Martin Feldman */
 
-
 import { LitElement } from 'lit-element';
 import './sign-in.component';
-
 
 describe('login', () => {
   let element: LitElement;
