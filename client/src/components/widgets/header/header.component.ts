@@ -25,7 +25,7 @@ class Header extends LitElement{
 
             <div class="header-left">
                 <div class="logo">
-                    <img id="logo-img" src="./../../../../resources/images/dog_logo.png">
+                    <img id="logo-img" src="./../../../../resources/images/Gassi2Go-Logo.png">
                 </div>
                 <div class="gassi2go">
                     <h2>Gassi2Go</h2>
