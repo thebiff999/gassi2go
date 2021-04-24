@@ -13,8 +13,10 @@
     url('../node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.svg#fontawesome') format('svg');
 }
 
-body {
-  font-family: 'Open Sans', sans-serif;
+body { 
+  //font-family: 'Open Sans', sans-serif; default 
   margin: 0px;
   overflow-x: hidden;
+  font-family: Verdana;
+  background: linear-gradient(120deg, rgb(235, 249, 239), rgb(138, 219, 158));
 }

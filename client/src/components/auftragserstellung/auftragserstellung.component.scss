@@ -2,7 +2,6 @@
 
 *{
     box-sizing: border-box;
-    font-family: Verdana;
 }
 
 
@@ -16,7 +15,10 @@ div{
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(120deg, white, LightGreen);
+    //background: linear-gradient(120deg, rgb(235, 249, 239), rgb(138, 219, 158)); -> jetzt in der Index.scss
+    //background:linear-gradient(120deg, white, lightgreen);
+    //background: linear-gradient(120deg, white, rgb(138, 219, 158));
+
 }
 
 .fieldset1{
