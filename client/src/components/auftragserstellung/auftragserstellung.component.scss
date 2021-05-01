@@ -4,22 +4,19 @@
     box-sizing: border-box;
 }
 
-
-form{
-    margin: 5vw;
-    width: 90vw;
-    text-align: left;
+.form-row{
+    margin: 20px;
 }
 
-div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#outerDiv{
+    background-color: white;
+    margin: 3.5vw;
+    border-radius: 10px;
     //background: linear-gradient(120deg, rgb(235, 249, 239), rgb(138, 219, 158)); -> jetzt in der Index.scss
     //background:linear-gradient(120deg, white, lightgreen);
     //background: linear-gradient(120deg, white, rgb(138, 219, 158));
-
 }
+
 
 .fieldset1{
     border: 3px solid darkgreen;
