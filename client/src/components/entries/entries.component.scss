@@ -1,4 +1,4 @@
-.entries {
+#entries {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -7,8 +7,9 @@
 }
 
 .entry {
-    border: solid black 1px;
     border-radius: 25px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .entry img {
@@ -17,10 +18,18 @@
 }
 
 .inactive {
-    display: none;
+    display: none !important;
 }
 
 #map {
-    height: 800px;
+    height: calc(100vh - 90px);
     width: 100%;
+}
+
+html, body {
+    height: 100vh;
+}
+
+.toggle-btn {
+    position: fixed;
 }

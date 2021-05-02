@@ -40,25 +40,29 @@ class EntriesComponent extends PageMixin(LitElement) {
         ];
 
         return html`
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <div>
             <button class="toggle-btn" @click=${this.toggleView}>
                 Ansicht wechseln
             </button>
         </div>
 
-        <div id="entries" class="entries">
-        ${repeat(entries, entry => entry.id, entry =>
-            html`
-            <div class="entry" @click=${() => window.alert("you clicked the box")}>
-            <img src=${entry.image} height="300px" width="400px">
-            <p>Rasse: ${entry.name}</p>
-            <p>Entfernung: ${entry.distance}</p>
-            </div>
+        <div id="entries" class="container">
+            <div class="row align-items-start">
+                ${repeat(entries, entry => entry.id, entry =>
+                html`
+                <div class="col card entry" @click=${() => window.alert("you clicked the box")}>
+                    <img class ="card-img-top" src=${entry.image} height="300px" width="400px">
+                    <div class="card-body">
+                        <p>Rasse: ${entry.name}</p>
+                        <p>Entfernung: ${entry.distance}</p>
+                        <a href="#" class="btn btn-primary">Führ mich aus</a>
+                    </div>
+                </div>
             `)}
+            </div>
         </div>
         <div id="map-container" class="inactive">
-            <h2>Google Map</h2>
-            <i class="fas fa-camera"></i>
             <div id="map">
             </div>
         </div>
@@ -83,13 +87,14 @@ class EntriesComponent extends PageMixin(LitElement) {
 
         //Create Google Maps
         const loader = new Loader({
-            apiKey: "AIzaSyD6or1CtWKZk_eDsfSa2lutejZo9jEAZ3E",
+            apiKey: "AIzaSyApvgXYHn99FigrI9QuMMfrIbxHqiEY1yA",
             version: "weekly"
         });
         loader.load().then(() => {
             this.map = new google.maps.Map(this.shadowRoot?.querySelector('#map') as HTMLElement, {
               center: { lat: 51.96236, lng: 7.62571 },
               zoom: 13,
+              disableDefaultUI: true
             });
           }).then(() => {
             for (let i=0; i < entries.length; i++) {
@@ -100,6 +105,10 @@ class EntriesComponent extends PageMixin(LitElement) {
 
     async firstUpdated() {
         this.createMap();
+        /*navigator.geolocation.getCurrentPosition(
+            pos => alert(pos.coords.latitude + ', ' + pos.coords.longitude),
+            error => alert('Error code: ' + error.code)
+            );*/
     }
 
     addMarker(entry: Entry) {
