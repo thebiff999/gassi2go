@@ -24,7 +24,7 @@ class AuftragsErstellungComponent extends LitElement{
     @query('form')
     form!: HTMLFormElement;
 
-    @query('#inputArt')
+    @query('#inputAuftragArt')
     auftragArtElement!: HTMLFormElement;
     
     @query('#auftragDatum')
@@ -197,8 +197,9 @@ class AuftragsErstellungComponent extends LitElement{
         })
     }
 
-/*  GoogleMaps API benötigt eine Kreditkartenhinterlegung für den Geolocation-Service.
-    Wechsel auf TomTom. 
+/*  Alternative Geolocation-Implementierung für die GoogleMaps API.
+    Diese benötigt eine Kreditkartenhinterlegung, um den Service nutzen zu können,
+    weshalb auf die TomTom-API genutzt wurde. Unfertiger Stand.
 
      geocode = () => {
         var location = "22 Main st Boston MA";
@@ -214,10 +215,6 @@ class AuftragsErstellungComponent extends LitElement{
             //Formatierte Adresse
             console.log(response.data.results[0].formatted_address);
             var formAddress = response.data.results[0].formatted_address;
-            var formAddressOut = `
-                <ul class="list-group">
-                <li class="list-group-item">${formAddress}</li>
-                </ul>
             `;
 
             document.getElementById('formAddress')!.innerHTML = formAddressOut;
