@@ -61,10 +61,12 @@
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.11.3",
+    "autoprefixer": "^10.2.5",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.0-beta3",
     "jquery": "^3.6.0",
     "lit-element": "^2.4.0",
-    "popper.js": "^1.16.1"
+    "popper.js": "^1.16.1",
+    "precss": "^4.0.0"
   }
 }

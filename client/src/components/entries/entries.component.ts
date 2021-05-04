@@ -25,7 +25,8 @@ class EntriesComponent extends PageMixin(LitElement) {
 
     modal: Modal | undefined;
     map: google.maps.Map | undefined;
-    location: Coords | undefined;
+    location: Coords;
+    entries: Entry[];
 
     static styles = [
         css`${unsafeCSS(entryComponentCSS)}`
@@ -34,34 +35,28 @@ class EntriesComponent extends PageMixin(LitElement) {
     constructor(){
         super();
         this.location = {lat:0, lng:0};
+        this.entries = [
+            {id: 1, name: "Golden-Retriever", coords: {lat: 51.95276, lng: 7.62571}, distance: 20, image: "https://i.imgur.com/XgbZdeA.jpg"},
+            {id: 2, name: "Dackel", coords: {lat: 51.96258, lng: 7.62591}, distance: 26, image: "https://i.imgur.com/N7K4w0J.jpg"},
+            {id: 3, name: "Rottweiler", coords: {lat: 51.96346, lng: 7.62481}, distance: 31, image: "https://i.imgur.com/26zaH5Y.jpg"},
+            {id: 4, name: "Golden-Retriever", coords: {lat: 52.23868633054282, lng: 7.3709097237207715}, distance:1, image: "https://i.imgur.com/XgbZdeA.jpg"}
+        ];
     }
 
     render() {
-        var entries: Entry[] = [
-            {id: 1, name: "Golden-Retriever", coords: {lat: 51.96246, lng: 7.62581}, distance: 20, image: "https://i.imgur.com/XgbZdeA.jpg"},
-            {id: 2, name: "Dackel", coords: {lat: 51.96258, lng: 7.62591}, distance: 26, image: "https://i.imgur.com/N7K4w0J.jpg"},
-            {id: 3, name: "Rottweiler", coords: {lat: 51.96346, lng: 7.62481}, distance: 31, image: "https://i.imgur.com/26zaH5Y.jpg"},
-            {id: 1, name: "Golden-Retriever", coords: {lat: 51.96246, lng: 7.62581}, distance: 20, image: "https://i.imgur.com/XgbZdeA.jpg"},
-            {id: 2, name: "Dackel", coords: {lat: 51.96258, lng: 7.62591}, distance: 26, image: "https://i.imgur.com/N7K4w0J.jpg"},
-            {id: 3, name: "Rottweiler", coords: {lat: 51.96346, lng: 7.62481}, distance: 31, image: "https://i.imgur.com/26zaH5Y.jpg"},{id: 1, name: "Golden-Retriever", coords: {lat: 51.96246, lng: 7.62581}, distance: 20, image: "https://i.imgur.com/XgbZdeA.jpg"},
-            {id: 2, name: "Dackel", coords: {lat: 51.96258, lng: 7.62591}, distance: 26, image: "https://i.imgur.com/N7K4w0J.jpg"},
-            {id: 3, name: "Rottweiler", coords: {lat: 51.96346, lng: 7.62481}, distance: 31, image: "https://i.imgur.com/26zaH5Y.jpg"},{id: 1, name: "Golden-Retriever", coords: {lat: 51.96246, lng: 7.62581}, distance: 20, image: "https://i.imgur.com/XgbZdeA.jpg"},
-            {id: 2, name: "Dackel", coords: {lat: 51.96258, lng: 7.62591}, distance: 26, image: "https://i.imgur.com/N7K4w0J.jpg"},
-            {id: 3, name: "Rottweiler", coords: {lat: 51.96346, lng: 7.62481}, distance: 31, image: "https://i.imgur.com/26zaH5Y.jpg"}
-        ];
+        var entries = this.getEntries();
 
         return html`
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
         
-        <div id="locationModal" class="modal" tabindex="-1" role="dialog">
+        <div id="locationModal" class="modal blurred" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
+                        <h5 class="modal-title">Standort Freigabe</h5>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Modal body text goes here.</p>
+                        <p>Damit Gassi2Go dir Fellnasen in der Nähe anzeigen kann, benötigen wir deinen .</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" @click="${this.askforLocation}">Standort freigeben</button>
@@ -83,10 +78,10 @@ class EntriesComponent extends PageMixin(LitElement) {
                 <div class="col">
                     <div class="card shadow entry">
                         <div class="card-body">
-                            <img class ="card-img-top" src=${entry.image} height="300px" width="400px">
+                            <img class="card-img-top" src="${entry.image}" height="300px" width="400px">
                             <p>Rasse: ${entry.name}</p>
-                            <p>Entfernung: ${entry.distance} km</p>
-                            <a href="#" class="btn btn-primary">Führ mich aus</a>
+                            <p>Entfernung: ${this.getDistance(entry.coords, this.location!)} km</p>
+                            <a href="#" class="btn btn-primary">Führ mich aus <i class="fas fa-paw"></i></a>
                         </div>
                     </div>
                 </div>
@@ -101,6 +96,7 @@ class EntriesComponent extends PageMixin(LitElement) {
 
     }
 
+    //toggles between card and map view
     toggleView = () => {
         var button = this.shadowRoot?.querySelector('#toggle-btn') as HTMLElement;
         if (button!.innerText == "Zur Kartenansicht") {
@@ -115,13 +111,10 @@ class EntriesComponent extends PageMixin(LitElement) {
         map?.classList.toggle('inactive');
     }
 
+    //creates a Google Map on the #map div
     createMap() { 
 
-        var entries: Entry[] = [
-            {id: 1, name: "Golden-Retriever", coords: {lat: 51.95276, lng: 7.62571}, distance: 20, image: "https://i.imgur.com/XgbZdeA.jpg"},
-            {id: 2, name: "Dackel", coords: {lat: 51.96258, lng: 7.62591}, distance: 26, image: "https://i.imgur.com/N7K4w0J.jpg"},
-            {id: 3, name: "Rottweiler", coords: {lat: 51.96346, lng: 7.62481}, distance: 31, image: "https://i.imgur.com/26zaH5Y.jpg"}
-        ];
+        var entries = this.entries;         
 
         //Create Google Maps
         const loader = new Loader({
@@ -130,7 +123,7 @@ class EntriesComponent extends PageMixin(LitElement) {
         });
         loader.load().then(() => {
             this.map = new google.maps.Map(this.shadowRoot?.querySelector('#map') as HTMLElement, {
-              center: { lat: 51.96236, lng: 7.62571 },
+              center: this.location,
               zoom: 13,
               disableDefaultUI: true
             });
@@ -141,32 +134,49 @@ class EntriesComponent extends PageMixin(LitElement) {
           });
     }
 
-    async firstUpdated() {
-        //create the Google Maps
-        this.createMap();
+    //called after render has been called for the first time. Opens the modal dialog
+    async firstUpdated() {       
 
         //call modal for User Location
-        /*let modal = this.shadowRoot?.querySelector('#locationModal') as HTMLElement;
+        let modal = this.shadowRoot?.querySelector('#locationModal') as HTMLElement;
         this.modal = new Modal(modal, {backdrop: 'static', keyboard: false});
-        this.modal.show();*/
+        this.modal.show();
         
     }
+    //asks the user for location permission
     askforLocation() {
         navigator.geolocation.getCurrentPosition(
             pos => {
-                this.location!.lat = pos.coords.latitude;
-                this.location!.lng = pos.coords.longitude;
-                alert(this.location!.lat + ' ' + this.location!.lng);
+                this.location = { lat: pos.coords.latitude, lng: pos.coords.longitude };
                 this.modal?.hide();
+                this.createMap();
+                this.requestUpdate();
             },
             error => alert('Standort wurde nicht freigegeben')
             );
     }
 
     addMarker(entry: Entry) {
+        // create the markers
+        var map = this.map;
         var marker = new google.maps.Marker({
             position: entry.coords,
-            map: this.map
+            map: map
+        });
+        //create the info windows
+        var infoWindow = new google.maps.InfoWindow({
+            content: `
+            <div style="float:left">
+                <img src="${entry.image}" width="200px" height="150px">
+            </div>
+            <div style="float:right; padding: 10px;">
+                <h5>${entry.name}</h5>
+                <p>Entfernung: ${this.getDistance(entry.coords, this.location!)} km</p>
+            </div>`
+        });
+        //link markers and info windows
+        marker.addListener('click', function() {
+            infoWindow.open(map,marker);
         });
     }
 
@@ -183,6 +193,10 @@ class EntriesComponent extends PageMixin(LitElement) {
             Math.sin(dLong / 2) * Math.sin(dLong / 2);
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         var d = (R * c) / 1000;
-        return d; // returns the distance in kilometer
+        return d.toFixed(1); // returns the distance in kilometer
+    }
+
+    getEntries() {
+        return this.entries;
     }
 }

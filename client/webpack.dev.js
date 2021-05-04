@@ -34,13 +34,25 @@ module.exports = {
           'to-string-loader',
           { loader: 'css-loader', options: { sourceMap: true, esModule: false } },
           { loader: 'postcss-loader', options: { sourceMap: true } },
-          { loader: 'sass-loader', options: { sourceMap: true } }
+          { loader: 'sass-loader', options: { sourceMap: true , sassOptions: {
+            plugins: function () { // post css plugins, can be exported to postcss.config.js
+              return [
+                require('precss'),
+                require('autoprefixer')
+              ];
+            }
+          } } }
         ]
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
         use: [{ loader: 'file-loader', options: { outputPath: 'fonts/', publicPath: '/app/fonts' } }]
+      },
+      {
+        test: /\.css$/,
+        use: [{loader: 'css-loader'}]
       }
+      
     ]
   },
   plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })]
