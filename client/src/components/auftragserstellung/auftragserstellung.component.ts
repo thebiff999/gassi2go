@@ -55,7 +55,6 @@ class AuftragsErstellungComponent extends LitElement{
         return html`
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
         <div class="border border-success" id="outerDiv">
             <form novalidate}">

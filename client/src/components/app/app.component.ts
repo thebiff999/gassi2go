@@ -23,7 +23,7 @@ static styles= [
     return router.select(
       {
         '/users/sign-in': () => html`<h1> sign-in </h1>`,
-        '/auftrag/new': () => html `<app-auftragserstellung ><app-auftragserstellung>`
+        '/auftrag/new': () => html `<app-auftragserstellung></app-auftragserstellung>`
       },
       () => html `<app-entries></app-entries>`
     );
