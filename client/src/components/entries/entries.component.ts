@@ -56,7 +56,12 @@ class EntriesComponent extends PageMixin(LitElement) {
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Damit Gassi2Go dir Fellnasen in der Nähe anzeigen kann, benötigen wir deinen .</p>
+                        <div id="modal-loading" class="d-flex justify-content-center inactive">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <p id="modal-text">Damit Gassi2Go dir Fellnasen in der Nähe anzeigen kann, benötigen wir deinen Standort.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" @click="${this.askforLocation}">Standort freigeben</button>
@@ -66,13 +71,13 @@ class EntriesComponent extends PageMixin(LitElement) {
         </div>
         
         <div>
-            <button id="toggle-btn" class="btn btn-success toggle-btn" @click=${this.toggleView}>
+            <button id="toggle-btn" class="btn btn-success toggle-btn" @click=${this.toggleButton}>
                 Zur Kartenansicht
             </button>
         </div>
 
         <div id="entries" class="container-fluid">
-            <div class="row row-cols-3 row-cols-xxl-4 g-3 g-xxl-5">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3 g-xxl-5">
                 ${repeat(entries, entry => entry.id, entry =>
                 html`
                 <div class="col">
@@ -96,8 +101,14 @@ class EntriesComponent extends PageMixin(LitElement) {
 
     }
 
+    toggleView(id: string) {
+        var element = this.shadowRoot?.querySelector(id);
+        element?.classList.toggle('inactive');
+
+    }
+
     //toggles between card and map view
-    toggleView = () => {
+    toggleButton = () => {
         var button = this.shadowRoot?.querySelector('#toggle-btn') as HTMLElement;
         if (button!.innerText == "Zur Kartenansicht") {
             button!.innerText = "Zur Kachelansicht";
@@ -105,10 +116,8 @@ class EntriesComponent extends PageMixin(LitElement) {
         else {
             button!.innerText = "Zur Kartenansicht";
         }
-        var entries = this.shadowRoot?.querySelector('#entries');
-        var map = this.shadowRoot?.querySelector('#map-container');
-        entries?.classList.toggle('inactive');
-        map?.classList.toggle('inactive');
+        this.toggleView('#entries');
+        this.toggleView('#map-container');
     }
 
     //creates a Google Map on the #map div
@@ -145,6 +154,8 @@ class EntriesComponent extends PageMixin(LitElement) {
     }
     //asks the user for location permission
     askforLocation() {
+        this.toggleView('modal-text');
+        this.toggleView('modal-loading');
         navigator.geolocation.getCurrentPosition(
             pos => {
                 this.location = { lat: pos.coords.latitude, lng: pos.coords.longitude };
