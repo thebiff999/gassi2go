@@ -70,7 +70,7 @@ class AuftragsErstellungComponent extends LitElement{
                     </div>
                     <div class="form-group col-md-6">
                         <label for="auftragDatum">Datum</label>
-                        <input type="date" class="form-control" id="auftragDatum">
+                        <input type="date" class="form-control" id="auftragDatum" required>
                     </div>
                 </div>
 
@@ -122,19 +122,43 @@ class AuftragsErstellungComponent extends LitElement{
 
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <button class="btn btn-primary" type="submit" @click=${this.geocode}> Auftrag erstellen </button>
+                        <button class="btn btn-primary" type="submit"> Auftrag erstellen </button>
                     </div>
                 </div>
 
             </form>
         </div>
-        
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         `
         ;
+    }
+
+    updated(){
+        this.setMinDate();
+    } 
+
+    /** Methode zum Ermitteln des aktuellen Datums für das min-Attribut. */
+    setMinDate = () => {
+        var today = new Date();
+        var ddNum = today.getDate();
+        var dd = today.getDate().toString();
+
+        var mmNum = today.getMonth() + 1;  //Januar starts at 0
+        var mm = mmNum.toString();
+
+        var yyyyNum = today.getFullYear();
+        var yyyy = yyyyNum.toString();
+
+        console.log("dd: "+ dd + ", mm: "+ mm +", y: "+ yyyy);
+        if(ddNum < 10){
+            dd = '0' + dd;
+        }
+        if(mmNum < 10){
+            mm = '0' + mm;
+        }
+
+        var todayStr = yyyy+'-'+mm+'-'+dd;
+        console.log("Neues Attribut min: " + todayStr);
+        document.getElementById("auftragDatum")!.setAttribute("min", todayStr);
     }
 
     async submit() {
