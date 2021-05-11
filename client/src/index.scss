@@ -14,6 +14,15 @@
     url('../node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.svg#fontawesome') format('svg');
 }
 
+.app-root {
+  height:100%;
+  display: flex;
+  flex-direction: column;
+}
+
+body, html {
+  height: 100%;
+}
 body { 
   //font-family: 'Open Sans', sans-serif; default 
   margin: 0px;

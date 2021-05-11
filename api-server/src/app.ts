@@ -24,7 +24,7 @@ function configureApp(app: Express) {
   app.use(apiEndpoint);
 }
 
-export async function start(port: number, dbms = 'in-memory-db', withHttps = false) {
+export async function start(port: number, dbms = 'mongodb', withHttps = false) {
   const app = express();
 
   configureApp(app);
@@ -33,7 +33,7 @@ export async function start(port: number, dbms = 'in-memory-db', withHttps = fal
 
   return async () => {
     await stopHttpServer();
-    await stopDB();
+    await stopDB;
   };
 }
 

@@ -23,7 +23,8 @@ static styles= [
     return router.select(
       {
         '/users/sign-in': () => html`<h1> sign-in </h1>`,
-        '/auftrag/new': () => html `<app-auftragserstellung></app-auftragserstellung>`
+        '/auftrag/new': () => html `<app-auftragserstellung></app-auftragserstellung>`,
+        '/entries': () => html `<app-entry></app-entry>`
       },
       () => html `<app-entries></app-entries>`
     );
@@ -33,6 +34,7 @@ static styles= [
     return html`
     <app-header title="${this.title}"></app-header>
     <div class="main_container">${this.renderRouterOutlet()}</div>
+    <app-footer class="footer"></app-footer>
     `;
   }
 

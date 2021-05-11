@@ -9,7 +9,6 @@ import { InMemoryGenericDAO } from './models/in-memory-generic.dao';
 import { Entry } from './models/entry'
 
 export default async function startDB(app: Express, dbms = 'in-memory-db') {
-  return async () => Promise.resolve();
   switch (dbms) {
     case 'mongodb':
       return await startMongoDB(app);
@@ -23,7 +22,7 @@ export default async function startDB(app: Express, dbms = 'in-memory-db') {
 async function startMongoDB(app: Express) {
   const client = await connectToMongoDB();
   const db = client.db('xyz');
-  app.locals.entryDAO = new MongoGenericDAO<Entry>(db, 'entry');
+  app.locals.entryDAO = new MongoGenericDAO<Entry>(db, 'entries');
 
 }
 
@@ -32,8 +31,8 @@ async function connectToMongoDB() {
   const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    auth: { user: 'user', password: 'password'},
-    authSource: 'xyz'
+    auth: { user: 'mongo', password: 'mongo'},
+    authSource: 'entries'
   };
   try {
     return await MongoClient.connect(url, options);

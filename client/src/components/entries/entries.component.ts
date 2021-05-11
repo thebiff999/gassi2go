@@ -1,3 +1,5 @@
+/* Autor: Dennis Heuermann */
+
 import { customElement, html, LitElement, css, unsafeCSS } from "lit-element";
 import { repeat } from 'lit-html/directives/repeat';
 import { PageMixin } from "../page.mixin";
@@ -5,7 +7,7 @@ import { Loader } from "@googlemaps/js-api-loader";
 import {} from 'google.maps';
 import { Modal } from 'bootstrap';
 
-const entryComponentCSS = require('./entries.component.scss');
+const entriesComponentCSS = require('./entries.component.scss');
 
 interface Coords {
     lat: number;
@@ -29,7 +31,7 @@ class EntriesComponent extends PageMixin(LitElement) {
     entries: Entry[];
 
     static styles = [
-        css`${unsafeCSS(entryComponentCSS)}`
+        css`${unsafeCSS(entriesComponentCSS)}`
     ]
 
     constructor(){
