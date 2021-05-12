@@ -1,5 +1,5 @@
 /* Autor: Simon Flathmann */ 
-import { css, customElement, html, LitElement, query, unsafeCSS } from "lit-element";
+import { css, customElement, html, LitElement, query, queryAll, unsafeCSS } from "lit-element";
 
 const auftragserstellungComponentSCSS = require('./auftragserstellung.component.scss');
 const axios = require('axios').default;
@@ -26,6 +26,9 @@ class AuftragsErstellungComponent extends LitElement{
 
     @query('#inputAuftragArt')
     auftragArtElement!: HTMLFormElement;
+
+    @queryAll('.form-check-input')
+    hundeElement?: NodeListOf<HTMLInputElement>;
     
     @query('#auftragDatum')
     auftragDatumElement!: HTMLFormElement;
@@ -57,19 +60,20 @@ class AuftragsErstellungComponent extends LitElement{
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
         <div class="border border-success" id="outerDiv">
-            <form novalidate}">
+            <form class="needs-validation" novalidate>
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="InputAuftragArt">Auftragsart </label>
                         <select id="inputAuftragArt" class="form-control">
-                            <option selected>Gassi gehen</option>
-                            <option>Hundebetreuung</option>
+                            <option value="Gassi" selected>Gassi gehen</option>
+                            <option value="Betreuung">Hundebetreuung</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="auftragDatum">Datum</label>
                         <input type="date" class="form-control" id="auftragDatum" required>
+                        <div class="invalid-feedback"> Bitte wähle ein valides Datum. </div>
                     </div>
                 </div>
 
@@ -85,43 +89,49 @@ class AuftragsErstellungComponent extends LitElement{
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroupPrepend">€</span>
                             </div>
-                            <input type="number" min"0.00" step="0.05" id="inputEntlohnung" placeholder="Entlohnung" class="form-control">
+                            <input type="number" value="0.00" min="0" step="0.1" id="inputEntlohnung" placeholder="Entlohnung" class="form-control" required>
+                            <div class="invalid-feedback"> Die Entlohnung ist erforderlich und darf nicht im negativen Bereich liegen. </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-9">
-                        <label for="inputstraße">Straße </label>
-                        <input type="text" class="form-control" id="inputStraße" placeholder="Beispielstraße">
+                        <label for="inputstraße">Straße</label>
+                        <input type="text" class="form-control" id="inputStraße" placeholder="Beispielstraße" required>
+                        <div class="invalid-feedback"> Eine Straße ist erforderlich. </div>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputHausNr">HausNr. </label>
-                        <input type="text" class="form-control" id="inputHausNr" placeholder="42">
+                        <label for="inputHausNr">HausNr.</label>
+                        <input type="text" class="form-control" id="inputHausNr" placeholder="42" maxlength="5" required>
+                        <div class="invalid-feedback"> Die Hausnummer ist erforderlich und muss gültig sein. </div>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="inputPLZ">PLZ</label>
-                        <input type="number" class="form-control" id="inputPLZ" minlength="5" maxlength="5" placeholder="12345">
+                        <input type="text" class="form-control" id="inputPLZ" pattern="[0-9]{5}" placeholder="12345" required>
+                        <div class="invalid-feedback"> Bitte geben Sie eine gültige Postleitzahl ein. </div>
                     </div>
                     <div class="form-group col-md-9">
                         <label for="inputOrt">Ort</label>
-                        <input type="text" class="form-control" id="inputOrt" placeholder="Musterort">
+                        <input type="text" class="form-control" id="inputOrt" placeholder="Musterort" required>
+                        <div class="invalid-feedback"> Bitte geben Sie ihren Ort ein. </div>
                     </div>
                 </div>
 
                 
                 <div class="form-group col-md-12">
                     <label for="auftragBeschreibung">Beschreibung</label>
-                    <textarea class="form-control" id="auftragBeschreibung" rows="5" maxlength="500"
-                    placeholder="Hier können Sie ihre Hunde beschreiben und alle wichtigen Informationen nennen. " ></textarea>
+                    <textarea class="form-control" id="auftragBeschreibung" rows="5" minlength="30" maxlength="900" required
+                    placeholder="Hier können Sie ihre Vierbeiner beschreiben und alle wichtigen Informationen nennen. Bei der Hundebetreuung sollte Sie hier angeben, wie lange auf den Hund aufgepasst werden soll. " ></textarea>
+                    <div class="invalid-feedback"> Die Beschreibung ist erforderlich und muss 30 bis 900 Buchstaben lang sein. </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <button class="btn btn-primary" type="submit"> Auftrag erstellen </button>
+                        <button class="btn btn-primary" type="button" @click="${this.submit}"> Auftrag erstellen </button>
                     </div>
                 </div>
 
@@ -135,7 +145,7 @@ class AuftragsErstellungComponent extends LitElement{
         this.setMinDate();
     } 
 
-    /** Methode zum Ermitteln des aktuellen Datums für das min-Attribut. */
+    /** Methode zum dynamischen Setzen des Min-Attributs für das Auftragsdatum */
     setMinDate = () => {
         var today = new Date();
         var ddNum = today.getDate();
@@ -147,7 +157,6 @@ class AuftragsErstellungComponent extends LitElement{
         var yyyyNum = today.getFullYear();
         var yyyy = yyyyNum.toString();
 
-        console.log("dd: "+ dd + ", mm: "+ mm +", y: "+ yyyy);
         if(ddNum < 10){
             dd = '0' + dd;
         }
@@ -156,25 +165,62 @@ class AuftragsErstellungComponent extends LitElement{
         }
 
         var todayStr = yyyy+'-'+mm+'-'+dd;
-        console.log("Neues Attribut min: " + todayStr);
-        document.getElementById("auftragDatum")!.setAttribute("min", todayStr);
+        console.log("Auftragdatum: Setzen von Attribut min: " + todayStr);
+        const root = document.querySelector("app-root");
+        const auftragserstellung = root?.shadowRoot?.querySelector("app-auftragserstellung");
+        auftragserstellung?.shadowRoot?.getElementById("auftragDatum")?.setAttribute("min", todayStr);
     }
+
 
     async submit() {
         console.log('submiting');
         if(this.checkInputs()){
             const auftragData = {
                 auftragArt: this.auftragArtElement.value,
-                auftragDatum: this.auftragDatumElement.value,
+                auftragDatum: this.auftragDatumElement.value
             }
             console.log(auftragData);
-        } else{
-            this.form.classList.add('was-validted');
+        } 
+        else{
+            console.log("validation failed")
+
+            this.form.classList.add('was-validated');
         }
     }
 
     checkInputs(){
-        console.log("checking inputs");
+        const root = document.querySelector("app-root");
+        const auftragserstellung = root?.shadowRoot?.querySelector("app-auftragserstellung");
+        const dogDivs = auftragserstellung?.shadowRoot?.getElementById("inputDogs")?.children;
+        const listArray = Array.from(dogDivs!);
+        var checked = 0;
+
+        //Überprüfung, ob mind. eine der Checkboxen checked ist. Falls ja, wird der der Wert von checked auf 1 gesetzt.
+        //Die if-Bedinungen dienen der Fehlerprävention.
+        listArray.forEach((item) => {
+            if(item.className == "form-check"){
+                if(item.children[0].className == "form-check-input"){
+                    console.log("form-check-input found");
+                    let ele = item.children[0] as HTMLInputElement;
+                    if(ele.checked){
+                        checked = 1;
+                    }
+                }
+            }
+        });
+        if(checked == 0){
+            console.log(this.hundeElement);
+            for(let l=0; l < this.hundeElement!.length; l++){
+                if(l == this.hundeElement!.length-1){
+                    this.hundeElement![l].setCustomValidity('Bitte wählen Sie mindestens einen Hund aus.');
+                    this.hundeElement![l].reportValidity();
+                } else{
+                    this.hundeElement![l].setCustomValidity(' ');
+                    this.hundeElement![l].reportValidity();
+                }
+            }
+        }
+
         return this.form.checkValidity();
     }
 
@@ -184,11 +230,12 @@ class AuftragsErstellungComponent extends LitElement{
         var x = 0;
         for(const i of dogs){
             dogTemplates.push(html`
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck + ${x}">
-                    <label class="custom-control-label" for="customCheck + ${x}">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="customCheck + ${x}">
+                    <label class="form-check-label" for="customCheck + ${x}">
                         ${i.name}
                     </label>
+                    <div class="invalid-feedback"></div>
                 </div>
             `)
             x++;
@@ -196,6 +243,13 @@ class AuftragsErstellungComponent extends LitElement{
         return html `${dogTemplates}`;
     }
 
+
+//     <div class="custom-control custom-checkbox">
+//     <input type="checkbox" class="custom-control-input" id="customCheck + ${x}">
+//     <label class="custom-control-label" for="customCheck + ${x}">
+//         ${i.name}
+//     </label>
+// </div>
 
     /** Geocode */
     geocode = () => {
