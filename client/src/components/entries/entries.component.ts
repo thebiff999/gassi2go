@@ -58,15 +58,15 @@ class EntriesComponent extends PageMixin(LitElement) {
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div id="modal-loading" class="d-flex justify-content-center inactive">
-                            <div class="spinner-border" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
                         <p id="modal-text">Damit Gassi2Go dir Fellnasen in der Nähe anzeigen kann, benötigen wir deinen Standort.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" @click="${this.askforLocation}">Standort freigeben</button>
+                        <div class="d-flex justify-content-center">
+                            <div id="modal-spinner" class="spinner-border visually-hidden" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <button type="button" id="modal-button" class="btn btn-primary" @click="${this.askforLocation}">Standort freigeben</button>
                     </div>
                 </div>
             </div>
@@ -95,7 +95,7 @@ class EntriesComponent extends PageMixin(LitElement) {
             `)}
             </div>
         </div>
-        <div id="map-container" class="inactive">
+        <div id="map-container" class="visually-hidden">
             <div id="map">
             </div>
         </div>
@@ -105,7 +105,7 @@ class EntriesComponent extends PageMixin(LitElement) {
 
     toggleView(id: string) {
         var element = this.shadowRoot?.querySelector(id);
-        element?.classList.toggle('inactive');
+        element?.classList.toggle('visually-hidden');
 
     }
 
@@ -116,10 +116,12 @@ class EntriesComponent extends PageMixin(LitElement) {
             button!.innerText = "Zur Kachelansicht";
         }
         else {
-            button!.innerText = "Zur Kartenansicht";
+            button!.innerText = "Zur Kartenansicht";            
         }
+        document.querySelector('app-root')?.shadowRoot?.querySelector('app-footer')?.toggleAttribute('hidden');
         this.toggleView('#entries');
         this.toggleView('#map-container');
+
     }
 
     //creates a Google Map on the #map div
@@ -156,8 +158,8 @@ class EntriesComponent extends PageMixin(LitElement) {
     }
     //asks the user for location permission
     askforLocation() {
-        this.toggleView('modal-text');
-        this.toggleView('modal-loading');
+        this.toggleView('#modal-button');
+        this.toggleView('#modal-spinner');
         navigator.geolocation.getCurrentPosition(
             pos => {
                 this.location = { lat: pos.coords.latitude, lng: pos.coords.longitude };
@@ -165,8 +167,11 @@ class EntriesComponent extends PageMixin(LitElement) {
                 this.createMap();
                 this.requestUpdate();
             },
-            error => alert('Standort wurde nicht freigegeben')
-            );
+            error => {
+                alert('Standort wurde nicht freigegeben');
+                this.toggleView('modal-spinner');
+                this.toggleView('modal-button');
+            });
     }
 
     addMarker(entry: Entry) {

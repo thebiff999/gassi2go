@@ -60,3 +60,12 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 div.modal-header {
     background-color: rgb(50, 154, 100) !important;
 }
+
+
+div.modal-dialog div.modal-content div.modal-footer i {
+    font-family: "Font Awesome 5 Free" !important;
+}
+/*
+div.modal-dialog div.modal-content div.modal-footer button.btn i.inactive {
+    display: none !important;
+}*/
