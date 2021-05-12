@@ -25,28 +25,28 @@ class AuftragsErstellungComponent extends LitElement{
     form!: HTMLFormElement;
 
     @query('#inputAuftragArt')
-    auftragArtElement!: HTMLFormElement;
+    auftragArtElement!: HTMLInputElement;
 
     @queryAll('.form-check-input')
     hundeElement?: NodeListOf<HTMLInputElement>;
     
     @query('#auftragDatum')
-    auftragDatumElement!: HTMLFormElement;
+    auftragDatumElement!: HTMLInputElement;
 
     @query('#inputEntlohnung')
-    auftragEntlohnung!: HTMLFormElement;
+    auftragEntlohnung!: HTMLInputElement;
 
     @query('#inputStraße')
-    straße!: HTMLFormElement;
+    straße!: HTMLInputElement;
 
     @query('inputHausNr')
-    hausnr!: HTMLFormElement;
+    hausnr!: HTMLInputElement;
 
     @query('inputPLZ')
-    plz!: HTMLFormElement;
+    plz!: HTMLInputElement;
 
     @query('inputOrt')
-    ort!: HTMLFormElement;
+    ort!: HTMLInputElement;
 
     render(){
         var dogs: Dog[] = [

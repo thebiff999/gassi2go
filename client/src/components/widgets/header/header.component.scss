@@ -128,7 +128,7 @@ nav{
 
     position: absolute;
     right: 0px;
-    //height: 100%; this line caused faulty element positioning
+    height: calc(100% - 90px);
     top: 90px;
     background-color:rgb(50, 154, 100);
     display: flex;
