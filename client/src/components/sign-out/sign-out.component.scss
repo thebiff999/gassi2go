@@ -1,0 +1,63 @@
+/* Autor: Martin Feldman */
+
+h1 {
+	position: relative;
+	left: +210px;
+	top: -360px;
+	margin-top: 80%;
+}
+
+h3 {
+	position: relative;
+	left: +260px;
+	top: -360px;
+	display: inline;
+}
+ 
+img {
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	//padding: 5px;
+	width: 79%;
+	max-width: 100%;
+	height: auto;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10%;
+}
+
+img:hover {
+	box-shadow: 10px 10px 20px 10px rgba(50, 154, 100 0.5);
+}
+
+#absenden {
+	position: relative;
+	left: 225px;
+	top: -100px;
+	height: 60px;
+	width: 410px;
+}
+
+.main {
+	margin-left: 40%;
+}
+
+
+.sidenav {
+	height: 100%;
+	background: linear-gradient(120deg, rgb(235, 249, 239), rgb(138, 219, 158));
+	overflow-x: hidden;
+}
+
+
+
+@media screen and (min-width: 768px) {
+	.sidenav {
+		width: 40%;
+		position: fixed;
+		z-index: 1;
+		top: 0;
+		left: 0;
+	}
+}

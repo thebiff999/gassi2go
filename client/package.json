@@ -46,7 +46,7 @@
     "node-fetch": "^2.6.1",
     "playwright": "^1.9.1",
     "postcss-loader": "^5.0.0",
-    "postcss-preset-env": "^6.7.0",
+    "postcss-preset-env": "^5.3.0",
     "prettier": "^2.2.1",
     "sass": "^1.32.8",
     "sass-loader": "^11.0.1",
@@ -67,6 +67,6 @@
     "jquery": "^3.6.0",
     "lit-element": "^2.4.0",
     "popper.js": "^1.16.1",
-    "precss": "^4.0.0"
+    "precss": "^3.1.2"
   }
 }
