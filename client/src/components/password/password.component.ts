@@ -6,7 +6,7 @@ import { PageMixin } from '../page.mixin';
 //const sharedCSS = require('../shared.scss');
 const componentCSS = require('./password.component.scss');
 
-@customElement('password')
+@customElement('app-password')
 class AccountComponent extends PageMixin(LitElement) {
   // eslint-disable-line @typescript-eslint/no-unused-vars
 

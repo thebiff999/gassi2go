@@ -8,7 +8,7 @@ import { PageMixin } from '../page.mixin';
 //const sharedCSS = require('../shared.scss');
 const componentCSS = require('./sign-in.component.scss');
 
-@customElement('sign-in')
+@customElement('app-sign-in')
 class SignInComponent extends PageMixin(LitElement) {
   // eslint-disable-line @typescript-eslint/no-unused-vars
 
