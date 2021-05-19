@@ -138,7 +138,7 @@ class AccountComponent extends PageMixin(LitElement) {
                       />
                       <small id='passwordHelpBlock' class='form-text text-muted'>
                         Dein Passwort muss 8-20 Zeichen lang sein. Es darf Buchstaben und Nummer
-                        enthalten, aber keine Leerzeichen oder Spezialbuchstaben.
+                        enthalten, aber keine Leerzeichen oder Sonderzeichen.
                       </small>
                       <div class='invalid-feedback'>
                         Passwort ist erforderlich und muss mind. 8 Zeichen lang sein
