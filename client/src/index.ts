@@ -7,3 +7,8 @@ import './components/entries/entries.component.ts';
 import './components/auftragserstellung/auftragserstellung.component.ts';
 import './components/entry/entry.component.ts';
 import './components/widgets/footer/footer.component.ts';
+import './components/account/account.component.ts';
+import './components/password/password.component.ts';
+import './components/sign-in/sign-in.component.ts';
+import './components/sign-out/sign-out.component.ts';
+import './components/sign-up/sign-up.component.ts';

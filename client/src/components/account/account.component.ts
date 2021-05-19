@@ -14,7 +14,7 @@ interface Account {
   email: string;
 }
 
-const sharedCSS = require('../shared.scss');
+//const sharedCSS = require('../shared.scss');
 const componentCSS = require('./account.component.scss');
 
 @customElement('account')
@@ -22,9 +22,9 @@ class AccountComponent extends PageMixin(LitElement) {
   // eslint-disable-line @typescript-eslint/no-unused-vars
 
   static styles = [
-    css`
-      ${unsafeCSS(sharedCSS)}
-    `,
+    //constcss`
+    //${unsafeCSS(sharedCSS)}
+    //`,
     css`
       ${unsafeCSS(componentCSS)}
     `

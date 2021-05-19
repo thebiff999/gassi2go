@@ -50,7 +50,8 @@ img {
 }
 
 img:hover {
-	box-shadow: 10px 10px 20px 10px rgba(50, 154, 100, 0.5);
+	box-shadow: 10px 10px 20px 10px;
+
 }
 
 #navigateToSignIn {
@@ -138,7 +139,7 @@ img:hover {
 	}
 
 	img:hover {
-		box-shadow: 10px 10px 20px 10px rgba(50, 154, 100 0.5);
+		box-shadow: 10px 10px 20px 10px;
 	}
 
 	#navigateToSignIn {
