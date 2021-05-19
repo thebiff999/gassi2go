@@ -5,7 +5,9 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 @import '@fortawesome/fontawesome-free/scss/regular';
 
 #entries {
-    padding: 6%;
+    padding-top: 80px;
+    padding-left: 6%;
+    padding-right: 6%;
 }
 
 .entry {

@@ -1,0 +1,13 @@
+app-root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main_container {
+    flex: 1;
+}
+
+app-footer {
+    background-color: rgb(50, 154, 100);
+}

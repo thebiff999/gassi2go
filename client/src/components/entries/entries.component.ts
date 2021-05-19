@@ -29,6 +29,7 @@ class EntriesComponent extends PageMixin(LitElement) {
     map: google.maps.Map | undefined;
     location: Coords;
     entries: Entry[];
+    openWindow: google.maps.InfoWindow | undefined;
 
     static styles = [
         css`${unsafeCSS(entriesComponentCSS)}`
@@ -61,12 +62,15 @@ class EntriesComponent extends PageMixin(LitElement) {
                         <p id="modal-text">Damit Gassi2Go dir Fellnasen in der Nähe anzeigen kann, benötigen wir deinen Standort.</p>
                     </div>
                     <div class="modal-footer">
-                        <div class="d-flex justify-content-center">
-                            <div id="modal-spinner" class="spinner-border visually-hidden" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                        <button type="button" id="modal-button" class="btn btn-primary" @click="${this.askforLocation}">Standort freigeben</button>
+                        <button type="button"  class="btn btn-primary" @click="${this.askforLocation}">
+                            <div id="modal-spinner" class="visually-hidden">
+                                <div  class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span>Laden...</span>
+                            </div>                            
+                            <span id="modal-button">Standort freigeben</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -158,8 +162,8 @@ class EntriesComponent extends PageMixin(LitElement) {
     }
     //asks the user for location permission
     askforLocation() {
-        this.toggleView('#modal-button');
-        this.toggleView('#modal-spinner');
+        document.getElementById('modal-spinner')?.classList.toggle('visually-hidden');
+        document.getElementById('modal-button')?.classList.toggle('visually-hidden');
         navigator.geolocation.getCurrentPosition(
             pos => {
                 this.location = { lat: pos.coords.latitude, lng: pos.coords.longitude };
@@ -169,13 +173,14 @@ class EntriesComponent extends PageMixin(LitElement) {
             },
             error => {
                 alert('Standort wurde nicht freigegeben');
-                this.toggleView('modal-spinner');
-                this.toggleView('modal-button');
+                document.getElementById('modal-spinner')?.classList.toggle('visually-hidden');
+                document.getElementById('modal-button')?.classList.toggle('visually-hidden');
             });
     }
 
     addMarker(entry: Entry) {
         // create the markers
+        var _this = this;
         var map = this.map;
         var marker = new google.maps.Marker({
             position: entry.coords,
@@ -194,8 +199,18 @@ class EntriesComponent extends PageMixin(LitElement) {
         });
         //link markers and info windows
         marker.addListener('click', function() {
+            _this.closeOpenedWindow();
             infoWindow.open(map,marker);
+            _this.saveOpenedWindow(infoWindow);
         });
+    }
+
+    saveOpenedWindow(window: google.maps.InfoWindow) {
+            this.openWindow = window;
+    }
+
+    closeOpenedWindow() {
+        this.openWindow?.close();
     }
 
     getDistance(pos1: Coords, pos2: Coords) {
