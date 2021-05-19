@@ -1,4 +1,4 @@
-/* Autor: TODO */
+/* Autor: Simon Flathmann */
 
 import { css, customElement, html, internalProperty, LitElement, unsafeCSS } from 'lit-element';
 import { router } from '../../router';
@@ -29,11 +29,13 @@ class AppComponent extends LitElement {
         '/users/sign-in': () => html`<h1>sign-in</h1>`,
         '/auftrag/new': () => html`<app-auftragserstellung></app-auftragserstellung>`,
         '/entries': () => html`<app-entry></app-entry>`,
-        '/user/': () => html`<app-account></app-account>`,
+        '/user': () => html`<app-account></app-account>`,
         '/user/password': () => html`<app-password></app-password>`,
         '/user/sign-in': () => html`<app-sign-in></app-sign-in>`,
         '/user/sign-up': () => html`<app-sign-up></app-sign-up>`,
-        '/user/sign-out': () => html`<app-sign-out></app-sign-out>`
+        '/user/sign-out': () => html`<app-sign-out></app-sign-out>`,
+        '/user/entries': () => html`<h1>TODO: Simon</h1>`,
+        '/user/dogs': () => html`<h1>TODO: Simon</h1>`
       },
       () => html`<app-entries></app-entries>`
     );
