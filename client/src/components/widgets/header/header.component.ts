@@ -22,15 +22,16 @@ class Header extends LitElement{
     render(){
         return html`
         <nav>
-
-            <div class="header-left">
-                <div class="logo">
-                    <img id="logo-img" src="./../../../../resources/images/Gassi2Go-Logo.png">
+            <a href="#">
+                <div class="header-left">
+                    <div class="logo">
+                        <img id="logo-img" src="./../../../../resources/images/Gassi2Go-Logo.png">
+                    </div>
+                    <div class="gassi2go">
+                        <h2>Gassi2Go</h2>
+                    </div>
                 </div>
-                <div class="gassi2go">
-                    <h2>Gassi2Go</h2>
-                </div>
-            </div>
+            </a>
 
             <div class="header-mid">
                 <div class="title">
@@ -51,7 +52,7 @@ class Header extends LitElement{
                     </a>
                 </div>
 
-                <a href='/auftrag/new' class="auftrag-link">
+                <a href='auftrag/new' class="auftrag-link">
                     <h3>Auftrag erstellen</h3>
                 </a>
             </div>

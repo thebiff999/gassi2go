@@ -19,6 +19,10 @@ static styles= [
   linkItems = [
   ];
 
+  firstUpdated() {
+    router.subscribe(() => this.requestUpdate());
+  }
+
   renderRouterOutlet() {
     return router.select(
       {
