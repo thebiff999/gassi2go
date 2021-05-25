@@ -28,18 +28,19 @@ static styles= [
       {
         '/users/sign-in': () => html`<h1> sign-in </h1>`,
         '/auftrag/new': () => html `<app-auftragserstellung></app-auftragserstellung>`,
-        '/entries': () => html `<app-entry></app-entry>`
+        '/entries': () => html `<app-entry></app-entry>`,
+        '/entries/:id': params => html`<app-entry-details .entryId=${params.id}></app-entry-details>`
       },
       () => html `<app-entries></app-entries>`
     );
   }
+
 
   render() {
     return html`
     <app-header title="${this.title}"></app-header>
     <div class="main_container">${this.renderRouterOutlet()}</div>
     <app-footer class="footer"></app-footer>
-    `;
-  }
+    `;}
 
 }
