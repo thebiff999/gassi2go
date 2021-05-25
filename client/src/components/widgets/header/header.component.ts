@@ -22,7 +22,7 @@ class Header extends LitElement{
     render(){
         return html`
         <nav>
-            <a href="#">
+            <a class="logo-link" href="">
                 <div class="header-left">
                     <div class="logo">
                         <img id="logo-img" src="./../../../../resources/images/Gassi2Go-Logo.png">
@@ -47,21 +47,21 @@ class Header extends LitElement{
                 </div>
 
                 <div class="profil">
-                    <a href="#">
+                    <a href="/user">
                         <img id="profil-img" src="./../../../../resources/images/logo_user_dog.PNG">
                     </a>
                 </div>
 
-                <a href='auftrag/new' class="auftrag-link">
+                <a href='/auftrag/new' class="auftrag-link">
                     <h3>Auftrag erstellen</h3>
                 </a>
             </div>
 
             <ul class="toggle-links" part="toggle-links-part">
-                <li><a href="#">Auftrag suchen</a></li>
-                <li><a href="#">Meine Aufträge</a></li>
-                <li><a href="#">Meine Hunde</a></li>
-                <li><a href="#">Abmelden</a></li>
+                <li><a href="/entries">Auftrag suchen</a></li>
+                <li><a href="/user/entries">Meine Aufträge</a></li>
+                <li><a href="/user/dogs">Meine Hunde</a></li>
+                <li><a href="/user/sign-out">Abmelden</a></li>
              </ul>
 
         </nav>

@@ -17,7 +17,7 @@ interface Account {
 //const sharedCSS = require('../shared.scss');
 const componentCSS = require('./account.component.scss');
 
-@customElement('account')
+@customElement('app-account')
 class AccountComponent extends PageMixin(LitElement) {
   // eslint-disable-line @typescript-eslint/no-unused-vars
 
