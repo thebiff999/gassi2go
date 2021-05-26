@@ -18,7 +18,7 @@ h3 {
 img {
 	border: 1px solid #ddd;
 	border-radius: 4px;
-	//padding: 5px;
+
 	width: 79%;
 	max-width: 100%;
 	height: auto;
@@ -84,11 +84,6 @@ span {
 	width: 410px;
 }
 
-.sidenav {
-	height: 100%;
-	background: linear-gradient(120deg, rgb(235, 249, 239), rgb(138, 219, 158));
-	overflow-x: hidden;
-}
 
 .main {
 	margin-left: 40%;
@@ -153,7 +148,7 @@ span {
 	}
 }
 
-//for large desktops min-width: 1600px
+
 @media screen and (min-width: 1600px) {
 	h1 {
 		left: +200px;
