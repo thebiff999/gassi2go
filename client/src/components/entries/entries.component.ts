@@ -1,11 +1,14 @@
 /* Autor: Dennis Heuermann */
 
-import { customElement, html, LitElement, css, unsafeCSS } from "lit-element";
+import { customElement, html, LitElement, css, unsafeCSS, internalProperty } from "lit-element";
+import { router } from '../../router';
 import { repeat } from 'lit-html/directives/repeat';
+import { httpClient } from '../../http-client';
 import { PageMixin } from "../page.mixin";
 import { Loader } from "@googlemaps/js-api-loader";
 import {} from 'google.maps';
 import { Modal } from 'bootstrap';
+import { Entry } from '../../../../api-server/src/models/entry';
 
 const entriesComponentCSS = require('./entries.component.scss');
 
@@ -14,40 +17,34 @@ interface Coords {
     lng: number;
 }
 
-interface Entry {
-    id: number;
-    name: string;
-    coords: Coords;
-    distance: number;
-    image: string;
-}
-
 @customElement('app-entries')
 class EntriesComponent extends PageMixin(LitElement) {
 
     modal: Modal | undefined;
     map: google.maps.Map | undefined;
     location: Coords;
-    entries: Entry[];
     openWindow: google.maps.InfoWindow | undefined;
 
     static styles = [
         css`${unsafeCSS(entriesComponentCSS)}`
     ]
 
+    @internalProperty()
+    private entries: Entry[] = [];
+
     constructor(){
         super();
         this.location = {lat:0, lng:0};
-        this.entries = [
-            {id: 1, name: "Golden-Retriever", coords: {lat: 51.95276, lng: 7.62571}, distance: 20, image: "https://i.imgur.com/XgbZdeA.jpg"},
-            {id: 2, name: "Dackel", coords: {lat: 51.96258, lng: 7.62591}, distance: 26, image: "https://i.imgur.com/N7K4w0J.jpg"},
-            {id: 3, name: "Rottweiler", coords: {lat: 51.96346, lng: 7.62481}, distance: 31, image: "https://i.imgur.com/26zaH5Y.jpg"},
-            {id: 4, name: "Golden-Retriever", coords: {lat: 52.23868633054282, lng: 7.3709097237207715}, distance:1, image: "https://i.imgur.com/XgbZdeA.jpg"}
-        ];
+        /*this.entries = [
+            {id: '1', name: "Golden-Retriever", coords: {lat: 51.95276, lng: 7.62571}, distance: 20, image: "https://i.imgur.com/XgbZdeA.jpg"},
+            {id: '2', name: "Dackel", coords: {lat: 51.96258, lng: 7.62591}, distance: 26, image: "https://i.imgur.com/N7K4w0J.jpg"},
+            {id: '3', name: "Rottweiler", coords: {lat: 51.96346, lng: 7.62481}, distance: 31, image: "https://i.imgur.com/26zaH5Y.jpg"},
+            {id: '4', name: "Golden-Retriever", coords: {lat: 52.23868633054282, lng: 7.3709097237207715}, distance:1, image: "https://i.imgur.com/XgbZdeA.jpg"},
+            {id: '5', name: "Golden-Retriever", coords: {lat: 52.23868633054282, lng: 7.3709097237207715}, distance:1, image: "https://i.imgur.com/XgbZdeA.jpg"}
+        ];*/
     }
 
     render() {
-        var entries = this.getEntries();
 
         return html`
         
@@ -84,15 +81,15 @@ class EntriesComponent extends PageMixin(LitElement) {
 
         <div id="entries" class="container-fluid">
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3 g-xxl-5">
-                ${repeat(entries, entry => entry.id, entry =>
+                ${repeat(this.entries, entry => entry.id, entry =>
                 html`
                 <div class="col">
                     <div class="card shadow entry">
                         <div class="card-body">
-                            <img class="card-img-top" src="${entry.image}" height="300px" width="400px">
-                            <p>Rasse: ${entry.name}</p>
-                            <p>Entfernung: ${this.getDistance(entry.coords, this.location!)} km</p>
-                            <a href="#" class="btn btn-primary">Führ mich aus <i class="fas fa-paw"></i></a>
+                            <img class="card-img-top" src="${entry.imageUrl}" height="300px" width="400px">
+                            <p>Rasse: ${entry.dogName}</p>
+                            <p>Entfernung: ${this.getDistance({lat:entry.lat, lng:entry.lng}, this.location)} km</p>
+                            <button @click=${() => this.showDetails(entry.id)} class="btn btn-primary">Führ mich aus <i class="fas fa-paw"></i></a>
                         </div>
                     </div>
                 </div>
@@ -155,9 +152,19 @@ class EntriesComponent extends PageMixin(LitElement) {
     async firstUpdated() {       
 
         //call modal for User Location
-        let modal = this.shadowRoot?.querySelector('#locationModal') as HTMLElement;
-        this.modal = new Modal(modal, {backdrop: 'static', keyboard: false});
-        this.modal.show();
+        //let modal = this.shadowRoot?.querySelector('#locationModal') as HTMLElement;
+        //this.modal = new Modal(modal, {backdrop: 'static', keyboard: false});
+        //this.modal.show();
+
+        //request entries from api-server
+        try {
+            const response = await httpClient.get('/entries');
+            this.entries = (await response.json()).results;
+        }
+        catch ({message, statusCode}) {
+            console.log(message);
+            console.log(statusCode);
+        }
         
     }
     //asks the user for location permission
@@ -183,18 +190,18 @@ class EntriesComponent extends PageMixin(LitElement) {
         var _this = this;
         var map = this.map;
         var marker = new google.maps.Marker({
-            position: entry.coords,
+            position: {lat:entry.lat, lng:entry.lng},
             map: map
         });
         //create the info windows
         var infoWindow = new google.maps.InfoWindow({
             content: `
             <div style="float:left">
-                <img src="${entry.image}" width="200px" height="150px">
+                <img src="${entry.imageUrl}" width="200px" height="150px">
             </div>
             <div style="float:right; padding: 10px;">
-                <h5>${entry.name}</h5>
-                <p>Entfernung: ${this.getDistance(entry.coords, this.location!)} km</p>
+                <h5>${entry.dogName}</h5>
+                <p>Entfernung: ${this.getDistance({lat:entry.lat, lng:entry.lng}, this.location!)} km</p>
             </div>`
         });
         //link markers and info windows
@@ -231,5 +238,9 @@ class EntriesComponent extends PageMixin(LitElement) {
 
     getEntries() {
         return this.entries;
+    }
+
+    showDetails(entryId: string) {
+        router.navigate(`/entries/${entryId}`);
     }
 }

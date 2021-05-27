@@ -9,7 +9,8 @@ import https from 'https';
 import fs from 'fs';
 import path from 'path';
 // TODO: Routen importieren
-import apiEndpoint from './route/api-endpoint';
+import entries from './routes/entries';
+//import apiEndpoint from './route/api-endpoint';
 
 import startDB from './db';
 import { corsService } from './services/cors.service';
@@ -20,11 +21,11 @@ function configureApp(app: Express) {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(cookieParser());
   app.use(corsService.expressMiddleware);
-  // TODO: Routen einbinden
-  app.use(apiEndpoint);
+  app.use('/api/entries', entries);
+  //app.use(apiEndpoint);
 }
 
-export async function start(port: number, dbms = 'mongodb', withHttps = false) {
+export async function start(port: number, dbms = 'psql', withHttps = false) {
   const app = express();
 
   configureApp(app);
