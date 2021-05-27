@@ -50,14 +50,15 @@ async function startPsql(app: Express) {
 
 async function connectToPsql() {
   const client = new Client({
-    user: 'user',
-    host: 'localhost',
-    database: 'xyz',
+    user: 'gassi',
+    host: '99a7ecc.online-server.cloud',
+    database: 'gassi2go',
     password: 'password',
     port: 5432
   });
   try {
     await client.connect();
+    console.log('Succesfully connected to PostgreSQL database');
     return client;
   } catch (err) {
     console.log('Could not connect to PostgreSQL: ', err.stack);

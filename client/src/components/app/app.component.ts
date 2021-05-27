@@ -1,6 +1,7 @@
 /* Autor: Simon Flathmann */
 
 import { css, customElement, html, internalProperty, LitElement, unsafeCSS } from 'lit-element';
+import { httpClient } from '../../http-client';
 import { router } from '../../router';
 
 const appComponentSCSS = require('./app.component.scss');
@@ -19,6 +20,11 @@ class AppComponent extends LitElement {
   @internalProperty()
   linkItems = [];
 
+  constructor() {
+    super();
+    httpClient.init({baseURL: `//${location.hostname}:3000/api/`});
+  }
+
   firstUpdated() {
     router.subscribe(() => this.requestUpdate());
   }
@@ -28,7 +34,8 @@ class AppComponent extends LitElement {
       {
         '/users/sign-in': () => html`<h1>sign-in</h1>`,
         '/auftrag/new': () => html`<app-auftragserstellung></app-auftragserstellung>`,
-        '/entries': () => html`<app-entry></app-entry>`,
+        '/entries': () => html`<app-entries></app-entries>`,
+        '/entries/:id': params => html`<app-entry-details .entryId=${params.id}></app-entry-details>`,
         '/user': () => html`<app-account></app-account>`,
         '/user/password': () => html`<app-password></app-password>`,
         '/user/sign-in': () => html`<app-sign-in></app-sign-in>`,
