@@ -88,7 +88,7 @@ class EntriesComponent extends PageMixin(LitElement) {
                         <div class="card-body">
                             <img class="card-img-top" src="${entry.imageUrl}" height="300px" width="400px">
                             <p>Rasse: ${entry.dogName}</p>
-                            <p>Entfernung: ${this.getDistance({lat:entry.lat, lng:entry.lng}, this.location)} km</p>
+                            <p>Entfernung: ${this.getDistance(entry.lat, entry.lng, this.location)} km</p>
                             <button @click=${() => this.showDetails(entry.id)} class="btn btn-primary">Führ mich aus <i class="fas fa-paw"></i></a>
                         </div>
                     </div>
@@ -126,9 +126,7 @@ class EntriesComponent extends PageMixin(LitElement) {
     }
 
     //creates a Google Map on the #map div
-    createMap() { 
-
-        var entries = this.entries;         
+    createMap() {        
 
         //Create Google Maps
         const loader = new Loader({
@@ -142,8 +140,8 @@ class EntriesComponent extends PageMixin(LitElement) {
               disableDefaultUI: true
             });
           }).then(() => {
-            for (let i=0; i < entries.length; i++) {
-                this.addMarker(entries[i]);
+            for (let i=0; i < this.entries.length; i++) {
+                this.addMarker(this.entries[i]);
               }
           });
     }
@@ -152,9 +150,9 @@ class EntriesComponent extends PageMixin(LitElement) {
     async firstUpdated() {       
 
         //call modal for User Location
-        //let modal = this.shadowRoot?.querySelector('#locationModal') as HTMLElement;
-        //this.modal = new Modal(modal, {backdrop: 'static', keyboard: false});
-        //this.modal.show();
+        let modal = this.shadowRoot?.querySelector('#locationModal') as HTMLElement;
+        this.modal = new Modal(modal, {backdrop: 'static', keyboard: false});
+        this.modal.show();
 
         //request entries from api-server
         try {
@@ -189,8 +187,11 @@ class EntriesComponent extends PageMixin(LitElement) {
         // create the markers
         var _this = this;
         var map = this.map;
+        var lat = parseFloat(entry.lat);
+        var lng = parseFloat(entry.lng);
+        var markerPosition = {lat, lng};
         var marker = new google.maps.Marker({
-            position: {lat:entry.lat, lng:entry.lng},
+            position: markerPosition,
             map: map
         });
         //create the info windows
@@ -201,7 +202,7 @@ class EntriesComponent extends PageMixin(LitElement) {
             </div>
             <div style="float:right; padding: 10px;">
                 <h5>${entry.dogName}</h5>
-                <p>Entfernung: ${this.getDistance({lat:entry.lat, lng:entry.lng}, this.location!)} km</p>
+                <p>Entfernung: ${this.getDistance(entry.lat, entry.lng, this.location!)} km</p>
             </div>`
         });
         //link markers and info windows
@@ -220,24 +221,27 @@ class EntriesComponent extends PageMixin(LitElement) {
         this.openWindow?.close();
     }
 
-    getDistance(pos1: Coords, pos2: Coords) {
+    getDistance(lat: number | string, lng: number | string, pos2: Coords) {
         var rad = function(x: number) {
             return x * Math.PI / 180;
         }
 
+        if (typeof lat !== 'number') {
+            lat = parseFloat(lat);
+        }
+        if (typeof lng !== 'number') {
+            lng = parseFloat(lng);
+        }
+
         var R = 6378137;
-        var dLat = rad(pos2.lat - pos1.lat);
-        var dLong = rad(pos2.lng - pos1.lng);
+        var dLat = rad(pos2.lat - lat);
+        var dLong = rad(pos2.lng - lng);
         var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(rad(pos1.lat)) * Math.cos(rad(pos2.lat)) *
+            Math.cos(rad(lat)) * Math.cos(rad(pos2.lat)) *
             Math.sin(dLong / 2) * Math.sin(dLong / 2);
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         var d = (R * c) / 1000;
         return d.toFixed(1); // returns the distance in kilometer
-    }
-
-    getEntries() {
-        return this.entries;
     }
 
     showDetails(entryId: string) {

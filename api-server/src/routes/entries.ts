@@ -36,6 +36,23 @@ router.get('/:id', async(req, res) => {
     }
 });
 
+router.post('/', async (req,res) => {
+    const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
+    const createdEntry = await entryDAO.create({
+        type: req.body.type,
+        date: req.body.date,
+        pay: req.body.pay,
+        status: 'open',
+        description: req.body.description,
+        ownerId: 123,
+        ownerName: 'Max Mustermann',
+        dogId: 123,
+        dogName: 'Dackel',
+        lat: '0',
+        lng: '0',
+        imageUrl: 'https://imgur.com'
+    });
+});
 //returns all assigned entries
 //TODO
 
