@@ -12,3 +12,6 @@ import './components/password/password.component.ts';
 import './components/sign-in/sign-in.component.ts';
 import './components/sign-out/sign-out.component.ts';
 import './components/sign-up/sign-up.component.ts';
+import './components/hunde/hunde.component.ts';
+import './components/hundeerstellung/hundeerstellung.component.ts';
+
