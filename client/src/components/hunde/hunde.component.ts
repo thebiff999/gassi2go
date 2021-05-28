@@ -16,6 +16,7 @@ class HundeComponent extends LitElement{
     render(){
         return html`
             <h1>hundeübersicht</h1>
+
         `
     }
 }
