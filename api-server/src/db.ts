@@ -7,6 +7,7 @@ import { MongoGenericDAO } from './models/mongo-generic.dao';
 import { PsqlGenericDAO } from './models/psql-generic.dao';
 import { InMemoryGenericDAO } from './models/in-memory-generic.dao';
 import { Entry } from './models/entry'
+import { Hund } from './models/hunde';
 
 export default async function startDB(app: Express, dbms = 'in-memory-db') {
   switch (dbms) {
@@ -45,6 +46,7 @@ async function connectToMongoDB() {
 async function startPsql(app: Express) {
   const client = await connectToPsql();
   app.locals.entryDAO = new PsqlGenericDAO<Entry>(client!, 'entries');
+  app.locals.hundeDAO = new PsqlGenericDAO<Hund>(client!, 'hunde');
   return async () => await client.end();
 }
 

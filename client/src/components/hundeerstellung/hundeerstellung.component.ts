@@ -1,9 +1,13 @@
+/* Autor: Simon Flathmann */ 
 import { css, customElement, html, LitElement, query, unsafeCSS } from "lit-element";
+import { Hund } from '../../../../api-server/src/models/hunde';
+import { httpClient } from "../../http-client";
+import { PageMixin} from '../page.mixin';
 
 const hundeerstellungComponentSCSS = require('./hundeerstellung.component.scss');
 
 @customElement('app-hundeerstellung')
-class HundeerstellungComponent extends LitElement{
+class HundeerstellungComponent extends PageMixin(LitElement){
 
     static styles = [
         css`${unsafeCSS(hundeerstellungComponentSCSS)}`
@@ -37,7 +41,7 @@ class HundeerstellungComponent extends LitElement{
             integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
             <div class="border border-success" id="formdiv">
-                <form class="needs-validation" novalidate>
+                <form action="/" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>
                     <div class="form-row m-4">
                         <div class="col-lg-8">
                             <div class="form-row">
@@ -96,7 +100,23 @@ class HundeerstellungComponent extends LitElement{
     async create() {
         console.log("erstellung");
         if(this.checkInputs()){
-            console.log("checked successfully")
+            console.log("checked successfully");
+            const hund: Partial<Hund> = {
+                //TODO: id auf serverseite
+                besitzerId: "TODO",
+                createdAt: new Date().getDate(),
+                name: this.name.value,
+                rasse: this.rasse.value,
+                gebDate: this.geb.value,
+                infos: this.info.value,
+                image: this.file.value
+            }
+            try{
+                const res = await httpClient.post('/hunde', hund);
+            }
+            catch({message}){
+                this.setNotification({ errorMessage: message});
+            }
         }
         else{
             this.form.classList.add('was-validated');
@@ -106,7 +126,6 @@ class HundeerstellungComponent extends LitElement{
     //Validierung der eingegebenen Daten
     checkInputs(){
         console.log('checkingInputs');
-        var file = this.file;
         var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
         console.log(this.file);
         console.log(this.file.value);

@@ -10,6 +10,7 @@ import fs from 'fs';
 import path from 'path';
 // TODO: Routen importieren
 import entries from './routes/entries';
+import hunde from './routes/hunde';
 //import apiEndpoint from './route/api-endpoint';
 
 import startDB from './db';
@@ -22,6 +23,7 @@ function configureApp(app: Express) {
   app.use(cookieParser());
   app.use(corsService.expressMiddleware);
   app.use('/api/entries', entries);
+  app.use('/api/hunde', hunde)
   //app.use(apiEndpoint);
 }
 
