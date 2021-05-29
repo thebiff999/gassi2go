@@ -7,5 +7,17 @@
 #hunde-image{
     width: 100%;
     vertical-align: middle;
-    padding: 20px;
+    padding:5px;
+    max-width: 200px;
+    max-height: 200px;
+    border: 1px solid #bbbbbb;
+    border-radius: 6px;
+}
+
+.m-auto{
+    text-align: center;
+}
+
+.pictureinput{
+    text-align: center;
 }

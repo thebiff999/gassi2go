@@ -126,7 +126,7 @@ class AuftragsErstellungComponent extends LitElement{
                     <label for="auftragBeschreibung">Beschreibung</label>
                     <textarea class="form-control" id="auftragBeschreibung" rows="5" minlength="30" maxlength="900" required
                     placeholder="Hier können Sie ihre Vierbeiner beschreiben und alle wichtigen Informationen nennen. Bei der Hundebetreuung sollte Sie hier angeben, wie lange auf den Hund aufgepasst werden soll. " ></textarea>
-                    <div class="invalid-feedback"> Die Beschreibung ist erforderlich und muss 30 bis 900 Buchstaben lang sein. </div>
+                    <div class="invalid-feedback"> Die Beschreibung ist erforderlich und muss 30 bis 900 Zeichen lang sein. </div>
                 </div>
 
                 <div class="form-row">
