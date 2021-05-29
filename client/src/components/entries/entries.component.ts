@@ -9,6 +9,7 @@ import { Loader } from "@googlemaps/js-api-loader";
 import {} from 'google.maps';
 import { Modal } from 'bootstrap';
 import { Entry } from '../../../../api-server/src/models/entry';
+import Cookies from 'js-cookie';
 
 const entriesComponentCSS = require('./entries.component.scss');
 
@@ -20,11 +21,6 @@ interface Coords {
 @customElement('app-entries')
 class EntriesComponent extends PageMixin(LitElement) {
 
-    modal: Modal | undefined;
-    map: google.maps.Map | undefined;
-    location: Coords;
-    openWindow: google.maps.InfoWindow | undefined;
-
     static styles = [
         css`${unsafeCSS(entriesComponentCSS)}`
     ]
@@ -32,17 +28,17 @@ class EntriesComponent extends PageMixin(LitElement) {
     @internalProperty()
     private entries: Entry[] = [];
 
-    constructor(){
-        super();
-        this.location = {lat:0, lng:0};
-        /*this.entries = [
-            {id: '1', name: "Golden-Retriever", coords: {lat: 51.95276, lng: 7.62571}, distance: 20, image: "https://i.imgur.com/XgbZdeA.jpg"},
-            {id: '2', name: "Dackel", coords: {lat: 51.96258, lng: 7.62591}, distance: 26, image: "https://i.imgur.com/N7K4w0J.jpg"},
-            {id: '3', name: "Rottweiler", coords: {lat: 51.96346, lng: 7.62481}, distance: 31, image: "https://i.imgur.com/26zaH5Y.jpg"},
-            {id: '4', name: "Golden-Retriever", coords: {lat: 52.23868633054282, lng: 7.3709097237207715}, distance:1, image: "https://i.imgur.com/XgbZdeA.jpg"},
-            {id: '5', name: "Golden-Retriever", coords: {lat: 52.23868633054282, lng: 7.3709097237207715}, distance:1, image: "https://i.imgur.com/XgbZdeA.jpg"}
-        ];*/
-    }
+    @internalProperty()
+    private location: Coords = {lat:0, lng:0};
+
+    @internalProperty()
+    private modal: Modal | undefined;
+
+    @internalProperty()
+    private map: google.maps.Map | undefined;
+
+    @internalProperty()
+    private openWindow: google.maps.InfoWindow | undefined;
 
     render() {
 
@@ -104,6 +100,7 @@ class EntriesComponent extends PageMixin(LitElement) {
 
     }
 
+    //helper function to toggle the visibility status of elements
     toggleView(id: string) {
         var element = this.shadowRoot?.querySelector(id);
         element?.classList.toggle('visually-hidden');
@@ -128,31 +125,51 @@ class EntriesComponent extends PageMixin(LitElement) {
     //creates a Google Map on the #map div
     createMap() {        
 
-        //Create Google Maps
-        const loader = new Loader({
-            apiKey: "AIzaSyApvgXYHn99FigrI9QuMMfrIbxHqiEY1yA",
-            version: "weekly"
-        });
-        loader.load().then(() => {
-            this.map = new google.maps.Map(this.shadowRoot?.querySelector('#map') as HTMLElement, {
-              center: this.location,
-              zoom: 13,
-              disableDefaultUI: true
+        //Create Google Map
+        if (!window.google) {
+            const loader = new Loader({
+                apiKey: "AIzaSyApvgXYHn99FigrI9QuMMfrIbxHqiEY1yA",
+                version: "weekly"
             });
-          }).then(() => {
-            for (let i=0; i < this.entries.length; i++) {
-                this.addMarker(this.entries[i]);
-              }
-          });
+            loader.load().then(() => {
+                this.map = new google.maps.Map(this.shadowRoot?.querySelector('#map') as HTMLElement, {
+                  center: this.location,
+                  zoom: 13,
+                  disableDefaultUI: true
+                });
+              }).then(() => {
+                for (let i=0; i < this.entries.length; i++) {
+                    this.addMarker(this.entries[i]);
+                  }
+              });
+        }
+        else {
+                this.map = new google.maps.Map(this.shadowRoot?.querySelector('#map') as HTMLElement, {
+                  center: this.location,
+                  zoom: 13,
+                  disableDefaultUI: true
+                });
+                for (let i=0; i < this.entries.length; i++) {
+                    this.addMarker(this.entries[i]);
+                  }
+        }
+        
     }
 
     //called after render has been called for the first time. Opens the modal dialog
     async firstUpdated() {       
 
+        //check if the user location is saved in a cookie
+        if(Cookies.get('lat')) {
+            this.location.lat = parseFloat(Cookies.get('lat')!);
+            this.location.lng = parseFloat(Cookies.get('lng')!);
+        }
         //call modal for User Location
-        let modal = this.shadowRoot?.querySelector('#locationModal') as HTMLElement;
-        this.modal = new Modal(modal, {backdrop: 'static', keyboard: false});
-        this.modal.show();
+        else {
+            let modal = this.shadowRoot?.querySelector('#locationModal') as HTMLElement;
+            this.modal = new Modal(modal, {backdrop: 'static', keyboard: false});
+            this.modal.show();
+        }               
 
         //request entries from api-server
         try {
@@ -163,8 +180,12 @@ class EntriesComponent extends PageMixin(LitElement) {
             console.log(message);
             console.log(statusCode);
         }
-        
+
+        //create the map after the entries have been loaded
+        this.createMap();
+        this.requestUpdate();        
     }
+
     //asks the user for location permission
     askforLocation() {
         document.getElementById('modal-spinner')?.classList.toggle('visually-hidden');
@@ -173,8 +194,8 @@ class EntriesComponent extends PageMixin(LitElement) {
             pos => {
                 this.location = { lat: pos.coords.latitude, lng: pos.coords.longitude };
                 this.modal?.hide();
-                this.createMap();
-                this.requestUpdate();
+                Cookies.set('lat',this.location.lat.toString(), {expires: 7});
+                Cookies.set('lng',this.location.lng.toString(), {expires: 7});
             },
             error => {
                 alert('Standort wurde nicht freigegeben');
@@ -183,6 +204,7 @@ class EntriesComponent extends PageMixin(LitElement) {
             });
     }
 
+    //adds markers on the map for the entries
     addMarker(entry: Entry) {
         // create the markers
         var _this = this;
@@ -213,14 +235,17 @@ class EntriesComponent extends PageMixin(LitElement) {
         });
     }
 
+    //saves the opened window to a the internal property 'openWindow'
     saveOpenedWindow(window: google.maps.InfoWindow) {
             this.openWindow = window;
     }
 
+    //closes the open window saved in the internal property 'openWindow'
     closeOpenedWindow() {
         this.openWindow?.close();
     }
 
+    //calculates the distance between two coordinates. Accepts numbers and strings for the first position.
     getDistance(lat: number | string, lng: number | string, pos2: Coords) {
         var rad = function(x: number) {
             return x * Math.PI / 180;
@@ -244,6 +269,7 @@ class EntriesComponent extends PageMixin(LitElement) {
         return d.toFixed(1); // returns the distance in kilometer
     }
 
+    //navigates to the detailed view of an entry, realized by the entry-details-component
     showDetails(entryId: string) {
         router.navigate(`/entries/${entryId}`);
     }
