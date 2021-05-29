@@ -23,7 +23,7 @@ class EntryComponent extends LitElement {
     }
 
     async firstUpdated() {
-        const response = await httpClient.get('/tasks/' + this.entryId);
+        const response = await httpClient.get('/entries/' + this.entryId);
         this.entry = await response.json();
         await this.requestUpdate();
     }
