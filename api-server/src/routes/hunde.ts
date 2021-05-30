@@ -9,9 +9,6 @@ const router = express.Router();
 
 router.post('/', async(req, res) => {
     console.log("post-anfrage auf hunde.ts");
-    console.log(req.body);
-    console.log("######################################################");
-    console.log(req.app.locals.hundeDAO);
     
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
     const fehler: string[] = [];
@@ -28,6 +25,7 @@ router.post('/', async(req, res) => {
 
     //TODO weitere Validierungen
 
+    console.log("Vor hundeDAO.create");
     //Nach erfolgreicher Validierung, wird der Hund erstellt
     const hundNeu = await hundeDAO.create({
         besitzerId: req.body.besitzerId,
@@ -35,8 +33,9 @@ router.post('/', async(req, res) => {
         rasse: req.body.rasse,
         gebDate: req.body.gebDate,
         infos: req.body.infos,
-        image: req.body.file
+        image: req.body.image
     });
+    console.log("Nach hundeDAO.create");
 
     //erfolgreiche Erstellung
     authService.createAndSetToken({id: hundNeu.id}, res);

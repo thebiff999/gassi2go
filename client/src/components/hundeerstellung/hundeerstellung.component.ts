@@ -104,7 +104,7 @@ class HundeerstellungComponent extends PageMixin(LitElement){
             const hund: Partial<Hund> = {
                 //TODO: id auf serverseite
                 besitzerId: "TODO",
-                createdAt: new Date().getDate(),
+                createdAt: new Date().getTime(),
                 name: this.name.value,
                 rasse: this.rasse.value,
                 gebDate: this.geb.value,
@@ -112,7 +112,10 @@ class HundeerstellungComponent extends PageMixin(LitElement){
                 image: this.file.value
             }
             try{
-                const res = await httpClient.post('/hunde', hund);
+                const response = await httpClient.post('/hunde', hund);
+                if(response.status == 201){
+                    alert("Hund erfolgreich erstellt.");
+                }
             }
             catch({message}){
                 this.setNotification({ errorMessage: message});
