@@ -42,6 +42,18 @@ router.post('/', async(req, res) => {
     res.status(201).json(hundNeu);
 });
 
+//ExpressMiddleware
+router.get('/', async(req, res) => {
+    console.log("Get-Anfrage an hunde.ts");
+    console.log(res.locals);
+    const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
+    const filter: Partial<Hund> = { besitzerId: "TODO" }  //TODO besitzerId
+    const hunde = (await hundeDAO.findAll(filter)).map(hund => {
+        return { ...hund };
+    });
+    res.json({results: hunde });
+});
+
 //Überprüft für jedes Pflichtfeld, ob dieses gesetzt ist und gibt das Ergebnis zurück.
 function allePflichtfelderVorhanden(objekt: { [key: string]: unknown}, pflichtfelder: string[], fehler: string[]){
     let fehlerVorhanden = false;

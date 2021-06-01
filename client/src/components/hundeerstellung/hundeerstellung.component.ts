@@ -104,7 +104,7 @@ class HundeerstellungComponent extends PageMixin(LitElement){
             const hund: Partial<Hund> = {
                 //TODO: id auf serverseite
                 besitzerId: "TODO",
-                createdAt: new Date().getTime(),
+                //createdAt: new Date().getTime(),
                 name: this.name.value,
                 rasse: this.rasse.value,
                 gebDate: this.geb.value,
