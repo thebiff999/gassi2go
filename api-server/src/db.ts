@@ -6,8 +6,9 @@ import { Client } from 'pg';
 import { MongoGenericDAO } from './models/mongo-generic.dao';
 import { PsqlGenericDAO } from './models/psql-generic.dao';
 import { InMemoryGenericDAO } from './models/in-memory-generic.dao';
-import { Entry } from './models/entry'
+import { Entry } from './models/entry';
 import { Hund } from './models/hunde';
+import { User } from './models/user';
 
 export default async function startDB(app: Express, dbms = 'in-memory-db') {
   switch (dbms) {
@@ -24,7 +25,6 @@ async function startMongoDB(app: Express) {
   const client = await connectToMongoDB();
   const db = client.db('xyz');
   app.locals.entryDAO = new MongoGenericDAO<Entry>(db, 'entries');
-
 }
 
 async function connectToMongoDB() {
@@ -32,7 +32,7 @@ async function connectToMongoDB() {
   const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    auth: { user: 'mongo', password: 'mongo'},
+    auth: { user: 'mongo', password: 'mongo' },
     authSource: 'entries'
   };
   try {
@@ -47,6 +47,7 @@ async function startPsql(app: Express) {
   const client = await connectToPsql();
   app.locals.entryDAO = new PsqlGenericDAO<Entry>(client!, 'entries');
   app.locals.hundeDAO = new PsqlGenericDAO<Hund>(client!, 'hunde');
+  app.locals.userDAO = new PsqlGenericDAO<User>(client!, 'user');
   return async () => await client.end();
 }
 
@@ -70,5 +71,5 @@ async function connectToPsql() {
 
 async function startInMemoryDB(app: Express) {
   app.locals.entryDAO = new InMemoryGenericDAO<Entry>();
-  return async() => Promise.resolve();
+  return async () => Promise.resolve();
 }
