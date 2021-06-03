@@ -158,32 +158,28 @@ class SignInComponent extends PageMixin(LitElement) {
   }
 
   /**
-   * Button, which navigate to "userAdministration/sign-up"
+   * Button, which navigate to "user/sign-up"
    */
   async navigateToSignUp() {
     try {
-      router.navigate('userAdministration/sign-up');
+      router.navigate('user/sign-up');
     } catch ({ message }) {
       this.setNotification({ errorMessage: message });
     }
   }
 
   /**
-   * Button, which navigate to "userAdministration/sign-in"
+   * Button, which navigate to "user/sign-in"
    */
   async navigateToSignIn() {
     try {
-      router.navigate('userAdministration/sign-in');
+      router.navigate('user/sign-in');
     } catch ({ message }) {
       this.setNotification({ errorMessage: message });
     }
   }
 
-  /**
-   * submit loginData and POST to "/userAdministration/sign-in"
-   * Server send JWT back
-   * TODO
-   */
+  
   async submit() {
     if (this.isFormValid()) {
       const loginData = {
@@ -191,7 +187,7 @@ class SignInComponent extends PageMixin(LitElement) {
         password: this.passwordElement.value
       };
       try {
-        await httpClient.post('app/userAdministration/login', loginData);
+        await httpClient.post('app/user/login', loginData);
         router.navigate('search');
       } catch ({ message }) {
         this.setNotification({ errorMessage: message });
