@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
 
 import program from 'commander';
