@@ -12,7 +12,7 @@ import path from 'path';
 // TODO: Routen importieren
 import entries from './routes/entries';
 import hunde from './routes/hunde';
-//import apiEndpoint from './route/api-endpoint';
+import user from './routes/user';
 
 import startDB from './db';
 import { corsService } from './services/cors.service';
@@ -24,8 +24,8 @@ function configureApp(app: Express) {
   app.use(cookieParser());
   app.use(corsService.expressMiddleware);
   app.use('/api/entries', entries);
-  app.use('/api/hunde', hunde)
-  //app.use(apiEndpoint);
+  app.use('/api/hunde', hunde);
+  app.use('/api/user', user);
 }
 
 export async function start(port: number, dbms = 'psql', withHttps = false) {
