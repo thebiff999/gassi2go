@@ -23,19 +23,23 @@ class HundeComponent extends LitElement{
         return html`
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
             integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-            <div id="hunde" class="container-fluid">
-                <div class="card-deck">
+            <div id="hunde" class="container">
+                <div class="row row-cols-4">
                     ${repeat(this.hunde, (hund) => hund.besitzerId, (hund, index) =>
                         html`
-                        <div class="card sm-6">
-                            <img class="card-img-top" src="${hund.image}"  alt="hunde-image">
-                            <div class="card-body">
-                                <h5 class="card-title">${hund.name}</h5>
-                                <p class="card-text">${hund.rasse}</p>
-                                <p class="card-text">${hund.gebDate}</p>
-                                <p class="card-text">${hund.infos}</p>
-                            </div>
-                        </div>
+                            <div class="col-md-4 border-dark">
+                                    <div class="card">
+                                        <div class="card-block">
+                                            <img class="img-fluid"  src="${hund.imgPath}" alt="hunde image">
+                                            <div class="card-title">
+                                                <h5>${hund.name}</h5>
+                                            </div> 
+                                            <div class="card-text">${hund.rasse}</div>
+                                            <div class="card-text">${hund.gebDate}</div>
+                                            <div class="card-text">${hund.infos}</div>
+                                        </div>
+                                    </div>
+                            </div>  
                         `)}
                 </div>
             </div>

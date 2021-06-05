@@ -1,7 +1,10 @@
 /* Autor: Simon Flathmann */ 
+import { ajaxPrefilter, data } from "jquery";
 import { css, customElement, html, LitElement, query, unsafeCSS } from "lit-element";
 import { Hund } from '../../../../api-server/src/models/hunde';
+import router from "../../../../api-server/src/routes/entries";
 import { httpClient } from "../../http-client";
+import { HttpClientConfig } from "../../http-client";
 import { PageMixin} from '../page.mixin';
 
 const hundeerstellungComponentSCSS = require('./hundeerstellung.component.scss');
@@ -67,7 +70,7 @@ class HundeerstellungComponent extends PageMixin(LitElement){
                                 <img src="./../../../../resources/images/dog_logo.png" id="hunde-image">
                             </div>
                             <div class="pictureinput m-4">
-                                <input type="file" id="file" class="form-control" hidden>
+                                <input type="file" id="file" name="image" class="form-control" hidden>
                                 <button id="uploadbtn" class="btn btn-sm btn-white d-table mx-auto mt-4" type="button">Foto hochladen</button>
                                 <div class="invalid-feedback">Der Datentyp ist nicht valide. Die erlaubten Datentypen sind: jpg, jpeg und png.</div>
                             </div>
@@ -98,24 +101,50 @@ class HundeerstellungComponent extends PageMixin(LitElement){
     }
 
     async create() {
+        //var formData: any = new FormData();
         console.log("erstellung");
         if(this.checkInputs()){
             console.log("checked successfully");
-            const hund: Partial<Hund> = {
+
+            const formData = new FormData();
+            formData.append('besitzerId', 'TODO');
+            formData.append('name', this.name.value);
+            formData.append('rasse', this.rasse.value);
+            formData.append('gebDate', this.geb.value);
+            formData.append('infos', this.info.value); 
+            formData.append('image', this.file.files![0]);
+
+            /*const hund: Partial<Hund> = {
                 //TODO: id auf serverseite
                 besitzerId: "TODO",
-                //createdAt: new Date().getTime(),
                 name: this.name.value,
                 rasse: this.rasse.value,
                 gebDate: this.geb.value,
-                infos: this.info.value,
-                image: this.file.value
-            }
+                infos: this.info.value
+            };*/
+
+            console.log("test");
+            console.log(this.file.files![0]);
+            console.log(formData);
+
             try{
-                const response = await httpClient.post('/hunde', hund);
-                if(response.status == 201){
-                    alert("Hund erfolgreich erstellt.");
-                }
+                const response = await fetch(`//${location.hostname}:3000/api/hunde`, {
+                    method: 'post',
+                    body: formData
+                })
+                .then(response => {
+                    alert("Hund erfolgreich angelegt.");
+                    return response.json();
+                })   
+                .then(data => {console.log(data)})
+                .catch((error) => {
+                    console.log("Fehler: " + error)
+                });
+
+                /*
+                const response = await httpClient.post('/hunde', hund);  
+                => Der HttpClient kann an dieser Stelle nicht verwendet werden, da ein File mitgeschickt werden kann.
+                */
             }
             catch({message}){
                 this.setNotification({ errorMessage: message});

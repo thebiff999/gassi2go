@@ -1,14 +1,31 @@
 /* Autor: Simon Flathmann */
 
 import express from 'express';
-import {GenericDAO} from '../models/generic.dao';
+import fileUpload, { UploadedFile } from 'express-fileupload';
+//import multer from 'multer';
+import { v4 as uuidv4 } from 'uuid';
+import { GenericDAO } from '../models/generic.dao';
 import { Hund } from '../models/hunde';
 import { authService } from '../services/auth.service';
-
+import path from 'path';
 const router = express.Router();
+//const upload = multer({ dest: '../../../client/resources/uploads/'});
+
+router.use(fileUpload());
+//<any> upload.single('image')
+//router.use(express.urlencoded({extended: true}));
 
 router.post('/', async(req, res) => {
+    let uploadPath =  './../../../client/resources/uploads/';
+    let imagePath = './../../../resources/uploads/';
+    var image = req.files?.image as UploadedFile;
+    var uniqueName = uuidv4() + image?.name; //Erzeugung eines eindeutigen Namen, um Dopplungen zu vermeiden
+    console.log('__dirnamne: ' + __dirname);
     console.log("post-anfrage auf hunde.ts");
+    console.log("Req.body (Partial):");
+    console.log(req.body);
+    console.log("req.files (image-Datei):");
+    console.log(req.files);
     
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
     const fehler: string[] = [];
@@ -25,6 +42,17 @@ router.post('/', async(req, res) => {
 
     //TODO weitere Validierungen
 
+    if(req.files){
+        image.mv(path.join(__dirname, uploadPath + uniqueName), (error) => {
+            if(error){
+                res.send(error);
+            }
+            else{
+                res.send('Image hochgeladen');
+            }
+        })
+    }
+
     console.log("Vor hundeDAO.create");
     //Nach erfolgreicher Validierung, wird der Hund erstellt
     const hundNeu = await hundeDAO.create({
@@ -33,7 +61,7 @@ router.post('/', async(req, res) => {
         rasse: req.body.rasse,
         gebDate: req.body.gebDate,
         infos: req.body.infos,
-        image: req.body.image
+        imgPath: imagePath + uniqueName
     });
     console.log("Nach hundeDAO.create");
 
