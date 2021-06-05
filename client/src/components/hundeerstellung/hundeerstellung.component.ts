@@ -67,7 +67,7 @@ class HundeerstellungComponent extends PageMixin(LitElement){
                         </div>
                         <div class="col-lg-4">
                             <div class="picture m-auto">
-                                <img src="./../../../../resources/images/dog_logo.png" id="hunde-image">
+                                <img src="./../../../../resources/default/defaultdog.png" id="hunde-image">
                             </div>
                             <div class="pictureinput m-4">
                                 <input type="file" id="file" name="image" class="form-control" hidden>
@@ -79,7 +79,7 @@ class HundeerstellungComponent extends PageMixin(LitElement){
                     <div class="form-row m-4">
                         <div class="form-group col-md-12">
                                     <label for="info">Zusätzliche Informationen</label>
-                                    <textarea class="form-control" id="info" rows="5" minlength="30" maxlength="1000" required
+                                    <textarea class="form-control" id="info" rows="5" minlength="30" maxlength="600" required
                                         placeholder="Hier können Sie ihren Hund beschreiben."></textarea>
                                     <div class="invalid-feedback">Die Zusätzlichen Informationen sind erforderlich und müssen zwischen 30 und 1000 Zeichen lang sein.</div>
                         </div>

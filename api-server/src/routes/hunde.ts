@@ -16,10 +16,11 @@ router.use(fileUpload());
 //router.use(express.urlencoded({extended: true}));
 
 router.post('/', async(req, res) => {
-    let uploadPath =  './../../../client/resources/uploads/';
-    let imagePath = './../../../resources/uploads/';
+    let uploadPath =  './../../../client/resources/uploads/';  //Pfad zum Verschieben der Images
+    let imagePath = './../../../resources/uploads/';  //Pfad zum Hinterlegen in der DB
     var image = req.files?.image as UploadedFile;
     var uniqueName = uuidv4() + image?.name; //Erzeugung eines eindeutigen Namen, um Dopplungen zu vermeiden
+    var finalPath = imagePath + uniqueName;  
     console.log('__dirnamne: ' + __dirname);
     console.log("post-anfrage auf hunde.ts");
     console.log("Req.body (Partial):");
@@ -52,6 +53,10 @@ router.post('/', async(req, res) => {
             }
         })
     }
+    else{
+        //Falls kein Foto hochgeladen wurde, wird auf ein Default-Foto verwiesen
+        finalPath = './../../../../resources/default/defaultdog.png';
+    }
 
     console.log("Vor hundeDAO.create");
     //Nach erfolgreicher Validierung, wird der Hund erstellt
@@ -61,7 +66,7 @@ router.post('/', async(req, res) => {
         rasse: req.body.rasse,
         gebDate: req.body.gebDate,
         infos: req.body.infos,
-        imgPath: imagePath + uniqueName
+        imgPath: finalPath
     });
     console.log("Nach hundeDAO.create");
 

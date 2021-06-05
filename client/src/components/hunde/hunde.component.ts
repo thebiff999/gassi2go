@@ -21,21 +21,19 @@ class HundeComponent extends LitElement{
 
     render(){
         return html`
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-            <div id="hunde" class="container">
-                <div class="row row-cols-4">
+            <div id="hunde" class="container-fluid">
+                <div class="row">
                     ${repeat(this.hunde, (hund) => hund.besitzerId, (hund, index) =>
                         html`
-                            <div class="col-md-4 border-dark">
-                                    <div class="card">
-                                        <div class="card-block">
-                                            <img class="img-fluid"  src="${hund.imgPath}" alt="hunde image">
-                                            <div class="card-title">
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xxl-3">
+                                    <div class="card text-center m-4 p-3 rounded-lg shadow-lg" id="dogcard">
+                                        <div class="card-block" m-md-2> 
+                                            <img class="img-fluid border" id="dogimg" src="${hund.imgPath}" alt="hunde image">
+                                            <div class="card-titl m-1">
                                                 <h5>${hund.name}</h5>
                                             </div> 
-                                            <div class="card-text">${hund.rasse}</div>
-                                            <div class="card-text">${hund.gebDate}</div>
+                                            <div class="card-text">Rasse: ${hund.rasse}</div>
+                                            <div class="card-text mb-2">Geb.: ${hund.gebDate}</div>
                                             <div class="card-text">${hund.infos}</div>
                                         </div>
                                     </div>
