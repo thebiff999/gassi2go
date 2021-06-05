@@ -102,7 +102,7 @@ class AccountComponent extends PageMixin(LitElement) {
                         automcomplete='off'
                       />
                       <div class='invalid-feedback'>
-                        Passwort ist erforderlich und muss mind. 8 Zeichen lang sein
+                        Passwort ist erforderlich und muss mind. 10 Zeichen lang sein
                       </div>
                     </div>
 
