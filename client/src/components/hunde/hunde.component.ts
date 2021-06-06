@@ -39,7 +39,10 @@ class HundeComponent extends PageMixin(LitElement){
                                             <div class="card-text">Rasse: ${hund.rasse}</div>
                                             <div class="card-text mb-2">Geb.: ${hund.gebDate}</div>
                                             <div class="card-text mb-2">${hund.infos}</div>
-                                            <button @click="${() => this.delete(hund.id, hund.imgPath)}" class="btn btn-light"><i class="far fa-trash-alt"></i> Löschen </button>
+                                            <div>
+                                                <button @click="${() => this.pet()}" class="btn btn-light"><i class="far fa-heart"></i> Streicheln</button>
+                                                <button @click="${() => this.delete(hund.id, hund.imgPath)}" class="btn btn-light"><i class="far fa-trash-alt"></i> Löschen </button>
+                                            </div>
                                         </div>
                                     </div>
                             </div>  
@@ -72,5 +75,9 @@ class HundeComponent extends PageMixin(LitElement){
                 this.setNotification({ errorMessage: message });
             }
         }
+    }
+    
+    async pet(){
+
     }
 }
