@@ -12,7 +12,7 @@ import path from 'path';
 // TODO: Routen importieren
 import entries from './routes/entries';
 import hunde from './routes/hunde';
-//import user from './routes/user';
+import users from './routes/users.js';
 
 import startDB from './db';
 import { corsService } from './services/cors.service';
@@ -25,7 +25,7 @@ function configureApp(app: Express) {
   app.use(corsService.expressMiddleware);
   app.use('/api/entries', entries);
   app.use('/api/hunde', hunde);
-//  app.use('/api/user', user);
+  app.use('/api/users', users);
 }
 
 export async function start(port: number, dbms = 'psql', withHttps = false) {

@@ -1,0 +1,13 @@
+{
+  "server": { "https": false, "port": 3000 },
+  "db": {
+    "use": "psql",
+    "connect": {
+      "user": "gassi",
+      "host": "99a7ecc.online-server.cloud",
+      "database": "gassi2go",
+      "password": "password",
+      "port":   "5432"
+    }
+  }
+}
