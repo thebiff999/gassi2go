@@ -278,7 +278,7 @@ class SignUpComponent extends PageMixin(LitElement) {
     }
   }
 
-  /
+  
   isFormValid() {
     if (this.passwordElement.value !== this.passwordCheckElement.value) {
       this.passwordCheckElement.setCustomValidity('Passwörter müssen gleich sein');
