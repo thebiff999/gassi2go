@@ -47,7 +47,7 @@ async function startPsql(app: Express) {
   const client = await connectToPsql();
   app.locals.entryDAO = new PsqlGenericDAO<Entry>(client!, 'entries');
   app.locals.hundeDAO = new PsqlGenericDAO<Hund>(client!, 'hunde');
-  app.locals.userDAO = new PsqlGenericDAO<User>(client!, 'user');
+  app.locals.userDAO = new PsqlGenericDAO<User>(client!, 'users');
   return async () => await client.end();
 }
 

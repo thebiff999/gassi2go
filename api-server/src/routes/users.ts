@@ -12,10 +12,12 @@ router.post('/', async (req, res) => {
 
   const sendErrorMessage = (message: string) => {
     authService.removeToken(res);
+    console.log(`error: ${message}`);
+    console.log(req.body);
     res.status(400).json({ message });
   };
 
-  if (!hasRequiredFields(req.body, ['email', 'name', 'password', 'passwordCheck'], errors)) {
+  if (!hasRequiredFields(req.body, ['email', 'firstName', 'lastName', 'password', 'passwordCheck'], errors)) {
     return sendErrorMessage(errors.join('\n'));
   }
 

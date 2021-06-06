@@ -97,28 +97,6 @@ class SignUpComponent extends PageMixin(LitElement) {
 
                     <div class='input-group col-md-14'>
                       <div class="input-group-prepend">
-                      <span class='input-group-text' for='screenName'>Nickname</span>
-                      </div>
-                      <input
-                        class='form-control'
-                        type='text'
-                        autofocus
-                        required
-                        minlength='2'
-                        id='screenName'
-                        name='screenName'
-                        automcomplete='off'
-                      />
-                      <div class='valid-feedback'>
-                        Soweit alles gut!
-                      </div>
-                      <div class='invalid-feedback'>
-                        Nickname ist erforderlich
-                      </div>
-                    </div>
-
-                    <div class='input-group col-md-14'>
-                      <div class="input-group-prepend">
                       <span class='input-group-text' for='firstName'>Vorname</span>
                       </div>
                       <input
@@ -153,14 +131,6 @@ class SignUpComponent extends PageMixin(LitElement) {
                       </div>
                     </div>
 
-                </fieldset>
-
-              
-
-                <fieldset id='register2'>
-
-            
-
                     <div class='input-group col-md-14'>
                       <div class="input-group-prepend">
                       <span class='input-group-text' for='email'>Email</span>
@@ -177,6 +147,12 @@ class SignUpComponent extends PageMixin(LitElement) {
                         E-Mail ist erforderlich und muss gültig sein
                       </div>
                     </div>
+
+                </fieldset>
+
+              
+
+                <fieldset id='register2'>
 
                     <div class='input-group col-md-14'>
                       <div class="input-group-prepend">
@@ -199,6 +175,31 @@ class SignUpComponent extends PageMixin(LitElement) {
                         Passwort ist erforderlich und muss mind. 8 Zeichen lang sein
                       </div>
                     </div>
+
+                    <div>
+                    <div class='input-group col-md-14'>
+                    <div class="input-group-prepend">
+                    <span class='input-group-text' for='password-check'>Passwort wiederholen</span>
+                    </div>
+                    <input
+                      class='form-control'
+                      type='password'
+                      required
+                      minlength='8'
+                      id='password-check'
+                      name='password-check'
+                      automcomplete='off'
+                    />
+                    <small id='passwordHelpBlock' class='form-text text-muted'>
+                      Dein Passwort muss 8-20 Zeichen lang sein. Es darf Buchstaben und Nummer
+                      enthalten, aber keine Leerzeichen oder Spezialbuchstaben.
+                    </small>
+                    <div class='invalid-feedback'>
+                      Passwort ist erforderlich und muss mind. 8 Zeichen lang sein
+                    </div>
+                  </div>
+                    </div>
+
                 </fieldset>
 
                 <!-- REGISTER RIGHT -->
@@ -261,15 +262,14 @@ class SignUpComponent extends PageMixin(LitElement) {
   async submit() {
     if (this.isFormValid()) {
       const accountData = {
-        screenName: this.screenNameElement.value,
         firstName: this.firstNameElement.value,
         lastName: this.lastNameElement.value,
         email: this.emailElement.value,
-        password: this.passwordElement.value
-        //passwordCheck: this.passwordCheckElement.value,
+        password: this.passwordElement.value,
+        passwordCheck: this.passwordCheckElement.value
       };
       try {
-        await httpClient.post('app/userAdministration/register', accountData);
+        await httpClient.post('/users', accountData);
         router.navigate('search');
       } catch ({ message }) {
         this.setNotification({ errorMessage: message });
@@ -285,7 +285,7 @@ class SignUpComponent extends PageMixin(LitElement) {
    * TODO
    */
   isFormValid() {
-    /*
+    
     if (this.passwordElement.value !== this.passwordCheckElement.value) {
       this.passwordCheckElement.setCustomValidity(
         'Passwörter müssen gleich sein'
@@ -293,7 +293,7 @@ class SignUpComponent extends PageMixin(LitElement) {
     } else {
       this.passwordCheckElement.setCustomValidity('');
     }
-    */
+    
     return this.form.checkValidity();
   }
 }
