@@ -8,5 +8,5 @@ export interface Hund extends Entity{
     rasse: string;
     gebDate: string;
     infos: string;
-    imgPath?: string;
+    imgPath: string;
 }

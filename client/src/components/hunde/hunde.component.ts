@@ -2,11 +2,12 @@ import { css, customElement, html, internalProperty, LitElement, unsafeCSS } fro
 import { repeat } from 'lit-html/directives/repeat';
 import { Hund } from "../../../../api-server/src/models/hunde";
 import { httpClient } from "../../http-client";
+import { PageMixin } from '../page.mixin';
 
 const hundeComponentSCSS = require('./hunde.component.scss');
 
 @customElement('app-hunde')
-class HundeComponent extends LitElement{
+class HundeComponent extends PageMixin(LitElement){
 
     static styles = [
         css`${unsafeCSS(hundeComponentSCSS)}`
@@ -37,7 +38,8 @@ class HundeComponent extends LitElement{
                                             </div> 
                                             <div class="card-text">Rasse: ${hund.rasse}</div>
                                             <div class="card-text mb-2">Geb.: ${hund.gebDate}</div>
-                                            <div class="card-text">${hund.infos}</div>
+                                            <div class="card-text mb-2">${hund.infos}</div>
+                                            <button @click="${() => this.delete(hund.id, hund.imgPath)}" class="btn btn-light"><i class="far fa-trash-alt"></i> Löschen </button>
                                         </div>
                                     </div>
                             </div>  
@@ -57,6 +59,18 @@ class HundeComponent extends LitElement{
         catch({message, statusCode}){
             console.log(message);
             console.log(statusCode);
+        }
+    }
+
+    async delete(id: string, path: string){
+        if(confirm('Möchten Sie den Hund wirklich löschen?')){
+            try{
+                await httpClient.delete(`/hunde/${id}`);
+                this.hunde = this.hunde.filter(hund => hund.id !== id);
+            }
+            catch({message}){
+                this.setNotification({ errorMessage: message });
+            }
         }
     }
 }

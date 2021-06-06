@@ -2,18 +2,15 @@
 
 import express from 'express';
 import fileUpload, { UploadedFile } from 'express-fileupload';
-//import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { GenericDAO } from '../models/generic.dao';
 import { Hund } from '../models/hunde';
 import { authService } from '../services/auth.service';
 import path from 'path';
+
 const router = express.Router();
-//const upload = multer({ dest: '../../../client/resources/uploads/'});
 
 router.use(fileUpload());
-//<any> upload.single('image')
-//router.use(express.urlencoded({extended: true}));
 
 router.post('/', async(req, res) => {
     let uploadPath =  './../../../client/resources/uploads/';  //Pfad zum Verschieben der Images
@@ -75,7 +72,7 @@ router.post('/', async(req, res) => {
     res.status(201).json(hundNeu);
 });
 
-//ExpressMiddleware
+//TODO: ExpressMiddleware
 router.get('/', async(req, res) => {
     console.log("Get-Anfrage an hunde.ts");
     console.log(res.locals);
@@ -85,6 +82,14 @@ router.get('/', async(req, res) => {
         return { ...hund };
     });
     res.json({results: hunde });
+});
+
+//TODO: authService.expressMiddleware
+router.delete('/:id', async(req, res) =>{
+    console.log('delete-request');
+    const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
+    await hundeDAO.delete(req.params.id);
+    res.status(200).end();
 });
 
 //Überprüft für jedes Pflichtfeld, ob dieses gesetzt ist und gibt das Ergebnis zurück.
