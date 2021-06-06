@@ -57,7 +57,8 @@ async function connectToPsql() {
     host: '99a7ecc.online-server.cloud',
     database: 'gassi2go',
     password: 'password',
-    port: 5432
+    port: 5432,
+    keepAlive: true
   });
   try {
     await client.connect();

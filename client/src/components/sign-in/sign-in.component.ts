@@ -37,7 +37,7 @@ class SignInComponent extends PageMixin(LitElement) {
     <!-- SIDENAV with Poster -->
 
         <div class='sidenav' id='sidenav'>
-          <img src='../src/assets/img/login_dog.jpg>
+          <img src='../../resources/images/login_dog.jpeg'>
         </div>
 
         <!-- SIDENAV END -->
@@ -45,111 +45,108 @@ class SignInComponent extends PageMixin(LitElement) {
 
     <!-- MAIN-FORM -->
     
-        <div class='main' id='main'>
-          <div class='col-md-6 col-sm-12'>
+        <div class='main container background' id='main'>
+          <div class="row">
+            <div class='col-md-6 col-sm-6'>
 
-              <h1>Gasse2Go</h1>
-              <h3>Der Hund zum ausgehen</h3>
+            <form> 
+                    <button
+                      class='btn btn-primary btn-lg'
+                      type='button'
+                      id='navigateToSignIn'
+                      @click='${this.navigateToSignIn}'
+                    >
+                      ANMELDEN
+                    </button>
+                  
+                    <button
+                      class='btn btn-primary btn-lg'
+                      type='button'
+                      id='navigateToSignUp'
+                      @click='${this.navigateToSignUp}'
+                    >
+                      REGISTRIEREN
+                    </button>
+                </form>
 
+                <!-- NAVIGATE BUTTON END -->
 
-          <form> 
-                  <button
-                    class='btn btn-primary btn-lg'
-                    type='button'
-                    id='navigateToSignIn'
-                    @click='${this.navigateToSignIn}'
-                  >
-                    ANMELDEN
-                  </button>
-                
-                  <button
-                    class='btn btn-primary btn-lg'
-                    type='button'
-                    id='navigateToSignUp'
-                    @click='${this.navigateToSignUp}'
-                  >
-                    REGISTRIEREN
-                  </button>
-              </form>
+  
+            <!-- LOGIN-FORM -->
 
-              <!-- NAVIGATE BUTTON END -->
+            <form>
 
- 
-          <!-- LOGIN-FORM -->
+              <!-- LOGIN-TEXT-FORM -->
 
-          <form>
-
-            <!-- LOGIN-TEXT-FORM -->
-
-            <fieldset id='login'>
-              <div class='input-group col-md-14'>
-              <div class="input-group-prepend">
-                <span class='input-group-text' for='email'>Email</span>
-              </div>
-                <input
-                  class='form-control'
-                  type='text'
-                  autofocus
-                  required
-                  minlength='2'
-                  maxlength='40'
-                  id='email'
-                  name='email'
-                  placeholder='email@email.com'
-                  automcomplete='off'
-                />
-                <small 
-                  id='emailHelp' 
-                  class='form-text 
-                  text-muted'>
-                </small>
-                <div class='invalid-feedback'>
-                  E-Mail ist erforderlich und muss gültig sein
-                </div>
-              </div>
-
-              <div class='input-group col-md-14'>
+              <fieldset id='login'>
+                <div class='input-group col-md-14'>
                 <div class="input-group-prepend">
-                <span class='input-group-text' for='password'>Passwort</span>
+                  <span class='input-group-text' for='email'>Email</span>
                 </div>
-                <input
-                  class='form-control'
-                  type='password'
-                  required
-                  minlength='8'
-                  id='password'
-                  name='password'
-                  placeholder='Password'
-                  automcomplete='off'
-                />
-                <div class='invalid-feedback'>
-                  Passwort ist erforderlich
+                  <input
+                    class='form-control'
+                    type='text'
+                    autofocus
+                    required
+                    minlength='2'
+                    maxlength='40'
+                    id='email'
+                    name='email'
+                    placeholder='email@email.com'
+                    automcomplete='off'
+                  />
+                  <small 
+                    id='emailHelp' 
+                    class='form-text 
+                    text-muted'>
+                  </small>
+                  <div class='invalid-feedback'>
+                    E-Mail ist erforderlich und muss gültig sein
+                  </div>
                 </div>
-              </div>
-            </fieldset>
 
-            <!-- LOGIN-TEXT-FORM-END -->
+                <div class='input-group col-md-14'>
+                  <div class="input-group-prepend">
+                  <span class='input-group-text' for='password'>Passwort</span>
+                  </div>
+                  <input
+                    class='form-control'
+                    type='password'
+                    required
+                    minlength='8'
+                    id='password'
+                    name='password'
+                    placeholder='Password'
+                    automcomplete='off'
+                  />
+                  <div class='invalid-feedback'>
+                    Passwort ist erforderlich
+                  </div>
+                </div>
+              </fieldset>
 
-            <!-- LOGIN-SUBMIT-BUTTON -->
+              <!-- LOGIN-TEXT-FORM-END -->
 
-            <fieldset>
-              <button 
-                class='btn btn-primary btn-lg' 
-                type='button'
-                id='absenden'
-                @click='${this.submit}'
-              >
-                ANMELDEN
-              </button>
-            </fielset>
+              <!-- LOGIN-SUBMIT-BUTTON -->
 
-            <!-- LOGIN-SUBMIT-BUTTON-END -->
+              <fieldset>
+                <button 
+                  class='btn btn-primary btn-lg' 
+                  type='button'
+                  id='absenden'
+                  @click='${this.submit}'
+                >
+                  ANMELDEN
+                </button>
+              </fielset>
 
-          </form>
+              <!-- LOGIN-SUBMIT-BUTTON-END -->
 
-          <!-- LOGIN-FORM-END -->
+            </form>
 
-      </div>
+            <!-- LOGIN-FORM-END -->
+          </div>
+        </div>
     </div>
 
     <!-- MAIN-FORM-END -->

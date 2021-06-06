@@ -29,7 +29,8 @@ router.post('/', async (req, res) => {
   }
 
   const createdUser = await userDAO.create({
-    name: req.body.name,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
     email: req.body.email,
     password: await bcrypt.hash(req.body.password, 10)
   });

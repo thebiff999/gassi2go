@@ -1,4 +1,5 @@
-import { customElement, LitElement, css, html, unsafeCSS, property } from "lit-element";
+import { customElement, LitElement, css, html, unsafeCSS, property} from "lit-element";
+import { until } from 'lit-html/directives/until.js';
 import { httpClient } from '../../http-client';
 import { Entry } from '../../../../api-server/src/models/entry';
 
@@ -14,18 +15,45 @@ class EntryComponent extends LitElement {
     @property()
     entryId!: string;
 
+    @property()
     entry!: Entry;
 
     render() {
         return html`
-        <h1>entry no: ${this.entryId}</h1>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5">
+                    <img src="${this.entry.imageUrl}" width="400px">
+                </div>
+                <div class="col-sm-7">
+                    <p class="heading">${this.entry.dogName}</p>
+                    <span class="attribute-container">
+                        <p>${this.entry.dogRace}</p>
+                        <p>${this.entry.pay}</p>
+                        <p>${this.entry.date}</p>
+                    </span>
+                    <p>${this.entry.description}</p>
+                </div>
+            </div>
+        </div>
         `
     }
 
-    async firstUpdated() {
-        const response = await httpClient.get('/entries/' + this.entryId);
-        this.entry = await response.json();
-        await this.requestUpdate();
+    connectedCallback() {
+        super.connectedCallback();
+        this.fetchData();
+    }
+
+    async fetchData() {
+        try {
+            console.log("requesting entry");
+            const response = await httpClient.get('/entries/' + this.entryId.toString());
+            this.entry = await response.json();
+        }
+        catch ({message, statusCode}) {
+            console.log(message);
+            console.log(statusCode);
+        }
     }
 
 }

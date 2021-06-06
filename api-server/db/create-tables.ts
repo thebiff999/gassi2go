@@ -1,4 +1,4 @@
-import pg from 'pg';
+/*import pg from 'pg';
 import config from '../config.json';
 
 const { Client } = pg;
@@ -25,4 +25,4 @@ async function createScheme() {
 createScheme().then(() => {
   client.end();
   console.log('finished');
-});
+});*/

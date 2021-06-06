@@ -14,6 +14,7 @@ export interface Entry extends Entity{
     ownerName: string;
     dogId: number;
     dogName: string;
+    dogRace: string;
     lat: string;
     lng: string;
     imageUrl: string;
