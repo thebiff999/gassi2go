@@ -40,7 +40,7 @@ class HundeComponent extends PageMixin(LitElement){
                                             <div class="card-text mb-2">Geb.: ${hund.gebDate}</div>
                                             <div class="card-text mb-2">${hund.infos}</div>
                                             <div>
-                                                <button @click="${() => this.pet()}" class="btn btn-light"><i class="far fa-heart"></i> Streicheln</button>
+                                                <button @click="${() => this.pet(hund.name)}" class="btn btn-light"><i class="far fa-heart"></i> Streicheln</button>
                                                 <button @click="${() => this.delete(hund.id, hund.imgPath)}" class="btn btn-light"><i class="far fa-trash-alt"></i> Löschen </button>
                                             </div>
                                         </div>
@@ -77,7 +77,19 @@ class HundeComponent extends PageMixin(LitElement){
         }
     }
     
-    async pet(){
-
+    async pet(name: string){
+        const rndInt = Math.floor(Math.random() * 4) + 1;
+        if(rndInt === 1){
+            alert(`Du hast ${name} nur leicht berührt und trotzdem wirkt ${name} schon sehr glücklich!`);
+        }
+        if(rndInt === 2){
+            alert(`${name} hat es sehr gefallen und wedelt vor Freude mit dem Schwanz.`);
+        }
+        if(rndInt === 3){
+            alert(`${name} bellt vor Freude.`);
+        }
+        if(rndInt === 4){
+            alert(`${name} dreht sich vor Freude im Kreis.`)
+        }
     }
 }
