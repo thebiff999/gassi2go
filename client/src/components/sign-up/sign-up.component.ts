@@ -191,11 +191,10 @@ class SignUpComponent extends PageMixin(LitElement) {
                       automcomplete='off'
                     />
                     <small id='passwordHelpBlock' class='form-text text-muted'>
-                      Dein Passwort muss 8-20 Zeichen lang sein. Es darf Buchstaben und Nummer
-                      enthalten, aber keine Leerzeichen oder Spezialbuchstaben.
+                  
                     </small>
                     <div class='invalid-feedback'>
-                      Passwort ist erforderlich und muss mind. 8 Zeichen lang sein
+                      Beide Passwörter müssen gleich sein
                     </div>
                   </div>
                     </div>
@@ -216,7 +215,7 @@ class SignUpComponent extends PageMixin(LitElement) {
                   >
                     KONTO ERSTELLEN
                   </button>
-                </fielset>
+                </fieldset>
 
                 <!-- ABSENDEN END -->
 
@@ -279,21 +278,14 @@ class SignUpComponent extends PageMixin(LitElement) {
     }
   }
 
-  /**
-   * check if input fields are valid
-   * check if password are same
-   * TODO
-   */
+  /
   isFormValid() {
-    
     if (this.passwordElement.value !== this.passwordCheckElement.value) {
-      this.passwordCheckElement.setCustomValidity(
-        'Passwörter müssen gleich sein'
-      );
+      this.passwordCheckElement.setCustomValidity('Passwörter müssen gleich sein');
     } else {
       this.passwordCheckElement.setCustomValidity('');
     }
-    
+
     return this.form.checkValidity();
   }
 }
