@@ -6,4 +6,28 @@
     border-radius: 15px;
 }
 
+#link-div{
+    height: 90px;
+}
+
+.btn-routing{
+    position: relative;
+    left: 5vw;
+    top: 5vh;
+    
+    padding: 10px;
+    color: white;
+    background-color: rgb(50, 154, 100);
+    border: 1px solid rgb(50, 154, 100);
+    border-radius: 10px;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+}
+
+.btn-routing:hover{
+    background-color: white;
+    color: rgb(50, 154, 100);
+}
+
 @import "bootstrap/scss/bootstrap";

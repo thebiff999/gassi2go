@@ -1,10 +1,5 @@
 /* Autor: Simon Flathmann */ 
-import { ajaxPrefilter, data } from "jquery";
 import { css, customElement, html, LitElement, query, unsafeCSS } from "lit-element";
-import { Hund } from '../../../../api-server/src/models/hunde';
-import router from "../../../../api-server/src/routes/entries";
-import { httpClient } from "../../http-client";
-import { HttpClientConfig } from "../../http-client";
 import { PageMixin} from '../page.mixin';
 
 const hundeerstellungComponentSCSS = require('./hundeerstellung.component.scss');
@@ -137,6 +132,7 @@ class HundeerstellungComponent extends PageMixin(LitElement){
                     return response.json();
                 })   
                 .then(data => {console.log(data)})
+                .then(() => history.back()) //Nach erfolgreichem Anlegen, wird zurück zur Hundeübersicht navigiert
                 .catch((error) => {
                     console.log("Fehler: " + error)
                 });

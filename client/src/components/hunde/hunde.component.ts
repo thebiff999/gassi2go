@@ -21,6 +21,9 @@ class HundeComponent extends LitElement{
 
     render(){
         return html`
+            <div id="link-div"> 
+                <a href="/user/dogs/new" class="btn-routing">Hund hinzufügen</a>
+            </div>
             <div id="hunde" class="container-fluid">
                 <div class="row">
                     ${repeat(this.hunde, (hund) => hund.besitzerId, (hund, index) =>
