@@ -92,6 +92,26 @@ router.delete('/:id', async(req, res) =>{
     res.status(200).end();
 });
 
+
+//TODO: middleware
+router.get('/:id', async(req, res) => {
+    console.log('Get-Anfrage an hunde/' + req.params.id);
+    try{
+        const hundDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
+        const hund = await hundDAO.findOne({ id : req.params.id});
+        if(!hund){
+            res.status(404).json({message: `Es wurde kein Hund mit der ID ${req.params.id} gefunden.`});
+        }else{
+            res.status(200).json({
+                hund
+            });
+        }
+    }
+    catch(error){
+        console.log(error);
+    }
+});
+
 //Überprüft für jedes Pflichtfeld, ob dieses gesetzt ist und gibt das Ergebnis zurück.
 function allePflichtfelderVorhanden(objekt: { [key: string]: unknown}, pflichtfelder: string[], fehler: string[]){
     let fehlerVorhanden = false;

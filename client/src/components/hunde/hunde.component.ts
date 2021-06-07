@@ -27,7 +27,7 @@ class HundeComponent extends PageMixin(LitElement){
             </div>
             <div id="hunde" class="container-fluid">
                 <div class="row">
-                    ${repeat(this.hunde, (hund) => hund.besitzerId, (hund, index) =>
+                    ${repeat(this.hunde, (hund) => hund.besitzerId, (hund) =>
                         html`
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xxl-3">
                                     <div class="card text-center m-4 p-3 rounded-lg shadow-lg" id="dogcard">

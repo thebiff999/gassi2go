@@ -1,14 +1,12 @@
 /* Autor: Simon Flathmann */ 
-import { css, customElement, html, LitElement, query, queryAll, unsafeCSS } from "lit-element";
+import { css, customElement, html, internalProperty, LitElement, property, query, queryAll, unsafeCSS} from "lit-element";
+import { repeat } from 'lit-html/directives/repeat';
+import { Hund } from "../../../../api-server/src/models/hunde";
+import { httpClient } from "../../http-client";
 
 const auftragserstellungComponentSCSS = require('./auftragserstellung.component.scss');
 const axios = require('axios').default;
 
-interface Dog {
-    id: number;
-    name: string;
-    breed: string;
-}
 
 @customElement('app-auftragserstellung')
 class AuftragsErstellungComponent extends LitElement{
@@ -16,6 +14,15 @@ class AuftragsErstellungComponent extends LitElement{
     static styles = [
         css`${unsafeCSS(auftragserstellungComponentSCSS)}`
     ]
+
+    @internalProperty()
+    private hunde: Hund[] = [];
+    
+    @internalProperty()
+    private lat: number = 0;
+
+    @internalProperty()
+    private lng: number = 0; 
 
     constructor(){
         super()
@@ -25,13 +32,13 @@ class AuftragsErstellungComponent extends LitElement{
     form!: HTMLFormElement;
 
     @query('#inputAuftragArt')
-    auftragArtElement!: HTMLInputElement;
+    auftragArt!: HTMLInputElement;
 
-    @queryAll('.form-check-input')
-    hundeElement?: NodeListOf<HTMLInputElement>;
+    @query('#inputHunde')
+    auftragHund!: HTMLInputElement;
     
     @query('#auftragDatum')
-    auftragDatumElement!: HTMLInputElement;
+    auftragDatum!: HTMLInputElement;
 
     @query('#inputEntlohnung')
     auftragEntlohnung!: HTMLInputElement;
@@ -39,22 +46,19 @@ class AuftragsErstellungComponent extends LitElement{
     @query('#inputStraße')
     straße!: HTMLInputElement;
 
-    @query('inputHausNr')
+    @query('#inputHausNr')
     hausnr!: HTMLInputElement;
 
-    @query('inputPLZ')
+    @query('#inputPLZ')
     plz!: HTMLInputElement;
 
-    @query('inputOrt')
+    @query('#inputOrt')
     ort!: HTMLInputElement;
 
-    render(){
-        var dogs: Dog[] = [
-            {id: 1, name: "Maja", breed: "Landseer"},
-            {id: 2, name: "Bello", breed: "Golden-Retriever"},
-            {id: 4, name: "Felix", breed: "Malteeser/Bolonka"}
-        ]
+    @query('#auftragBeschreibung')
+    auftragBeschreibung!: HTMLTextAreaElement;
 
+    render(){
         return html`
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -66,8 +70,8 @@ class AuftragsErstellungComponent extends LitElement{
                     <div class="form-group col-md-6">
                         <label for="InputAuftragArt">Auftragsart </label>
                         <select id="inputAuftragArt" class="form-control">
-                            <option value="Gassi" selected>Gassi gehen</option>
-                            <option value="Betreuung">Hundebetreuung</option>
+                            <option value="walk" selected>Gassi gehen</option>
+                            <option value="care">Hundebetreuung</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
@@ -79,8 +83,15 @@ class AuftragsErstellungComponent extends LitElement{
 
                 <div class="form-row">
                     <div class="form-group col-md-6" id="inputDogs">
-                        <label>Ihr Hunde</label>
-                        ${this.myDogs(dogs)}
+                        <label for='inputHunde'>Wähle einen Hund</label>
+                        <select id="inputHunde" class="form-control" required>
+                            <option value='' selected>Kein Hund ausgewählt</option>
+                            ${repeat(this.hunde, (hund) => hund.besitzerId, (hund, index) =>
+                                 html`
+                                    <option value='${hund.id}'>${hund.name}</option>
+                            `)}
+                        </select>
+                        <div class="invalid-feedback">Bitte wählen Sie einen Hund aus.</div>
                     </div>
 
                     <div class="form-group col-md-6">
@@ -141,6 +152,19 @@ class AuftragsErstellungComponent extends LitElement{
         ;
     }
 
+    async firstUpdated(){
+        try{
+            const response = await httpClient.get('/hunde');
+            const responseJSON = await response.json();
+            this.hunde = responseJSON.results;
+            console.log(this.hunde);
+        }
+        catch({message, statusCode}){
+            console.log(message);
+            console.log(statusCode);
+        }
+    }
+
     updated(){
         this.setMinDate();
     } 
@@ -175,20 +199,39 @@ class AuftragsErstellungComponent extends LitElement{
     async submit() {
         console.log('submiting');
         if(this.checkInputs()){
-            const auftragData = {
-                auftragArt: this.auftragArtElement.value,
-                auftragDatum: this.auftragDatumElement.value
+            try{
+                await this.geocode();
+                const auftragData = {
+                    art: this.auftragArt.value,
+                    datum: this.auftragDatum.value,
+                    entlohnung: this.auftragEntlohnung.value,
+                    status: 'open',
+                    beschreibung: this.auftragBeschreibung.value,
+                    besitzerId: 'TODO',
+                    besitzerName: 'TODO',
+                    dogId: this.auftragHund.value,
+                    lat: this.lat,
+                    lng: this.lng
+                }
+                const response = await httpClient.post('/entries', auftragData);
             }
-            console.log(auftragData);
+            catch{(error: any) => {
+                console.log(error);
+            }}
         } 
         else{
             console.log("validation failed")
-
             this.form.classList.add('was-validated');
         }
     }
 
+    
+
     checkInputs(){
+        return this.form.checkValidity();
+    }
+
+    /*
         const root = document.querySelector("app-root");
         const auftragserstellung = root?.shadowRoot?.querySelector("app-auftragserstellung");
         const dogDivs = auftragserstellung?.shadowRoot?.getElementById("inputDogs")?.children;
@@ -219,12 +262,12 @@ class AuftragsErstellungComponent extends LitElement{
                     this.hundeElement![l].reportValidity();
                 }
             }
-        }
+        }*/
 
-        return this.form.checkValidity();
-    }
-
-    /** dynamische Erstellung der Checkboxes für die vorhandenen Hunde. */
+    /** dynamische Erstellung der Checkboxes für die vorhandenen Hunde. 
+     *                  <label>Ihr Hunde</label>
+                        ${this.myDogs(dogs)}
+ 
     myDogs = (dogs: Dog[]) => {
         const dogTemplates = [];
         var x = 0;
@@ -242,37 +285,73 @@ class AuftragsErstellungComponent extends LitElement{
         }
         return html `${dogTemplates}`;
     }
+    */
 
-
-//     <div class="custom-control custom-checkbox">
-//     <input type="checkbox" class="custom-control-input" id="customCheck + ${x}">
-//     <label class="custom-control-label" for="customCheck + ${x}">
-//         ${i.name}
-//     </label>
-// </div>
+    //     <div class="custom-control custom-checkbox">
+    //     <input type="checkbox" class="custom-control-input" id="customCheck + ${x}">
+    //     <label class="custom-control-label" for="customCheck + ${x}">
+    //         ${i.name}
+    //     </label>
+    // </div>
 
     /** Geocode */
-    geocode = () => {
-        var location = "Grevenerstraße 140 48159 Münster";
-        //location = this.straße.value + " " + this.hausnr.value + " " + this.plz.value + " " + this.ort.value;
+    geocode = async () => {
+        //var location = "Grevenerstraße 140 48159 Münster";
+        console.log('Berechnung der Koordinaten.');
+        var straße = this.straße.value;
+        var hsnr = this.hausnr.value;
+        var plz = this.plz.value;
+        var ort = this.ort.value;
+        var location = straße+" "+hsnr+" "+plz+" "+ort;
+        console.log(location);
         var endcodeURL = encodeURI(location);
-        axios.get("https://api.tomtom.com/search/2/geocode/"+ endcodeURL + ".json", {
+        await axios.get("https://api.tomtom.com/search/2/geocode/"+ endcodeURL + ".json", {
             params:{
                 key: "H7fgXYLB4GN3FEtBLrnnxmwoI2A1ftXA"
             }
         })
-        .then(function(response: any){
-            //Response
-            console.log(response);
-            //Response Address
-            console.log(response.data.results[0].address);
+        .then((response: any) =>{
             console.log("Response Lat: " + response.data.results[0].position.lat);
             console.log("Response Lon: " + response.data.results[0].position.lon);
+            this.lat = response.data.results[0].position.lat;
+            this.lng = response.data.results[0].position.lon;
         })
         .catch(function(error: any){
             console.log(error);
         })
     }
+
+    /**geocodeProm = () => {
+        return new Promise<void> (async (resolve) => {
+            console.log('Berechnung der Koordinaten.');
+            var straße = this.straße.value;
+            var hsnr = this.hausnr.value;
+            var plz = this.plz.value;
+            var ort = this.ort.value;
+            var location = straße+" "+hsnr+" "+plz+" "+ort;
+            console.log(location);
+            var endcodeURL = encodeURI(location);
+            await axios.get("https://api.tomtom.com/search/2/geocode/"+ endcodeURL + ".json", {
+                params:{
+                    key: "H7fgXYLB4GN3FEtBLrnnxmwoI2A1ftXA"
+                }
+            })
+            .then((response: any) =>{
+                //Response
+                console.log(response);
+                //Response Address
+                console.log(response.data.results[0].address);
+                console.log("Response Lat: " + response.data.results[0].position.lat);
+                console.log("Response Lon: " + response.data.results[0].position.lon);
+                this.lat = response.data.results[0].position.lat;
+                this.lng = response.data.results[0].position.lon;
+            })
+            .catch(function(error: any){
+                console.log(error);
+            })
+            resolve();
+        })
+    }*/
 
 /*  Alternative Geolocation-Implementierung für die GoogleMaps API.
     Diese benötigt eine Kreditkartenhinterlegung, um den Service nutzen zu können,
