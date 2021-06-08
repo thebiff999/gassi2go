@@ -38,8 +38,8 @@ router.get('/:id', async(req, res) => {
     try {
         const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
         const entry = (await entryDAO.findOne({id: req.params.id}));
-        console.log(!entry);
         console.log("sending entry");
+        console.log(entry);
         res.status(200).json(entry);
     }
     catch (err){
@@ -57,9 +57,9 @@ router.post('/', async (req,res) => {
         pay: req.body.pay,
         status: 'open',
         description: req.body.description,
-        ownerId: 123,
+        ownerId: '123',
         ownerName: 'Max Mustermann',
-        dogId: 123,
+        dogId: '123',
         dogName: 'Charly',
         dogRace: 'Dackel',
         lat: '0',

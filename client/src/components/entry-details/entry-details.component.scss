@@ -1,1 +1,137 @@
 @import "bootstrap/scss/bootstrap";
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts'; 
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@fortawesome/fontawesome-free/scss/solid';
+@import '@fortawesome/fontawesome-free/scss/regular';
+
+.container {
+    padding-top: 10%;
+    padding-bottom: 10%;
+    position: relative;
+}
+
+.image {
+    position: relative;
+}
+
+.image img {
+    max-height: 500px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.details {
+    background-color: white;
+    border-radius: 15px;
+    padding: 5%;
+    position: relative;
+    padding-bottom: 80px;
+}
+
+p {
+    color: #6b6b6b;
+    font-weight: 700;
+}
+
+p.heading {
+    color: #464646;
+    font-size: 28px;
+    font-weight: 800px;
+}
+
+.flex-container p {
+    margin-right: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+    background-color: rgb(50, 154, 100);
+    border-radius: 25px;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+button {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+}
+
+div.image img.img-fluid {
+    border-radius: 15px;
+}
+/*
+.image{
+    position:relative;
+    overflow:hidden;
+    padding-bottom:100%;
+}
+.image img{
+      position: absolute;
+      max-width: 100%;
+      max-height: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+}
+*/
+.back-button {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    cursor: pointer;
+}
+
+.hover-button:hover {
+    transform: scale(1.1);
+    transition: 2s;
+    transition-delay: 0.2s;
+}
+
+@media screen and (max-width: 991px) {
+    .image {
+        margin-bottom: 40px;
+    }
+    .desktop-button {
+        visibility: hidden;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .mobile-button {
+        visibility: hidden;
+    }
+}
+/*
+@media screen and (min-width: 992px) {
+    .container {
+        max-height: 50%;
+    }
+}
+
+
+
+img {
+    border-radius: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    max-height: 80vh;
+    object-fit: cover;
+    max-width: 90vw;
+}
+
+@media screen and (min-width: 1140px) {
+    img {
+        width: 500px;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    img {
+        width: 650px;
+    }
+}*/

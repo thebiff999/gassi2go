@@ -58,7 +58,9 @@ async function connectToPsql() {
     database: 'gassi2go',
     password: 'password',
     port: 5432,
-    keepAlive: true
+    keepAlive: true,
+    keepAliveInitialDelayMillis: 1500
+
   });
   try {
     await client.connect();

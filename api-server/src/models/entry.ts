@@ -6,18 +6,18 @@ export interface Entry extends Entity{
     id: string;
     createdAt: number;
     type: 'walk' | 'care';
-    date: Date;
+    date: string;
     pay: number;
     status: 'open' | 'requested' | 'assigned';
     description: string;
-    ownerId: number;
+    ownerId: string;
     ownerName: string;
-    dogId: number;
+    dogId: string;
     dogName: string;
     dogRace: string;
     lat: string;
     lng: string;
     imageUrl: string;
-    requesterId?: number;
+    requesterId?: string;
     requesterName?: string;
 }

@@ -85,7 +85,7 @@ class EntriesComponent extends PageMixin(LitElement) {
                             <img class="card-img-top" src="${entry.imageUrl}" height="300px" width="400px">
                             <p>Rasse: ${entry.dogName}</p>
                             <p>Entfernung: ${this.getDistance(entry.lat, entry.lng, this.location)} km</p>
-                            <button @click=${() => this.showDetails(entry.id)} class="btn btn-primary">Führ mich aus <i class="fas fa-paw"></i></a>
+                            ${this.renderButton(entry.type, entry.id)}
                         </div>
                     </div>
                 </div>
@@ -98,6 +98,17 @@ class EntriesComponent extends PageMixin(LitElement) {
         </div>
         `;
 
+    }
+
+    renderButton(type: string, id: string) {
+        let content;
+        if (type == 'walk') {
+            content = html`<button @click=${() => this.showDetails(id)} class="btn btn-primary">Führ mich aus <i class="fas fa-paw"></i></a>`
+        }
+        else {
+            content = html`<button @click=${() => this.showDetails(id)} class="btn btn-primary">Pass auf mich auf <i class="fas fa-bone"></i></a>`
+        }
+        return content;
     }
 
     //helper function to toggle the visibility status of elements
