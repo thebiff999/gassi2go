@@ -52,19 +52,19 @@ router.post('/', async (req,res) => {
     console.log('received post on entries/');
     const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
     const createdEntry = await entryDAO.create({
-        type: req.body.type,
-        date: req.body.date,
-        pay: req.body.pay,
+        type: req.body.art,
+        date: req.body.datum,
+        pay: req.body.entlohnung,
         status: 'open',
-        description: req.body.description,
-        ownerId: '123',
+        description: req.body.beschreibung,
+        ownerId: '1',
         ownerName: 'Max Mustermann',
-        dogId: '123',
-        dogName: 'Charly',
-        dogRace: 'Dackel',
-        lat: '0',
-        lng: '0',
-        imageUrl: 'https://i.imgur.com/XgbZdeA.jpg'
+        dogId: req.body.hundId,
+        dogName: req.body.hundName,
+        dogRace: req.body.hundRasse,
+        lat: req.body.lat,
+        lng: req.body.lng,
+        imageUrl: req.body.imgPath
     });
 });
 //returns all assigned entries
