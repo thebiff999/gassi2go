@@ -64,8 +64,7 @@ class AuftragsErstellungComponent extends LitElement{
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
         <div class="border border-success" id="outerDiv">
-            <form class="needs-validation" novalidate>
-
+            <form action="/" method="post" class="needs-validation" novalidate>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="InputAuftragArt">Auftragsart </label>
@@ -201,19 +200,23 @@ class AuftragsErstellungComponent extends LitElement{
         if(this.checkInputs()){
             try{
                 await this.geocode();
+                var selHund = this.getHund(this.auftragHund.value);
+                console.log('selectedHund');
+                console.log(selHund);
                 const auftragData = {
                     art: this.auftragArt.value,
                     datum: this.auftragDatum.value,
                     entlohnung: this.auftragEntlohnung.value,
-                    status: 'open',
                     beschreibung: this.auftragBeschreibung.value,
-                    besitzerId: 'TODO',
-                    besitzerName: 'TODO',
-                    dogId: this.auftragHund.value,
+                    hundId: selHund!.id,
+                    hundName: selHund!.name,
+                    hundRasse: selHund!.rasse,
+                    imgPath: selHund!.imgPath,
                     lat: this.lat,
                     lng: this.lng
                 }
-                const response = await httpClient.post('/entries', auftragData);
+                console.log(auftragData);
+                const response = await httpClient.post('/entries/', auftragData);
             }
             catch{(error: any) => {
                 console.log(error);
@@ -319,6 +322,18 @@ class AuftragsErstellungComponent extends LitElement{
         .catch(function(error: any){
             console.log(error);
         })
+    }
+
+    getHund = (id: string) => {
+        for(let i = 0; i <= this.hunde.length-1; i++){
+            console.log(i);
+            console.log(id);
+            console.log(this.hunde[i].id);
+            if(id === this.hunde[i].id){
+                return this.hunde[i];
+            }
+        }
+        return null; //throw error
     }
 
     /**geocodeProm = () => {
