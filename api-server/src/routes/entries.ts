@@ -7,7 +7,6 @@ import {} from 'uuid';
 
 const router = express.Router();
 
-
 //returns all open entries
 router.get('/', async (req, res) => {
     try {
