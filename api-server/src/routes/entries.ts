@@ -7,16 +7,6 @@ import {} from 'uuid';
 
 const router = express.Router();
 
-//create a new entry
-router.post('/', async (req, res) => {
-    const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
-    const errors: string[] = [];
-
-    //const newEntry = await entryDAO.create({
-    //
-    //});
-});
-
 //returns all open entries
 router.get('/', async (req, res) => {
     try {
