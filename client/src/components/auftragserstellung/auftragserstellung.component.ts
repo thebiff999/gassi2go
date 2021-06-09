@@ -3,13 +3,14 @@ import { css, customElement, html, internalProperty, LitElement, property, query
 import { repeat } from 'lit-html/directives/repeat';
 import { Hund } from "../../../../api-server/src/models/hunde";
 import { httpClient } from "../../http-client";
+import { PageMixin } from "../page.mixin";
 
 const auftragserstellungComponentSCSS = require('./auftragserstellung.component.scss');
 const axios = require('axios').default;
 
 
 @customElement('app-auftragserstellung')
-class AuftragsErstellungComponent extends LitElement{
+class AuftragsErstellungComponent extends PageMixin(LitElement){
 
     static styles = [
         css`${unsafeCSS(auftragserstellungComponentSCSS)}`
@@ -156,7 +157,6 @@ class AuftragsErstellungComponent extends LitElement{
             const response = await httpClient.get('/hunde');
             const responseJSON = await response.json();
             this.hunde = responseJSON.results;
-            console.log(this.hunde);
         }
         catch({message, statusCode}){
             console.log(message);
@@ -174,7 +174,7 @@ class AuftragsErstellungComponent extends LitElement{
         var ddNum = today.getDate();
         var dd = today.getDate().toString();
 
-        var mmNum = today.getMonth() + 1;  //Januar starts at 0
+        var mmNum = today.getMonth() + 1;  //Januar startet bei 0
         var mm = mmNum.toString();
 
         var yyyyNum = today.getFullYear();
@@ -201,8 +201,6 @@ class AuftragsErstellungComponent extends LitElement{
             try{
                 await this.geocode();
                 var selHund = this.getHund(this.auftragHund.value);
-                console.log('selectedHund');
-                console.log(selHund);
                 const auftragData = {
                     art: this.auftragArt.value,
                     datum: this.auftragDatum.value,
@@ -215,12 +213,14 @@ class AuftragsErstellungComponent extends LitElement{
                     lat: this.lat,
                     lng: this.lng
                 }
-                console.log(auftragData);
-                const response = await httpClient.post('/entries/', auftragData);
+                await httpClient.post('/entries/', auftragData)
+                .then( () => {
+                    alert('Auftrag wurde erfolgreich angelegt.');
+                })
             }
-            catch{(error: any) => {
-                console.log(error);
-            }}
+            catch({ message }){
+                this.setNotification({ errorMessage: message })
+            }
         } 
         else{
             console.log("validation failed")
@@ -325,15 +325,21 @@ class AuftragsErstellungComponent extends LitElement{
     }
 
     getHund = (id: string) => {
-        for(let i = 0; i <= this.hunde.length-1; i++){
-            console.log(i);
-            console.log(id);
-            console.log(this.hunde[i].id);
-            if(id === this.hunde[i].id){
-                return this.hunde[i];
+        try{
+            let selHund;
+            for(let i = 0; i <= this.hunde.length-1; i++){
+                if(id === this.hunde[i].id){
+                    selHund = this.hunde[i];
+                }
             }
+            if(selHund == null){
+                throw 'Es konnte kein Hund mit der passenden ID gefunden werden.';
+            }
+            return selHund;
         }
-        return null; //throw error
+        catch (error){
+            this.setNotification({ errorMessage: error});
+        }
     }
 
     /**geocodeProm = () => {

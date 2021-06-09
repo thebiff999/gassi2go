@@ -132,7 +132,7 @@ class HundeerstellungComponent extends PageMixin(LitElement){
                     return response.json();
                 })   
                 .then(data => {console.log(data)})
-                .then(() => history.back()) //Nach erfolgreichem Anlegen, wird zurück zur Hundeübersicht navigiert
+                .then(() => history.back())      //Nach erfolgreichem Anlegen, wird zurück zur Hundeübersicht navigiert
                 .catch((error) => {
                     console.log("Fehler: " + error)
                 });
