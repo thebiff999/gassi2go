@@ -9,6 +9,7 @@
     "build": "webpack --config webpack.prod.js --progress",
     "lint": "eslint . --ext .ts",
     "test": "karma start",
+    "test-watch": "node node_modules/karma/bin/karma start --browsers=Chrome --single-run=false --auto-watch",
     "e2e": "npm run build && tsc -p e2e && node e2e/jasmine"
   },
   "keywords": [],
