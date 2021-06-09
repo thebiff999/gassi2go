@@ -1,0 +1,74 @@
+/* Autor: Dennis Heuermann */
+
+@import "bootstrap/scss/bootstrap";
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts'; 
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@fortawesome/fontawesome-free/scss/solid';
+@import '@fortawesome/fontawesome-free/scss/regular';
+
+$item-height: 100px;
+
+.container {
+    display: block;
+    padding-top: 70px;
+}
+
+@media screen and (max-width: 991px) {
+    
+}
+
+@media screen and (min-width: 992px) {
+    .list-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        align-items: center;
+        flex: none;
+        background-color: white;
+        border-radius:30px;
+        margin-bottom: 50px;
+        height: $item-height;
+    }
+    
+    img {
+        height: $item-height;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 30px 0 0 30px;
+    }
+    
+    .list-item span.image {
+        margin-left: 0;
+    }
+    
+    .list-item span {
+        height: $item-height;
+        line-height: $item-height;
+        text-align: center;
+        flex: 1;
+    }
+    
+    .list-item span p {
+        vertical-align: middle;
+    }
+    
+    .list-item span:nth-child(even) {
+        border-left: solid 2px lightgrey;
+        border-right: solid 2px lightgrey;
+    }
+    
+    .list-item span:nth-child(1) {
+        background: none;
+    }
+    
+    .list-item span:last-child {
+        background-color: blue;
+        border-radius: 0 30px 30px 0;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+    
+    i {
+        color: white;
+    }
+}

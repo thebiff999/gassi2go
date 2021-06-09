@@ -41,7 +41,7 @@ class AppComponent extends LitElement {
         '/user/sign-in': () => html`<app-sign-in></app-sign-in>`,
         '/user/sign-up': () => html`<app-sign-up></app-sign-up>`,
         '/user/sign-out': () => html`<app-sign-out></app-sign-out>`,
-        '/user/entries': () => html`<h1>TODO: Simon</h1>`,
+        '/user/entries': () => html`<app-assignments></app-assignments>`,
         '/user/dogs': () => html`<app-hunde></app-hunde>`,
         '/user/dogs/new': () => html`<app-hundeerstellung></app-hundeerstellung>`
       },

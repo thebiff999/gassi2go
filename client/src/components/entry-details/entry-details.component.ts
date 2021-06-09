@@ -1,5 +1,6 @@
+/* Autor: Dennis Heuermann */
+
 import { customElement, LitElement, css, html, unsafeCSS, property, internalProperty} from "lit-element";
-import { until } from 'lit-html/directives/until.js';
 import { httpClient } from '../../http-client';
 import { Entry } from '../../../../api-server/src/models/entry';
 import { router } from '../../router';
@@ -38,7 +39,7 @@ class EntryComponent extends LitElement {
                             <p>${this.entry?.date}</p>
                         </span>
                         <p>${this.entry?.description}</p>
-                        ${this.renderButton()}
+                        <button @click=${this.submit} class="btn btn-primary">${this.renderButton()}</button>
                     </div>
                 </div>
             </div>
@@ -54,10 +55,10 @@ class EntryComponent extends LitElement {
     renderButton() {
         let content;
         if (this.entry?.type == 'walk') {
-            content = html`<button @click=${this.submit} class="btn btn-primary">Ich führe dich aus <i class="fas fa-paw"></i></a>`
+            content = html`Ich führe dich aus <i class="fas fa-paw"></i>`
         }
         else {
-            content = html`<button @click=${this.submit} class="btn btn-primary">Ich passe auf dich auf <i class="fas fa-bone"></i></a>`
+            content = html`Ich passe auf dich auf <i class="fas fa-bone"></i>`
         }
         return content;
     }
@@ -74,18 +75,37 @@ class EntryComponent extends LitElement {
     }
 
     async submit() {
-        let body = this.entry!;
-        body.status = 'assigned';
+        let requestBody = this.entry;
+        requestBody.status = 'assigned';
         try {
-            const response = await httpClient.patch('/entries/' + this.entryId, body);
+            console.log('patch-request');
+            console.log(requestBody);
+            const response = await httpClient.patch('/entries/id/' + this.entryId, requestBody);
+            console.log(response);
         }
-        catch ({message, statusCode}) {
-            console.log(message);
-            console.log(statusCode);
+        catch (error: any) {
+            console.log(error);
         }
+        
     }
 
-    
+    async connectedCallback() {
+        super.connectedCallback();
+
+        try {
+            const response = await httpClient.get('/entries/' + this.entryId);
+            this.entry = await response.json();
+            await this.requestUpdate();
+          } catch ({ message, statusCode }) {
+            if (statusCode === 401) {
+              router.navigate('/users/sign-in');
+            } else {
+              console.log({ errorMessage: message });
+            }
+          }
+
+    }
+    /*
     async firstUpdated() {
         try {
             const response = await httpClient.get('/entries/' + this.entryId);
@@ -98,40 +118,6 @@ class EntryComponent extends LitElement {
               console.log({ errorMessage: message });
             }
           }
-    }
-    
-    /*
-    connectedCallback() {
-        super.connectedCallback();
-        console.log('connectedCallback');
-        this.fetchData();
-        this.requestUpdate();
-    }
-    */
-
-    async fetchData() {
-
-        async function fetchCall(id: string) {
-            const response = await httpClient.get('/entries/' + id);
-            console.log("received entry");
-            let responseObject = await response.json();
-            return responseObject;
-        }
-
-        const timeOutPromise = new Promise((resolve, reject) => {
-            setTimeout(() => reject('fetch timed out'), 1000);
-        });
-
-        try {
-            Promise.race([fetchCall(this.entryId), timeOutPromise]).then((data) => {
-                this.entry = data;
-            });
-        }
-
-        catch ({message, statusCode}) {
-            console.log(message);
-            console.log(statusCode);
-        }
-    }
+    }*/
 
 }

@@ -10,6 +10,7 @@ import {} from 'google.maps';
 import { Modal } from 'bootstrap';
 import { Entry } from '../../../../api-server/src/models/entry';
 import Cookies from 'js-cookie';
+import { getDistance } from '../../distance';
 
 const entriesComponentCSS = require('./entries.component.scss');
 
@@ -82,9 +83,9 @@ class EntriesComponent extends PageMixin(LitElement) {
                 <div class="col">
                     <div class="card shadow entry">
                         <div class="card-body">
-                            <img class="card-img-top" src="${entry.imageUrl}" height="300px" width="400px">
-                            <p>Rasse: ${entry.dogName}</p>
-                            <p>Entfernung: ${this.getDistance(entry.lat, entry.lng, this.location)} km</p>
+                            <img class="card-img-top" src="${entry.imageUrl}">
+                            <p>Name: ${entry.dogName}</p>
+                            <p>Entfernung: ${getDistance(entry.lat, entry.lng, this.location.lat, this.location.lng)} km</p>
                             ${this.renderButton(entry.type, entry.id)}
                         </div>
                     </div>
@@ -235,7 +236,7 @@ class EntriesComponent extends PageMixin(LitElement) {
             </div>
             <div style="float:right; padding: 10px;">
                 <h5>${entry.dogName}</h5>
-                <p>Entfernung: ${this.getDistance(entry.lat, entry.lng, this.location!)} km</p>
+                <p>Entfernung: ${getDistance(entry.lat, entry.lng, this.location.lat, this.location.lng)} km</p>
             </div>`
         });
         //link markers and info windows
@@ -254,30 +255,6 @@ class EntriesComponent extends PageMixin(LitElement) {
     //closes the open window saved in the internal property 'openWindow'
     closeOpenedWindow() {
         this.openWindow?.close();
-    }
-
-    //calculates the distance between two coordinates. Accepts numbers and strings for the first position.
-    getDistance(lat: number | string, lng: number | string, pos2: Coords) {
-        var rad = function(x: number) {
-            return x * Math.PI / 180;
-        }
-
-        if (typeof lat !== 'number') {
-            lat = parseFloat(lat);
-        }
-        if (typeof lng !== 'number') {
-            lng = parseFloat(lng);
-        }
-
-        var R = 6378137;
-        var dLat = rad(pos2.lat - lat);
-        var dLong = rad(pos2.lng - lng);
-        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(rad(lat)) * Math.cos(rad(pos2.lat)) *
-            Math.sin(dLong / 2) * Math.sin(dLong / 2);
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        var d = (R * c) / 1000;
-        return d.toFixed(1); // returns the distance in kilometer
     }
 
     //navigates to the detailed view of an entry, realized by the entry-details-component

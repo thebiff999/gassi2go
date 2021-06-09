@@ -1,3 +1,5 @@
+/* Autor: Dennis Heuermann */
+
 @import "bootstrap/scss/bootstrap";
 $fa-font-path: '~@fortawesome/fontawesome-free/webfonts'; 
 @import '@fortawesome/fontawesome-free/scss/fontawesome';
@@ -8,6 +10,7 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
     padding-top: 80px;
     padding-left: 6%;
     padding-right: 6%;
+    padding-bottom: 50px;
 }
 
 .entry {
@@ -24,12 +27,6 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 .entry img {
     transform: scale(1.0);
     transition: 1s;
-}
-
-.entry img:hover {
-    transform: scale(1.1);
-    transition: 2s;
-    transition-delay: 0.2s;
 }
 
 .inactive {
@@ -66,4 +63,33 @@ div.modal-header {
 
 div.modal-dialog div.modal-content div.modal-footer i {
     font-family: "Font Awesome 5 Free" !important;
+}
+
+@media screen and (min-width: 992px) {
+    img.card-img-top {
+        height: 300px;
+    }
+
+    .entry img:hover {
+        transform: scale(1.07);
+        transition: 2s;
+        transition-delay: 0.2s;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    img.card-img-top {
+        height: 400px;
+    }
+    .entry img:hover {
+        transform: scale(1.05);
+        transition: 2s;
+        transition-delay: 0.2s;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    img.card-img-top {
+        height: 450px;
+    }
 }
