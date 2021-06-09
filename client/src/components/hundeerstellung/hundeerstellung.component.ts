@@ -5,7 +5,7 @@ import { PageMixin} from '../page.mixin';
 const hundeerstellungComponentSCSS = require('./hundeerstellung.component.scss');
 
 @customElement('app-hundeerstellung')
-class HundeerstellungComponent extends PageMixin(LitElement){
+export class HundeerstellungComponent extends PageMixin(LitElement){
 
     static styles = [
         css`${unsafeCSS(hundeerstellungComponentSCSS)}`
@@ -96,7 +96,6 @@ class HundeerstellungComponent extends PageMixin(LitElement){
     }
 
     async create() {
-        //var formData: any = new FormData();
         console.log("erstellung");
         if(this.checkInputs()){
             console.log("checked successfully");
@@ -108,18 +107,6 @@ class HundeerstellungComponent extends PageMixin(LitElement){
             formData.append('gebDate', this.geb.value);
             formData.append('infos', this.info.value); 
             formData.append('image', this.file.files![0]);
-
-            /*const hund: Partial<Hund> = {
-                //TODO: id auf serverseite
-                besitzerId: "TODO",
-                name: this.name.value,
-                rasse: this.rasse.value,
-                gebDate: this.geb.value,
-                infos: this.info.value
-            };*/
-
-            console.log("test");
-            console.log(this.file.files![0]);
             console.log(formData);
 
             try{
@@ -155,8 +142,6 @@ class HundeerstellungComponent extends PageMixin(LitElement){
     checkInputs(){
         console.log('checkingInputs');
         var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-        console.log(this.file);
-        console.log(this.file.value);
 
         //Falls eine Datei hochgeladen wurde, wird diese auf den Datentypen überprüft
         if(this.file.value !== ""){
@@ -207,7 +192,6 @@ class HundeerstellungComponent extends PageMixin(LitElement){
 
         uploadbtn!.addEventListener('click', openDialog);
         function openDialog(){
-            console.log('opened Dialog');
             component!.getElementById('file')!.click();
         }
 

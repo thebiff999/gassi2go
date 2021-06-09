@@ -1,4 +1,3 @@
-import { htmlPrefilter } from 'jquery';
 import { LitElement } from 'lit-element';
 import { httpClient } from '../../http-client';
 import './auftragserstellung.component';
@@ -15,10 +14,6 @@ describe('app-auftragserstellung', () => {
         element.remove();
     })
 
-    it('should work everytime', async() => {
-        expect(1).toBe(1);
-    });
-
     it('should render a combobox option for each dog', async() =>{
         const hunde = [
             {besitzerId: '1a1b1c', name: 'Bello', rasse: 'Lambrador', gebDate: '2018-03-10', infos: 'Bello ist ein super lieber und ruhiger Hund, der es liebt gestreichelt zu werden.', imgPath: './../../../resources/uploads/d52f472b-7a97-49f1-ab0e-321dd26dac6cbernasenne.jpg'},
@@ -27,11 +22,11 @@ describe('app-auftragserstellung', () => {
         ]
 
         spyOn(httpClient, 'get').and.returnValue(
-            Promise.resolve({                                                                                       
-                json(){
-                    return Promise.resolve({ response: hunde});
+            Promise.resolve({
+                json() {
+                    return Promise.resolve({ results: hunde });
                 } 
-            } as Response )
+            } as Response)
         );
 
         await element.updateComplete;
@@ -42,6 +37,10 @@ describe('app-auftragserstellung', () => {
         expect(hundeOptions.length).toBe(4); //4 und nicht 3, da eine Option initial gesetzt wird.
     });
 
-    
-    
-})
+    it('should set the min-attribute of the date input', async() =>{
+        await element.updateComplete;
+        let input = element.shadowRoot!.querySelector('#auftragDatum') as HTMLInputElement;
+        expect(input.getAttribute('min')).toBeDefined();
+    });
+
+});

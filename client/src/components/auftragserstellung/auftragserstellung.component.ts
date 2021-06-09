@@ -306,7 +306,6 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
         var plz = this.plz.value;
         var ort = this.ort.value;
         var location = straße+" "+hsnr+" "+plz+" "+ort;
-        console.log(location);
         var endcodeURL = encodeURI(location);
         await axios.get("https://api.tomtom.com/search/2/geocode/"+ endcodeURL + ".json", {
             params:{
