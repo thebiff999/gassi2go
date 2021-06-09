@@ -25,7 +25,7 @@ describe('sign-in', () => {
   /**
    * button should navigate to SignIn
    */
-  fit('button should navigate to SignIn', async () => {
+  it('button should navigate to SignIn', async () => {
     const navigate = element.shadowRoot!.querySelector('#navigateToSignIn') as HTMLElement;
     navigate.click();
     element = document.createElement('sign-in') as LitElement;
