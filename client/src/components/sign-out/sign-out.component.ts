@@ -53,7 +53,7 @@ class SignOutComponent extends PageMixin(LitElement) {
 
   async submit() {
     try {
-      await httpClient.delete('userAdministration/sign-out');
+      await httpClient.delete('users/sign-out');
       this.setNotification({ infoMessage: 'Sie wurden erfolgreich abgemeldet!' });
       router.navigate('userAdministration/sign-in');
     } catch ({ message }) {

@@ -8,7 +8,7 @@ export interface Entry extends Entity{
     type: 'walk' | 'care';
     date: string;
     pay: number;
-    status: 'open' | 'requested' | 'assigned';
+    status: 'open' | 'assigned' | 'done';
     description: string;
     ownerId: string;
     ownerName: string;
