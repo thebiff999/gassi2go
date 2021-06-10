@@ -180,11 +180,11 @@ class SignInComponent extends PageMixin(LitElement) {
   async submit() {
     if (this.isFormValid()) {
       const loginData = {
-        username: this.usernameElement.value,
+        email: this.usernameElement.value,
         password: this.passwordElement.value
       };
       try {
-        await httpClient.post('app/user/login', loginData);
+        await httpClient.post('users/sign-in', loginData);
         router.navigate('search');
       } catch ({ message }) {
         this.setNotification({ errorMessage: message });

@@ -41,12 +41,14 @@ router.post('/', async (req, res) => {
 });
 
 router.post('/sign-in', async (req, res) => {
+  console.log('received post on /users/sign-in');
   const userDAO: GenericDAO<User> = req.app.locals.userDAO;
   const filter: Partial<User> = { email: req.body.email };
   const errors: string[] = [];
 
   if (!hasRequiredFields(req.body, ['email', 'password'], errors)) {
     res.status(400).json({ message: errors.join('\n') });
+    console.log(errors)
     return;
   }
 
