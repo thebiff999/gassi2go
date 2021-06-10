@@ -237,6 +237,8 @@ class EntriesComponent extends PageMixin(LitElement) {
             <div style="float:right; padding: 10px;">
                 <h5>${entry.dogName}</h5>
                 <p>Entfernung: ${getDistance(entry.lat, entry.lng, this.location.lat, this.location.lng)} km</p>
+                <p>Datum: ${entry.date}</p>
+                <p>Bezahlung: ${entry.pay}€</p>
             </div>`
         });
         //link markers and info windows
@@ -260,5 +262,17 @@ class EntriesComponent extends PageMixin(LitElement) {
     //navigates to the detailed view of an entry, realized by the entry-details-component
     showDetails(entryId: string) {
         router.navigate(`/entries/${entryId}`);
+    }
+
+    //renders the html-content to output depending on the entry type (walk / care)
+    renderType(entry: Entry) {
+        let content;
+        if (entry.type == 'walk') {
+            content = html`<p>Auftragsart: Gassi</p>`
+        }
+        else {
+            content = html`<p>Auftragsart: Aufpassen</p>`
+        }
+        return content;
     }
 }

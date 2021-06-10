@@ -28,28 +28,45 @@ class EntryComponent extends LitElement {
             <div class="list">
                 ${repeat(this.assignments, assignment => assignment.id, assignment =>
                 html`
-                <div class="list-item shadow">
-                    <span class="image">
-                        <img src="${assignment.imageUrl}">
-                    </span>
-                    <span class="name">
-                        ${assignment.dogName}
-                    </span>
-                    <span class="date">
-                        <p>${assignment.date}</p>
-                    </span>
-                    <span class="type">
-                        <p>${this.renderType(assignment)}</p>
-                    </span>
-                    <span class="distance">
-                        <p>${getDistance(assignment.lat, assignment.lng, this.location.lat, this.location.lng)} km</p>
-                    </span>
-                    <span class="pay">
-                        <p>${assignment.pay}€</p>
-                    </span>
-                    <span class="button">
-                        <i class="fas fa-check fa-2x" @click="${() => this.submit(assignment)}"></i>
-                    </span>
+                <div class="list-item">
+                    <div class="desktop shadow">
+                        <span class="image">
+                            <img src="${assignment.imageUrl}">
+                        </span>
+                        <span class="name">
+                            ${assignment.dogName}
+                        </span>
+                        <span class="date">
+                            <p>${assignment.date}</p>
+                        </span>
+                        <span class="type">
+                            <p>${this.renderType(assignment)}</p>
+                        </span>
+                        <span class="distance">
+                            <p>${getDistance(assignment.lat, assignment.lng, this.location.lat, this.location.lng)} km</p>
+                        </span>
+                        <span class="pay">
+                            <p>${assignment.pay}€</p>
+                        </span>
+                        <span class="button">
+                            <i class="fas fa-check fa-2x" @click="${() => this.submit(assignment)}"></i>
+                        </span>
+                    </div>
+                    <div class="row mobile shadow">
+                        <div class="col-sm-6 image">
+                            <img src="${assignment.imageUrl}">
+                        </div>
+                        <div class="col-sm-6 details">
+                            <p>${assignment.dogName}</p>
+                            <span>
+                                <p>${assignment.date}</p>
+                                <p>${this.renderType(assignment)}</p>
+                                <p>${getDistance(assignment.lat, assignment.lng, this.location.lat, this.location.lng)} km</p>
+                                <p>${assignment.pay}€</p>
+                            </span>
+                            <button @click=${() => this.submit(assignment)} class="btn btn-primary">Erledigt <i class="fas fa-check"></i></button>
+                        </div>
+                    </div>
                 </div>
                 `)}
             </div>
@@ -75,12 +92,14 @@ class EntryComponent extends LitElement {
 
     async submit(assignment: Entry) {
         let requestBody = assignment;
-        requestBody.status = 'assigned';
+        requestBody.status = 'done';
         try {
             console.log('patch-request');
             console.log(requestBody);
-            const response = await httpClient.patch('/entries/' + assignment.id, requestBody);
+            const response = await httpClient.patch('/entries/id/' + assignment.id, requestBody);
             console.log(response);
+            this.deleteEntry(assignment.id);
+            this.requestUpdate();
         }
         catch (error: any) {
             console.log(error);
@@ -100,6 +119,18 @@ class EntryComponent extends LitElement {
         }
         this.location.lat = parseFloat(Cookies.get('lat')!);
         this.location.lng = parseFloat(Cookies.get('lng')!);
+    }
+
+    deleteEntry(id: string) {
+        console.log('before delete');
+        console.log(this.assignments);
+        for (let i=0; i < this.assignments.length; i++) {
+            if (this.assignments[i].id == id) {
+                this.assignments.splice(i,1);
+            }
+        }
+        console.log('after delete');
+        console.log(this.assignments);
     }
 
 }

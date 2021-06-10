@@ -93,7 +93,7 @@ class EntryComponent extends LitElement {
         super.connectedCallback();
 
         try {
-            const response = await httpClient.get('/entries/' + this.entryId);
+            const response = await httpClient.get('/entries/id/' + this.entryId);
             this.entry = await response.json();
             await this.requestUpdate();
           } catch ({ message, statusCode }) {
