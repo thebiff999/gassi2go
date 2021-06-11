@@ -15,4 +15,5 @@ import './components/sign-out/sign-out.component.ts';
 import './components/sign-up/sign-up.component.ts';
 import './components/hunde/hunde.component.ts';
 import './components/hundeerstellung/hundeerstellung.component.ts';
-
+import './components/page.mixin';
+import './components/widgets/notification/notification.component.ts';

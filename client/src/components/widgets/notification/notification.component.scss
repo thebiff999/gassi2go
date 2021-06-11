@@ -1,0 +1,26 @@
+/* Autor: Dennis Heuermann */
+
+.alert-info {
+    background-color: rgba(50,153,255,0.5);
+    border: 2px solid rgb(50,153,255);
+}
+
+.alert-danger {
+    background-color: rgba(255,50,50,0.5);
+    border: 2px solid rgb(255,50,50);
+}
+
+.alert {
+    width: 90vw;
+    height: 50px;
+    margin-top: 35px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: #464646;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}

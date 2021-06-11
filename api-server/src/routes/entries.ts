@@ -42,7 +42,7 @@ router.get('/assigned', authService.expressMiddleware ,async (req, res) => {
     try {
         console.log('received get on /entries/assigned')
         const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
-        const filter: Partial<Entry> = { requesterId: res.locals.user.id };
+        const filter: Partial<Entry> = { requesterId: res.locals.user.id, status: 'assigned' };
         const entries = (await entryDAO.findAll(filter)).map(entry => {
             return {...entry};
         });
@@ -64,7 +64,6 @@ router.post('/', authService.expressMiddleware ,async (req,res) => {
         status: 'open',
         description: req.body.beschreibung,
         ownerId: res.locals.user.id,
-        ownerName: 'Max Mustermann',
         dogId: req.body.hundId,
         dogName: req.body.hundName,
         dogRace: req.body.hundRasse,
@@ -84,7 +83,6 @@ router.patch('/id/:id', authService.expressMiddleware,async (req, res) => {
 
     const partialEntry: Partial<Entry> = { id: req.params.id};
     partialEntry.requesterId = res.locals.user.id;
-    partialEntry.requesterName = 'Max Mustermann';
     partialEntry.status = req.body.status;
 
     await entryDAO.update(partialEntry);

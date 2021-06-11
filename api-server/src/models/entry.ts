@@ -11,7 +11,6 @@ export interface Entry extends Entity{
     status: 'open' | 'assigned' | 'done';
     description: string;
     ownerId: string;
-    ownerName: string;
     dogId: string;
     dogName: string;
     dogRace: string;
@@ -19,5 +18,4 @@ export interface Entry extends Entity{
     lng: string;
     imageUrl: string;
     requesterId?: string;
-    requesterName?: string;
 }

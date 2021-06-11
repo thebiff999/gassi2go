@@ -1,6 +1,7 @@
 /* Autor: Dennis Heuermann */
 
 import { customElement, LitElement, css, html, unsafeCSS, property, internalProperty} from "lit-element";
+import { PageMixin } from '../page.mixin';
 import { repeat } from 'lit-html/directives/repeat';
 import { httpClient } from '../../http-client';
 import { getDistance } from '../../distance';
@@ -11,7 +12,7 @@ import { router } from '../../router';
 const assignmentsComponentCSS = require('./assignments.component.scss');
 
 @customElement('app-assignments')
-class EntryComponent extends LitElement {
+class EntryComponent extends PageMixin(LitElement) {
 
     static styles = [
         css`${unsafeCSS(assignmentsComponentCSS)}`
@@ -24,6 +25,7 @@ class EntryComponent extends LitElement {
 
     render() {
         let template = html`
+        ${this.renderNotification()}
         <div class="container">
             <div class="list">
                 ${repeat(this.assignments, assignment => assignment.id, assignment =>
@@ -101,8 +103,8 @@ class EntryComponent extends LitElement {
             this.deleteEntry(assignment.id);
             this.requestUpdate();
         }
-        catch (error: any) {
-            console.log(error);
+        catch ({ message }) {
+            this.setNotification({ errorMessage: message });
         }
         
     }
@@ -112,10 +114,15 @@ class EntryComponent extends LitElement {
         try {
             const response = await httpClient.get('/entries/assigned');
             this.assignments = (await response.json()).results;
+            console.log(this.assignments.length);
+            if (this.assignments.length == 0) {
+                this.setNotification({infoMessage: 'Keine zugeordneten Aufträge'});
+            }
         }
         catch ({message, statusCode}) {
             console.log(message);
             console.log(statusCode);
+            this.setNotification({ errorMessage: message });
         }
         this.location.lat = parseFloat(Cookies.get('lat')!);
         this.location.lng = parseFloat(Cookies.get('lng')!);
