@@ -9,7 +9,7 @@ import {} from 'uuid';
 const router = express.Router();
 
 //returns all open entries
-router.get('/', async (req, res) => {
+router.get('/', authService.expressMiddleware, async (req, res) => {
     try {
         console.log('received get on /entries');
         const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
@@ -71,7 +71,7 @@ router.post('/', authService.expressMiddleware ,async (req,res) => {
         lng: req.body.lng,
         imageUrl: req.body.imgPath
     });
-    res.status(2021).json({
+    res.status(201).json({
         createdEntry
     })
 });

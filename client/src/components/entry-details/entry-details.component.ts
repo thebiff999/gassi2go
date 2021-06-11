@@ -89,8 +89,7 @@ class EntryComponent extends LitElement {
         
     }
 
-    async connectedCallback() {
-        super.connectedCallback();
+    async firstUpdated() {
 
         try {
             const response = await httpClient.get('/entries/id/' + this.entryId);
@@ -98,7 +97,7 @@ class EntryComponent extends LitElement {
             await this.requestUpdate();
           } catch ({ message, statusCode }) {
             if (statusCode === 401) {
-              router.navigate('/users/sign-in');
+              router.navigate('/user/sign-in');
             } else {
               console.log({ errorMessage: message });
             }

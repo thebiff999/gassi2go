@@ -120,9 +120,11 @@ class EntryComponent extends PageMixin(LitElement) {
             }
         }
         catch ({message, statusCode}) {
-            console.log(message);
-            console.log(statusCode);
-            this.setNotification({ errorMessage: message });
+            if (statusCode === 401) {
+                router.navigate('/user/sign-in');
+            } else {
+                this.setNotification({ errorMessage: message });
+            }
         }
         this.location.lat = parseFloat(Cookies.get('lat')!);
         this.location.lng = parseFloat(Cookies.get('lng')!);

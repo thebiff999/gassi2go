@@ -189,8 +189,11 @@ class EntriesComponent extends PageMixin(LitElement) {
             this.entries = (await response.json()).results;
         }
         catch ({message, statusCode}) {
-            console.log(message);
-            console.log(statusCode);
+            if (statusCode === 401) {
+                router.navigate('/user/sign-in');
+            } else {
+                this.setNotification({ errorMessage: message });
+            }
         }
 
         //create the map after the entries have been loaded
