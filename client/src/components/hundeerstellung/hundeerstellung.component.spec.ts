@@ -1,5 +1,4 @@
 import { LitElement } from 'lit-element';
-import { httpClient } from '../../http-client';
 import './hundeerstellung.component';
 import { HundeerstellungComponent} from './hundeerstellung.component';
 

@@ -7,7 +7,7 @@ import { PageMixin } from '../page.mixin';
 const hundeComponentSCSS = require('./hunde.component.scss');
 
 @customElement('app-hunde')
-class HundeComponent extends PageMixin(LitElement){
+export class HundeComponent extends PageMixin(LitElement){
 
     static styles = [
         css`${unsafeCSS(hundeComponentSCSS)}`
@@ -33,7 +33,7 @@ class HundeComponent extends PageMixin(LitElement){
                                     <div class="card text-center m-4 p-3 rounded-lg shadow-lg" id="dogcard">
                                         <div class="card-block" m-md-2> 
                                             <img class="img-fluid border" id="dogimg" src="${hund.imgPath}" alt="hunde image">
-                                            <div class="card-titl m-1">
+                                            <div class="card-title m-1">
                                                 <h5>${hund.name}</h5>
                                             </div> 
                                             <div class="card-text">Rasse: ${hund.rasse}</div>
@@ -41,7 +41,7 @@ class HundeComponent extends PageMixin(LitElement){
                                             <div class="card-text mb-2">${hund.infos}</div>
                                             <div>
                                                 <button @click="${() => this.pet(hund.name)}" class="btn btn-light"><i class="far fa-heart"></i> Streicheln</button>
-                                                <button @click="${() => this.delete(hund.id, hund.imgPath)}" class="btn btn-light"><i class="far fa-trash-alt"></i> Löschen </button>
+                                                <button @click="${() => this.delete(hund.id)}" class="btn btn-light"><i class="far fa-trash-alt"></i> Löschen </button>
                                             </div>
                                         </div>
                                     </div>
@@ -65,7 +65,7 @@ class HundeComponent extends PageMixin(LitElement){
         }
     }
 
-    async delete(id: string, path: string){
+    async delete(id: string){
         if(confirm('Möchten Sie den Hund wirklich löschen?')){
             try{
                 await httpClient.delete(`/hunde/${id}`);
