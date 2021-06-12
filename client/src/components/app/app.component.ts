@@ -32,7 +32,6 @@ class AppComponent extends LitElement {
   renderRouterOutlet() {
     return router.select(
       {
-        '/users/sign-in': () => html`<h1>sign-in</h1>`,
         '/auftrag/new': () => html`<app-auftragserstellung></app-auftragserstellung>`,
         '/entries': () => html`<app-entries></app-entries>`,
         '/entries/:id': params => html`<app-entry-details .entryId=${params.id}></app-entry-details>`,
@@ -53,15 +52,14 @@ class AppComponent extends LitElement {
   renderHeaderOutlet(){
     return router.select(
       {
-        '/users/sign-in': () => html`<app-header title="Sign-In"></app-header>`,
         '/auftrag/new': () => html`<app-header title="Auftragserstellung"></app-header>`,
         '/entries': () => html`<app-header title="Auftragsübersicht"></app-header>`,
         '/entries/:id': params => html`<app-header title="Auftrag Detailansicht"></app-header>`,
         '/user': () => html`<app-header title="Profil"></app-header>`,
         '/user/password': () => html`<app-header title="Password"></app-header>`,
-        '/user/sign-in': () => html`<app-header title="Sign-In}"></app-header>>`,
-        '/user/sign-up': () => html`<app-header title="Sign-Up"></app-header>`,
-        '/user/sign-out': () => html`<<app-header title="Sign-Out"></app-header>`,
+        '/user/sign-in': () => html``,
+        '/user/sign-up': () => html``,
+        '/user/sign-out': () => html``,
         '/user/entries': () => html`<app-header title="Meine Aufträge"></app-header>`,
         '/user/dogs': () => html`<app-header title="Meine Hunde"></app-header>`,
         '/user/dogs/new': () => html`<app-header title="Hundeerstellung"></app-header>`

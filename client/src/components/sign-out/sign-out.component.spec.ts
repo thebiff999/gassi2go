@@ -3,14 +3,14 @@
 import { LitElement } from 'lit-element';
 import './sign-out.component';
 
-describe('sign-out', () => {
+describe('app-sign-out', () => {
   let element: LitElement;
 
   /**
    * runs before each Test
    */
   beforeEach(async () => {
-    element = document.createElement('sign-out') as LitElement;
+    element = document.createElement('app-sign-out') as LitElement;
     document.body.appendChild(element);
     await element.updateComplete;
   });

@@ -3,14 +3,14 @@
 import { LitElement } from 'lit-element';
 import './sign-in.component';
 
-describe('sign-in', () => {
+describe('app-sign-in', () => {
   let element: LitElement;
 
   /**
    * runs before each Test
    */
   beforeEach(async () => {
-    element = document.createElement('sign-in') as LitElement;
+    element = document.createElement('app-sign-in') as LitElement;
     document.body.appendChild(element);
     await element.updateComplete;
   });
