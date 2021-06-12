@@ -28,7 +28,7 @@ describe('app-sign-up', () => {
   it('button should navigate to SignIn', async () => {
     const navigate = element.shadowRoot!.querySelector('#navigateToSignIn') as HTMLElement;
     navigate.click();
-    element = document.createElement('sign-in') as LitElement;
+    element = document.createElement('app-sign-in') as LitElement;
     document.body.appendChild(element);
     await element.updateComplete;
     const sidenav = element.shadowRoot!.querySelector('#sidenav') as HTMLElement;
@@ -41,7 +41,7 @@ describe('app-sign-up', () => {
   it('button should navigate to SignUp', async () => {
     const navigate = element.shadowRoot!.querySelector('#navigateToSignUp') as HTMLElement;
     navigate.click();
-    element = document.createElement('sign-up') as LitElement;
+    element = document.createElement('app-sign-up') as LitElement;
     document.body.appendChild(element);
     await element.updateComplete;
     const sidenav = element.shadowRoot!.querySelector('#sidenav') as HTMLElement;

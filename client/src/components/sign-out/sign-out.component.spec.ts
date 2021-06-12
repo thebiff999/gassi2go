@@ -27,7 +27,7 @@ describe('app-sign-out', () => {
    */
   it('should render the title "Dein Hund ist in guten Händen"', async () => {
     const h1Elem = element.shadowRoot!.querySelector('h1') as HTMLElement;
-    expect(h1Elem.innerText).toBe('Dein Hund ist in guten Hände?');
+    expect(h1Elem.innerText).toBe('Dein Hund ist in guten Händen');
   });
 
   /**
@@ -36,7 +36,7 @@ describe('app-sign-out', () => {
   it('button should navigate to SignIn"', async () => {
     const submit = element.shadowRoot!.querySelector('#absenden') as HTMLElement;
     submit.click();
-    element = document.createElement('sign-in') as LitElement;
+    element = document.createElement('app-sign-in') as LitElement;
     document.body.appendChild(element);
     await element.updateComplete;
     const sidenav = element.shadowRoot!.querySelector('#sidenav') as HTMLElement;
