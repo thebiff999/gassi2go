@@ -100,6 +100,8 @@ class EntryComponent extends PageMixin(LitElement) {
             console.log(requestBody);
             const response = await httpClient.patch('/entries/id/' + assignment.id, requestBody);
             console.log(response);
+            let notification = 'Auftrag erledigt';
+            this.setNotification({ infoMessage: notification });
             this.deleteEntry(assignment.id);
             this.requestUpdate();
         }
@@ -120,10 +122,13 @@ class EntryComponent extends PageMixin(LitElement) {
             }
         }
         catch ({message, statusCode}) {
-            if (statusCode === 401) {
-                router.navigate('/user/sign-in');
-            } else {
-                this.setNotification({ errorMessage: message });
+            switch (statusCode) {
+                case 401:
+                    router.navigate('/user/sign-in');
+                case 404:
+                    this.setNotification({infoMessage: 'Keine zugeordneten Aufträge'});
+                default:
+                    this.setNotification({errorMessage: message});
             }
         }
         this.location.lat = parseFloat(Cookies.get('lat')!);

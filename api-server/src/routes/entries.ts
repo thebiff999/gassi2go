@@ -17,7 +17,14 @@ router.get('/', authService.expressMiddleware, async (req, res) => {
         const entries = (await entryDAO.findAll(filter)).map(entry => {
             return {...entry}
         })
-        res.json({ results: entries});
+        console.log(entries);
+        if (entries.length > 0) {
+            res.status(200).json({ results: entries});
+        }
+        else {
+            res.status(404);
+        }
+        
     }
     catch (err) {
         console.log(err.stack);
@@ -30,7 +37,18 @@ router.get('/id/:id', async(req, res) => {
     try {
         const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
         const entry = (await entryDAO.findOne({id: req.params.id}));
-        res.status(200).json(entry);
+        if (!entry) {
+            res.status(404);
+        }
+        else {
+            if (entry.status == 'done') {
+                res.status(200).json(entry);
+            }
+            else {
+                res.status(403);
+            }
+        }    
+        
     }
     catch (err){
         console.log(err.stack);
@@ -46,7 +64,14 @@ router.get('/assigned', authService.expressMiddleware ,async (req, res) => {
         const entries = (await entryDAO.findAll(filter)).map(entry => {
             return {...entry};
         });
-        res.json({ results: entries});
+        console.log(entries);
+        if (entries.length > 0) {
+            res.status(200).json({ results: entries});
+        }
+        else {
+            res.status(404);
+        }
+        
     }
     catch (err) {
         console.log(err.stack);

@@ -172,9 +172,11 @@ class EntriesComponent extends PageMixin(LitElement) {
     async firstUpdated() {       
 
         //check if the user location is saved in a cookie
-        if(Cookies.get('lat')) {
-            this.location.lat = parseFloat(Cookies.get('lat')!);
-            this.location.lng = parseFloat(Cookies.get('lng')!);
+        let cookies = Cookies.get();
+        if(cookies.lat) {
+            this.location.lat = parseFloat(cookies.lat);
+            this.location.lng = parseFloat(cookies.lng);
+            console.log(Cookies.get());
         }
         //call modal for User Location
         else {
@@ -189,10 +191,13 @@ class EntriesComponent extends PageMixin(LitElement) {
             this.entries = (await response.json()).results;
         }
         catch ({message, statusCode}) {
-            if (statusCode === 401) {
-                router.navigate('/user/sign-in');
-            } else {
-                this.setNotification({ errorMessage: message });
+            switch (statusCode) {
+                case 401:
+                    router.navigate('/user/sign-in');
+                case 404:
+                    this.setNotification({ infoMessage: 'Aktuell sind keine offenene Aufträge vorhanden'});
+                default:
+                    this.setNotification({ errorMessage: message });
             }
         }
 

@@ -4,11 +4,12 @@ import { customElement, LitElement, css, html, unsafeCSS, property, internalProp
 import { httpClient } from '../../http-client';
 import { Entry } from '../../../../api-server/src/models/entry';
 import { router } from '../../router';
+import { PageMixin } from "../page.mixin";
 
 const entryDetailsComponentCSS = require('./entry-details.component.scss');
 
 @customElement('app-entry-details')
-class EntryComponent extends LitElement {
+class EntryComponent extends PageMixin(LitElement) {
 
     static styles = [
         css`${unsafeCSS(entryDetailsComponentCSS)}`
@@ -81,10 +82,12 @@ class EntryComponent extends LitElement {
             console.log('patch-request');
             console.log(requestBody);
             const response = await httpClient.patch('/entries/id/' + this.entryId, requestBody);
-            console.log(response);
+            let notification = 'Du hast den Auftrag angenommen und kannst ihn unter Meine Aufträge finden';
+            this.setNotification({ infoMessage: notification });
+            setTimeout(this.navigateBack, 6000);
         }
-        catch (error: any) {
-            console.log(error);
+        catch ({message}) {
+            this.setNotification({ errorMessage: message });
         }
         
     }
@@ -96,27 +99,16 @@ class EntryComponent extends LitElement {
             this.entry = await response.json();
             await this.requestUpdate();
           } catch ({ message, statusCode }) {
-            if (statusCode === 401) {
-              router.navigate('/user/sign-in');
-            } else {
-              console.log({ errorMessage: message });
-            }
+              switch (statusCode) {
+                case 401:
+                    router.navigate('/user/sign-in');
+                case 403:
+                    this.setNotification({ infoMessage: 'Der Eintrag ist bereits einem anderen User zugeordnet'});
+                default:
+                    this.setNotification({ errorMessage: message });
+              }
           }
 
     }
-    /*
-    async firstUpdated() {
-        try {
-            const response = await httpClient.get('/entries/' + this.entryId);
-            this.entry = await response.json();
-            await this.requestUpdate();
-          } catch ({ message, statusCode }) {
-            if (statusCode === 401) {
-              router.navigate('/users/sign-in');
-            } else {
-              console.log({ errorMessage: message });
-            }
-          }
-    }*/
 
 }
