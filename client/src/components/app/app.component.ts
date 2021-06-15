@@ -22,7 +22,8 @@ class AppComponent extends LitElement {
 
   constructor() {
     super();
-    httpClient.init({baseURL: `//${location.hostname}:3000/api/`});
+    const port = location.protocol === 'https:' ? 3443 : location.protocol === 'https:' ? 3443 : 3000;
+    httpClient.init({ baseURL: `${location.protocol}//${location.hostname}:${port}/api/` });
   }
 
   firstUpdated() {
