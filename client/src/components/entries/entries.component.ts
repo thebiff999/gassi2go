@@ -56,14 +56,14 @@ class EntriesComponent extends PageMixin(LitElement) {
                         <p id="modal-text">Damit Gassi2Go dir Fellnasen in der Nähe anzeigen kann, benötigen wir deinen Standort.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button"  class="btn btn-primary" @click="${this.askforLocation}">
+                        <button id="modal-button" type="button"  class="btn btn-primary" @click="${this.askforLocation}">
                             <div id="modal-spinner" class="visually-hidden">
                                 <div  class="spinner-border spinner-border-sm" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
                                 <span>Laden...</span>
                             </div>                            
-                            <span id="modal-button">Standort freigeben</span>
+                            <span id="modal-text2">Standort freigeben</span>
                         </button>
                     </div>
                 </div>
@@ -176,7 +176,6 @@ class EntriesComponent extends PageMixin(LitElement) {
         if(cookies.lat) {
             this.location.lat = parseFloat(cookies.lat);
             this.location.lng = parseFloat(cookies.lng);
-            console.log(Cookies.get());
         }
         //call modal for User Location
         else {
@@ -194,8 +193,10 @@ class EntriesComponent extends PageMixin(LitElement) {
             switch (statusCode) {
                 case 401:
                     router.navigate('/user/sign-in');
+                    break;
                 case 404:
                     this.setNotification({ infoMessage: 'Aktuell sind keine offenene Aufträge vorhanden'});
+                    break;
                 default:
                     this.setNotification({ errorMessage: message });
             }
@@ -209,7 +210,7 @@ class EntriesComponent extends PageMixin(LitElement) {
     //asks the user for location permission
     askforLocation() {
         document.getElementById('modal-spinner')?.classList.toggle('visually-hidden');
-        document.getElementById('modal-button')?.classList.toggle('visually-hidden');
+        document.getElementById('modal-text2')?.classList.toggle('visually-hidden');
         navigator.geolocation.getCurrentPosition(
             pos => {
                 this.location = { lat: pos.coords.latitude, lng: pos.coords.longitude };
@@ -220,7 +221,7 @@ class EntriesComponent extends PageMixin(LitElement) {
             error => {
                 alert('Standort wurde nicht freigegeben');
                 document.getElementById('modal-spinner')?.classList.toggle('visually-hidden');
-                document.getElementById('modal-button')?.classList.toggle('visually-hidden');
+                document.getElementById('modal-text2')?.classList.toggle('visually-hidden');
             });
     }
 

@@ -20,18 +20,28 @@ class EntryComponent extends PageMixin(LitElement) {
 
     entry!: Entry;
 
+    @internalProperty()
+    exists: boolean;
+
+    constructor() {
+        super();
+        this.exists = false;
+    }
+
     render() {
         let template = html`
-
+        ${this.renderNotification()}
+        ${this.exists ?
+        html`
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 col-lg-5 image">
-                    <i class="fas fa-arrow-circle-left fa-3x back-button hover-button mobile-button" style="color: white" @click="${this.navigateBack}"></i>
+                    <i id="mobile-button" class="fas fa-arrow-circle-left fa-3x back-button hover-button mobile-button" style="color: white" @click="${this.navigateBack}"></i>
                     <img class="img-fluid" src="${this.entry?.imageUrl}">
                 </div>
                 <div class="h-100 col-sm-12 col-lg-7">
-                        <div class="details">
-                        <i class="fas fa-arrow-circle-left fa-lg back-button hover-button desktop-button" style="color: blue" @click="${this.navigateBack}"></i>
+                    <div class="details">
+                        <i id="desktop-button" class="fas fa-arrow-circle-left fa-lg back-button hover-button desktop-button" style="color: blue" @click="${this.navigateBack}"></i>
                         <p class="heading">${this.entry?.dogName}</p>
                         <span class="flex-container">
                             <p>${this.entry?.dogRace}</p>
@@ -45,7 +55,8 @@ class EntryComponent extends PageMixin(LitElement) {
                 </div>
             </div>
         </div>
-        `
+        `:
+        html ``}`
         return template;
     }
 
@@ -97,13 +108,19 @@ class EntryComponent extends PageMixin(LitElement) {
         try {
             const response = await httpClient.get('/entries/id/' + this.entryId);
             this.entry = await response.json();
-            await this.requestUpdate();
+            this.exists = true;
+            this.requestUpdate();
           } catch ({ message, statusCode }) {
               switch (statusCode) {
                 case 401:
                     router.navigate('/user/sign-in');
+                    break;
                 case 403:
                     this.setNotification({ infoMessage: 'Der Eintrag ist bereits einem anderen User zugeordnet'});
+                    break;
+                case 404:
+                    this.setNotification({ errorMessage: 'Dieser Eintrag existiert nicht'});
+                    break;
                 default:
                     this.setNotification({ errorMessage: message });
               }

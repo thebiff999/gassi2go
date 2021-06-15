@@ -18,6 +18,8 @@ describe('app-entries', () => {
 
   afterEach(() => {
     element.remove();
+    Cookies.remove('lat');
+    Cookies.remove('lng');
   });
 
   const entries = [
@@ -52,7 +54,7 @@ describe('app-entries', () => {
         type: 'care',
         date: '2021-06-17',
         pay: '220.00',
-        description: 'Bitte einmal auf diese süße Dame für 2Nächte aufpassen. Wird auch gut bezahlt!',
+        description: 'Bitte einmal auf diese süße Dame für 2 Nächte aufpassen. Wird auch gut bezahlt!',
         dogRace: 'Bernasenne'
       },
       {
@@ -92,6 +94,7 @@ describe('app-entries', () => {
     ];
 
   it('should fetch the entries on first update', async () => {
+    spyOn(Cookies, 'get').and.returnValue({lat: "52.248286199999995", lng: "7.376411999999998"});
     spyOn(httpClient, 'get');
     await element.updateComplete;
     expect(httpClient.get).toHaveBeenCalledTimes(1);
@@ -100,7 +103,6 @@ describe('app-entries', () => {
   it('should render the received entries', async () => {
 
     spyOn(Cookies, 'get').and.returnValue({lat: "52.248286199999995", lng: "7.376411999999998"});
-
     spyOn(httpClient, 'get').and.returnValue(
       Promise.resolve({
         json() {
@@ -113,8 +115,29 @@ describe('app-entries', () => {
     element.requestUpdate();
     await element.updateComplete;
 
-    const taskElems = element.shadowRoot!.querySelectorAll('.entry');
-    expect(taskElems.length).toBe(4);
+    const renderEntries = element.shadowRoot!.querySelectorAll('.entry');
+    expect(renderEntries.length).toBe(4);
+  });
+
+  it('should render the correct type', async () => {
+    spyOn(Cookies, 'get').and.returnValue({lat: "52.248286199999995", lng: "7.376411999999998"});
+    spyOn(httpClient, 'get').and.returnValue(
+      Promise.resolve({
+        json() {
+          return Promise.resolve({ results: entries });
+        }
+      } as Response)
+    );
+
+    await element.updateComplete;
+    element.requestUpdate();
+    await element.updateComplete;
+
+    const items = element.shadowRoot!.querySelectorAll('.card-body');
+    const item1 = items[0].querySelector('button');
+    const item2 = items[1].querySelector('button');
+    expect(item1?.innerText).toBe('Führ mich aus');
+    expect(item2?.innerText).toBe('Pass auf mich auf');
   });
 
   it('should navigate to the detail-site', async () => {
@@ -153,8 +176,6 @@ describe('app-entries', () => {
     );
 
     await element.updateComplete;
-    element.requestUpdate();
-    await element.updateComplete;
 
     let button: HTMLElement = element.shadowRoot!.querySelectorAll('button')[1];
     button.click();
@@ -166,44 +187,58 @@ describe('app-entries', () => {
     expect(mapView?.classList).not.toContain('visually-hidden');
   });
 
-  it('should load the google maps exactly once', async () => {
-    spyOn(Cookies, 'get').and.returnValue({lat: "52.248286199999995", lng: "7.376411999999998"});
-
-    spyOn(httpClient, 'get').and.returnValue(
-      Promise.resolve({
-        json() {
-          return Promise.resolve({ results: entries });
-        }
-      } as Response)
-    );
-
-    await element.updateComplete;
-    element.requestUpdate();
-    await element.updateComplete;
-
-    let iframe = element.shadowRoot!.querySelectorAll('iframe');
-
-    expect(iframe.length).toBe(1);
-  });
-
   it('should route user who are not logged in to the sign-in page', async () => {
     spyOn(Cookies, 'get').and.returnValue({lat: "52.248286199999995", lng: "7.376411999999998"});
-
-    spyOn(httpClient, 'get').and.returnValue(
-      Promise.reject({
-        json() {
-          return Promise.reject({ statusCode: 401 });
-        }
-      } as Response)
-    );
-
-    await element.updateComplete;
-    element.requestUpdate();
-    await element.updateComplete;
-
+    spyOn(httpClient, 'get').and.returnValue(Promise.reject({ message: 'Not logged in', statusCode: 401 }));
     spyOn(router, 'navigate').and.callThrough();
+
+    await element.updateComplete;
 
     expect(router.navigate).toHaveBeenCalledWith('/user/sign-in');
   });
 
+  it('should set the current location', async () => {
+    spyOn(httpClient, 'get').and.returnValue(
+        Promise.resolve({
+          json() {
+            return Promise.resolve({ results: entries });
+          }
+        } as Response)
+      );
+    await element.updateComplete;
+
+    spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function() {
+        var position = { coords: { latitude: 5, longitude: 6 } };
+        arguments[0](position);
+      });
+
+    let button : HTMLElement = document.querySelector('#modal-button')!;
+    button.click();
+
+    expect(Cookies.get('lat')).toBe('5');
+    expect(Cookies.get('lng')).toBe('6');
+  });
+
+  it('should not set the current location', async () => {
+    spyOn(httpClient, 'get').and.returnValue(
+        Promise.resolve({
+          json() {
+            return Promise.resolve({ results: entries });
+          }
+        } as Response)
+      );
+    await element.updateComplete;
+
+    spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function() {
+        var error = {code: 1};
+        arguments[1](error);
+      });
+
+    let button : HTMLElement = document.querySelector('#modal-button')!;
+    button.click();
+
+    expect(Cookies.get('lat')).toBe(undefined);
+    expect(Cookies.get('lng')).toBe(undefined);
+  });
+  
 })

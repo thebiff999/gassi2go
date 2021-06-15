@@ -77,10 +77,6 @@ class EntryComponent extends PageMixin(LitElement) {
         return template;
     }
 
-    navigateBack() {
-        history.back();
-    }
-
     renderType(assignment: Entry) {
         let content;
         if (assignment.type == 'walk') {
@@ -116,7 +112,6 @@ class EntryComponent extends PageMixin(LitElement) {
         try {
             const response = await httpClient.get('/entries/assigned');
             this.assignments = (await response.json()).results;
-            console.log(this.assignments.length);
             if (this.assignments.length == 0) {
                 this.setNotification({infoMessage: 'Keine zugeordneten Aufträge'});
             }
@@ -125,14 +120,19 @@ class EntryComponent extends PageMixin(LitElement) {
             switch (statusCode) {
                 case 401:
                     router.navigate('/user/sign-in');
+                    break;
                 case 404:
                     this.setNotification({infoMessage: 'Keine zugeordneten Aufträge'});
+                    break;
                 default:
                     this.setNotification({errorMessage: message});
             }
         }
-        this.location.lat = parseFloat(Cookies.get('lat')!);
-        this.location.lng = parseFloat(Cookies.get('lng')!);
+        let cookies = Cookies.get();
+        if(cookies.lat) {
+            this.location.lat = parseFloat(cookies.lat);
+            this.location.lng = parseFloat(cookies.lng);
+        }
     }
 
     deleteEntry(id: string) {

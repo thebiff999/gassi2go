@@ -17,12 +17,12 @@ router.get('/', authService.expressMiddleware, async (req, res) => {
         const entries = (await entryDAO.findAll(filter)).map(entry => {
             return {...entry}
         })
-        console.log(entries);
+        console.log('sent ' + entries.length + ' entries' );
         if (entries.length > 0) {
             res.status(200).json({ results: entries});
         }
         else {
-            res.status(404);
+            res.sendStatus(404);
         }
         
     }
@@ -32,20 +32,20 @@ router.get('/', authService.expressMiddleware, async (req, res) => {
 });
 
 //returnes the entry with the requested id
-router.get('/id/:id', async(req, res) => {
+router.get('/id/:id', authService.expressMiddleware, async(req, res) => {
     console.log('received get on /entries/' + req.params.id);
     try {
         const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
         const entry = (await entryDAO.findOne({id: req.params.id}));
         if (!entry) {
-            res.status(404);
+            res.sendStatus(404);
         }
         else {
-            if (entry.status == 'done') {
+            if (entry.status == 'open') {
                 res.status(200).json(entry);
             }
             else {
-                res.status(403);
+                res.sendStatus(403);
             }
         }    
         
@@ -69,7 +69,7 @@ router.get('/assigned', authService.expressMiddleware ,async (req, res) => {
             res.status(200).json({ results: entries});
         }
         else {
-            res.status(404);
+            res.sendStatus(404);
         }
         
     }
