@@ -1,6 +1,8 @@
 /* Autor: Simon Flathmann */
 
 import { css, customElement, html, LitElement, property, unsafeCSS } from "lit-element";
+import logo from'../../../../resources/images/Gassi2Go-Logo.png';
+import profile from '../../../../resources/images/logo_user_dog.png';
 
 const headerComponentSCSS = require('./header.component.scss');
 
@@ -25,7 +27,7 @@ class Header extends LitElement{
             <a class="logo-link" href="">
                 <div class="header-left">
                     <div class="logo">
-                        <img id="logo-img" src="./../../../../resources/images/Gassi2Go-Logo.png">
+                        <img id="logo-img" src=${logo}>
                     </div>
                     <div class="gassi2go">
                         <h2>Gassi2Go</h2>
@@ -48,7 +50,7 @@ class Header extends LitElement{
 
                 <div class="profil">
                     <a href="/user">
-                        <img id="profil-img" src="./../../../../resources/images/logo_user_dog.PNG">
+                        <img id="profil-img" src="${profile}">
                     </a>
                 </div>
 
