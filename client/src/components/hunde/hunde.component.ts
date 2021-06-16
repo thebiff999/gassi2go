@@ -35,6 +35,7 @@ export class HundeComponent extends PageMixin(LitElement){
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xxl-3">
                                     <div class="card text-center m-4 p-3 rounded-lg shadow-lg" id="dogcard">
                                         <div class="card-block" m-md-2> 
+                                            <img class="img-fluid border" id="dogimg" src="data:image/jpeg;base64,${hund.imgData}" alt="hunde image">
                                             <img class="img-fluid border" id="dogimg" src="${hund.imgPath}" alt="hunde image">
                                             <div class="card-title m-1">
                                                 <h5>${hund.name}</h5>

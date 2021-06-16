@@ -9,4 +9,6 @@ export interface Hund extends Entity{
     gebDate: string;
     infos: string;
     imgPath: string;
+    imgName: string;
+    imgData: string;
 }

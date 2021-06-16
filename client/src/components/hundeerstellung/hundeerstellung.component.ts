@@ -102,18 +102,19 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
             console.log("checked successfully");
 
             const formData = new FormData();
-            formData.append('besitzerId', 'TODO');
             formData.append('name', this.name.value);
             formData.append('rasse', this.rasse.value);
             formData.append('gebDate', this.geb.value);
             formData.append('infos', this.info.value); 
             formData.append('image', this.file.files![0]);
-            console.log(formData);
 
             try{
-                const response = await fetch(`//${location.hostname}:3000/api/hunde`, {
+                const port = location.protocol === 'https:' ? 3443 : location.protocol === 'https:' ? 3443 : 3000;
+                const baseURL = `${location.protocol}//${location.hostname}:${port}/api/`; 
+                const response = await fetch(`${baseURL}hunde`, {
                     method: 'post',
-                    body: formData
+                    body: formData,
+                    credentials: "include"
                 })
                 .then(response => {
                     alert("Hund erfolgreich angelegt.");
@@ -142,7 +143,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
     //Validierung der eingegebenen Daten
     checkInputs(){
         console.log('checkingInputs');
-        var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+        var allowedExtensions = /(\.jpg|\.jpeg)$/i;
 
         //Falls eine Datei hochgeladen wurde, wird diese auf den Datentypen überprüft
         if(this.file.value !== ""){

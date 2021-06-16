@@ -6,19 +6,21 @@ import { v4 as uuidv4 } from 'uuid';
 import { GenericDAO } from '../models/generic.dao';
 import { Hund } from '../models/hunde';
 import { authService } from '../services/auth.service';
-import path from 'path';
+import fs from 'fs';
 
 const router = express.Router();
 
 router.use(fileUpload());
 
-router.post('/', async(req, res) => {
+router.post('/', authService.expressMiddleware, async(req, res) => {
     console.log('Post-Request an /hunde/');
     let uploadPath =  './../../../client/resources/uploads/';  //Pfad zum Verschieben der Images
     let imagePath = './../../../resources/uploads/';  //Pfad zum Hinterlegen in der DB
     var image = req.files?.image as UploadedFile;
     var uniqueName = uuidv4() + image?.name; //Erzeugung eines eindeutigen Namen, um Dopplungen zu vermeiden
-    var finalPath = imagePath + uniqueName;  
+    var finalPath = imagePath + uniqueName;
+    let stringBuffer = "";
+    let imageName = "";
     
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
     const fehler: string[] = [];
@@ -29,13 +31,25 @@ router.post('/', async(req, res) => {
     };
 
     //Validierung, dass alle Pflichtfelder gesetzt sind
-    if(allePflichtfelderVorhanden(req.body, ['besitzerId', 'name', 'rasse', 'gebDate', 'infos'], fehler)){
+    if(allePflichtfelderVorhanden(req.body, ['name', 'rasse', 'gebDate', 'infos'], fehler)){
         return sendeFehlermeldung(fehler.join('\n'));
     }
 
     //TODO weitere Validierungen
 
+    
     if(req.files){
+        stringBuffer = image?.data.toString('base64');
+        imageName = image?.name;
+    }
+    else{
+        stringBuffer = fs.readFileSync(__dirname + '../../../resources/default.txt').toString();
+        imageName = 'defaultImage';
+    }
+
+    /*
+        //stringBuffer = image?.data.toString('base64');
+
         image.mv(path.join(__dirname, uploadPath + uniqueName), (error) => {
             if(error){
                 res.send(error);
@@ -49,15 +63,18 @@ router.post('/', async(req, res) => {
         //Falls kein Foto hochgeladen wurde, wird auf ein Default-Foto verwiesen
         finalPath = './../../../../resources/default/defaultdog.png';
     }
+    */
 
     //Nach erfolgreicher Validierung, wird der Hund erstellt
     const hundNeu = await hundeDAO.create({
-        besitzerId: req.body.besitzerId,
+        besitzerId: res.locals.user.id,
         name: req.body.name,
         rasse: req.body.rasse,
         gebDate: req.body.gebDate,
         infos: req.body.infos,
-        imgPath: finalPath
+        imgPath: finalPath,
+        imgName: imageName,
+        imgData: stringBuffer
     });
 
     //erfolgreiche Erstellung
