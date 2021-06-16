@@ -13,6 +13,9 @@ export async function start(port: number, dir: string, withHttps = false) {
   app.use('/app', (_, res) => {
     res.sendFile(path.join(dir, 'index.html'));
   });
+  app.get('/*', (req,res) => {
+    res.sendFile(path.join(dir, 'index.html'));
+  });
   const createOptions = () => {
     const certDir = path.join(__dirname, 'certs');
     return {
@@ -24,6 +27,7 @@ export async function start(port: number, dir: string, withHttps = false) {
   const httpServer = withHttps ? https.createServer(createOptions(), app) : http.createServer(app);
   await new Promise<void>(resolve => {
     httpServer.listen(port, () => {
+      console.log('dir: ' + dir);
       console.log(`WebServer running at http://localhost:${port}`);
       resolve();
     });

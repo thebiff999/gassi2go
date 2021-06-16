@@ -44,7 +44,7 @@ class EntriesComponent extends PageMixin(LitElement) {
     render() {
 
         return html`
-        
+        ${this.renderNotification()}
         <div id="locationModal" class="modal blurred" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
