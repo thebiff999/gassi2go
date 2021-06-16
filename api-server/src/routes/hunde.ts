@@ -47,24 +47,6 @@ router.post('/', authService.expressMiddleware, async(req, res) => {
         imageName = 'defaultImage';
     }
 
-    /*
-        //stringBuffer = image?.data.toString('base64');
-
-        image.mv(path.join(__dirname, uploadPath + uniqueName), (error) => {
-            if(error){
-                res.send(error);
-            }
-            else{
-                res.send('Image hochgeladen');
-            }
-        })
-    }
-    else{
-        //Falls kein Foto hochgeladen wurde, wird auf ein Default-Foto verwiesen
-        finalPath = './../../../../resources/default/defaultdog.png';
-    }
-    */
-
     //Nach erfolgreicher Validierung, wird der Hund erstellt
     const hundNeu = await hundeDAO.create({
         besitzerId: res.locals.user.id,
@@ -77,8 +59,6 @@ router.post('/', authService.expressMiddleware, async(req, res) => {
         imgData: stringBuffer
     });
 
-    //erfolgreiche Erstellung
-    authService.createAndSetToken({id: hundNeu.id}, res);
     res.status(201).json(hundNeu);
 });
 

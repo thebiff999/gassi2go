@@ -4,6 +4,7 @@ import { PageMixin} from '../page.mixin';
 
 const hundeerstellungComponentSCSS = require('./hundeerstellung.component.scss');
 
+/* Custom-Element zur Erstellung eines neuen Hundes */
 @customElement('app-hundeerstellung')
 export class HundeerstellungComponent extends PageMixin(LitElement){
 
@@ -96,11 +97,10 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
         this.initPictureUpload();
     }
 
+    /* Erstellt nach einer erfolgreichen Validierung der Eingabedaten eine FormData, die in Form eines Post-Requests
+     an den '/api/hunde' geschickt werden. Nach erfolgreichem Anlegen, wird der Nutzer nach '/user/dogs' navigiert. */
     async create() {
-        console.log("erstellung");
         if(this.checkInputs()){
-            console.log("checked successfully");
-
             const formData = new FormData();
             formData.append('name', this.name.value);
             formData.append('rasse', this.rasse.value);
@@ -109,15 +109,20 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
             formData.append('image', this.file.files![0]);
 
             try{
+                /* const response = await httpClient.post('/hunde', hund);  
+                => Der HttpClient-Service kann an dieser Stelle nicht verwendet werden, da ein File mitgeschickt werden kann.
+                */
                 const port = location.protocol === 'https:' ? 3443 : location.protocol === 'https:' ? 3443 : 3000;
                 const baseURL = `${location.protocol}//${location.hostname}:${port}/api/`; 
                 const response = await fetch(`${baseURL}hunde`, {
                     method: 'post',
                     body: formData,
-                    credentials: "include"
+                    credentials: "include" //damit das jqt-token für den authService mitgeschickt werden kann
                 })
                 .then(response => {
+                    this.setNotification({ infoMessage: 'Der Hund wurde erfolgreich angelegt.'});
                     alert("Hund erfolgreich angelegt.");
+                    window.setTimeout(() => {this.setNotification({ infoMessage: 'Der Hund wurde erfolgreich angelegt.'})}, 1000);
                     return response.json();
                 })   
                 .then(data => {console.log(data)})
@@ -125,11 +130,6 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
                 .catch((error) => {
                     console.log("Fehler: " + error)
                 });
-
-                /*
-                const response = await httpClient.post('/hunde', hund);  
-                => Der HttpClient kann an dieser Stelle nicht verwendet werden, da ein File mitgeschickt werden kann.
-                */
             }
             catch({message}){
                 this.setNotification({ errorMessage: message});
@@ -142,7 +142,6 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
     
     //Validierung der eingegebenen Daten
     checkInputs(){
-        console.log('checkingInputs');
         var allowedExtensions = /(\.jpg|\.jpeg)$/i;
 
         //Falls eine Datei hochgeladen wurde, wird diese auf den Datentypen überprüft
@@ -155,7 +154,6 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
                 this.file.setCustomValidity('');
             }
         }
-
 
         return this.form.checkValidity();
     }
@@ -202,7 +200,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
             let uploadedFile = file2.files![0];
 
             if(uploadedFile){
-                //Preview
+                //Preview der Bild-Datei
                 const reader = new FileReader();
                 reader.addEventListener('load', function(){
                     if(typeof reader.result === 'string' )
