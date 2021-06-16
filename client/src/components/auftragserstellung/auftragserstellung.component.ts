@@ -2,13 +2,14 @@
 import { css, customElement, html, internalProperty, LitElement, property, query, queryAll, unsafeCSS} from "lit-element";
 import { repeat } from 'lit-html/directives/repeat';
 import { Hund } from "../../../../api-server/src/models/hunde";
+import { router } from "../../router";
 import { httpClient } from "../../http-client";
 import { PageMixin } from "../page.mixin";
 
 const auftragserstellungComponentSCSS = require('./auftragserstellung.component.scss');
 const axios = require('axios').default;
 
-
+/* Custom-Element zur Erstellung von neuen Aufträgen */
 @customElement('app-auftragserstellung')
 class AuftragsErstellungComponent extends PageMixin(LitElement){
 
@@ -63,7 +64,8 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
         return html`
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+        
+        ${this.renderNotification()}
         <div class="border border-success" id="outerDiv">
             <form action="/" method="post" class="needs-validation" novalidate>
                 <div class="form-row">
@@ -152,6 +154,8 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
         ;
     }
 
+    /* Wird im Lit-Lifecycle einmalig aufgerufen, nachdem das Element das erste Mal gerendert wurde.
+        Schickt einen Get-Request an /hunde, um alle Hunde des aktuellen Users zu erhalten. */
     async firstUpdated(){
         try{
             const response = await httpClient.get('/hunde');
@@ -159,8 +163,16 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
             this.hunde = responseJSON.results;
         }
         catch({message, statusCode}){
-            console.log(message);
-            console.log(statusCode);
+            switch(statusCode){
+                case 404:
+                    this.setNotification({ infoMessage: 'Bevor Sie einen Auftrag erstellen können, sollten Sie mindestens einen Hund anlegen. Dies können Sie unter dem Reiter "Meine Hunde" machen.'});
+                    break;
+                case 401:
+                    router.navigate('/user/sign-in');
+                    break;
+                default:
+                    this.setNotification({ errorMessage: message });
+            }
         }
     }
 
@@ -188,15 +200,16 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
         }
 
         var todayStr = yyyy+'-'+mm+'-'+dd;
-        console.log("Auftragdatum: Setzen von Attribut min: " + todayStr);
         const root = document.querySelector("app-root");
         const auftragserstellung = root?.shadowRoot?.querySelector("app-auftragserstellung");
         auftragserstellung?.shadowRoot?.getElementById("auftragDatum")?.setAttribute("min", todayStr);
     }
 
-
+    /* Submit-Methode, die nach erfolgreicher Validierung, die Koordination der eingegebenen Adresse mithilfe
+        der geocode-Methode ermittelt, den in der Form ausgewählten Hund aus der internalProperty hunde liest und
+        anschließend einen Post-Request an den Endpunkt /entries/ schickt. 
+    */
     async submit() {
-        console.log('submiting');
         if(this.checkInputs()){
             try{
                 await this.geocode();
@@ -213,9 +226,9 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
                     lat: this.lat,
                     lng: this.lng
                 }
-                await httpClient.post('/entries/', auftragData)
-                .then( () => {
-                    alert('Auftrag wurde erfolgreich angelegt.');
+                const response = await httpClient.post('/entries/', auftragData)
+                .then(() => {
+                    this.setNotification({ infoMessage: 'Auftrag wurde erfolgreich angelegt.'});
                 })
             }
             catch({ message }){
@@ -223,83 +236,17 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
             }
         } 
         else{
-            console.log("validation failed")
             this.form.classList.add('was-validated');
         }
     }
-
-    
 
     checkInputs(){
         return this.form.checkValidity();
     }
 
-    /*
-        const root = document.querySelector("app-root");
-        const auftragserstellung = root?.shadowRoot?.querySelector("app-auftragserstellung");
-        const dogDivs = auftragserstellung?.shadowRoot?.getElementById("inputDogs")?.children;
-        const listArray = Array.from(dogDivs!);
-        var checked = 0;
-
-        //Überprüfung, ob mind. eine der Checkboxen checked ist. Falls ja, wird der der Wert von checked auf 1 gesetzt.
-        //Die if-Bedinungen dienen der Fehlerprävention.
-        listArray.forEach((item) => {
-            if(item.className == "form-check"){
-                if(item.children[0].className == "form-check-input"){
-                    console.log("form-check-input found");
-                    let ele = item.children[0] as HTMLInputElement;
-                    if(ele.checked){
-                        checked = 1;
-                    }
-                }
-            }
-        });
-        if(checked == 0){
-            console.log(this.hundeElement);
-            for(let l=0; l < this.hundeElement!.length; l++){
-                if(l == this.hundeElement!.length-1){
-                    this.hundeElement![l].setCustomValidity('Bitte wählen Sie mindestens einen Hund aus.');
-                    this.hundeElement![l].reportValidity();
-                } else{
-                    this.hundeElement![l].setCustomValidity(' ');
-                    this.hundeElement![l].reportValidity();
-                }
-            }
-        }*/
-
-    /** dynamische Erstellung der Checkboxes für die vorhandenen Hunde. 
-     *                  <label>Ihr Hunde</label>
-                        ${this.myDogs(dogs)}
- 
-    myDogs = (dogs: Dog[]) => {
-        const dogTemplates = [];
-        var x = 0;
-        for(const i of dogs){
-            dogTemplates.push(html`
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="customCheck + ${x}">
-                    <label class="form-check-label" for="customCheck + ${x}">
-                        ${i.name}
-                    </label>
-                    <div class="invalid-feedback"></div>
-                </div>
-            `)
-            x++;
-        }
-        return html `${dogTemplates}`;
-    }
-    */
-
-    //     <div class="custom-control custom-checkbox">
-    //     <input type="checkbox" class="custom-control-input" id="customCheck + ${x}">
-    //     <label class="custom-control-label" for="customCheck + ${x}">
-    //         ${i.name}
-    //     </label>
-    // </div>
-
-    /** Geocode */
+    /** Geocoding-Methode zur Berechnung der Koordinatien mithilfe der TomTom-Api und
+    *   der vom Nutzer angegebenen Adresse und dem Setzen von Latitude und Longitude. */
     geocode = async () => {
-        //var location = "Grevenerstraße 140 48159 Münster";
         console.log('Berechnung der Koordinaten.');
         var straße = this.straße.value;
         var hsnr = this.hausnr.value;
@@ -313,16 +260,15 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
             }
         })
         .then((response: any) =>{
-            console.log("Response Lat: " + response.data.results[0].position.lat);
-            console.log("Response Lon: " + response.data.results[0].position.lon);
             this.lat = response.data.results[0].position.lat;
             this.lng = response.data.results[0].position.lon;
         })
-        .catch(function(error: any){
-            console.log(error);
+        .catch((error: any) =>{
+            this.setNotification({ errorMessage: error});
         })
     }
 
+    /* Methode, um den in der Form ausgewählten Hund mithilfe der ID zu ermitteln und wiederzugeben.*/
     getHund = (id: string) => {
         try{
             let selHund;
@@ -339,41 +285,9 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
         catch (error){
             this.setNotification({ errorMessage: error});
         }
-    }
+    }   
 
-    /**geocodeProm = () => {
-        return new Promise<void> (async (resolve) => {
-            console.log('Berechnung der Koordinaten.');
-            var straße = this.straße.value;
-            var hsnr = this.hausnr.value;
-            var plz = this.plz.value;
-            var ort = this.ort.value;
-            var location = straße+" "+hsnr+" "+plz+" "+ort;
-            console.log(location);
-            var endcodeURL = encodeURI(location);
-            await axios.get("https://api.tomtom.com/search/2/geocode/"+ endcodeURL + ".json", {
-                params:{
-                    key: "H7fgXYLB4GN3FEtBLrnnxmwoI2A1ftXA"
-                }
-            })
-            .then((response: any) =>{
-                //Response
-                console.log(response);
-                //Response Address
-                console.log(response.data.results[0].address);
-                console.log("Response Lat: " + response.data.results[0].position.lat);
-                console.log("Response Lon: " + response.data.results[0].position.lon);
-                this.lat = response.data.results[0].position.lat;
-                this.lng = response.data.results[0].position.lon;
-            })
-            .catch(function(error: any){
-                console.log(error);
-            })
-            resolve();
-        })
-    }*/
-
-/*  Alternative Geolocation-Implementierung für die GoogleMaps API.
+    /*  Alternative Geolocation-Implementierung für die GoogleMaps API.
     Diese benötigt eine Kreditkartenhinterlegung, um den Service nutzen zu können,
     weshalb auf die TomTom-API genutzt wurde. Unfertiger Stand.
 

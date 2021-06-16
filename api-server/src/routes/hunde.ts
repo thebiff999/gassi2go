@@ -13,17 +13,12 @@ const router = express.Router();
 router.use(fileUpload());
 
 router.post('/', async(req, res) => {
+    console.log('Post-Request an /hunde/');
     let uploadPath =  './../../../client/resources/uploads/';  //Pfad zum Verschieben der Images
     let imagePath = './../../../resources/uploads/';  //Pfad zum Hinterlegen in der DB
     var image = req.files?.image as UploadedFile;
     var uniqueName = uuidv4() + image?.name; //Erzeugung eines eindeutigen Namen, um Dopplungen zu vermeiden
     var finalPath = imagePath + uniqueName;  
-    console.log('__dirnamne: ' + __dirname);
-    console.log("post-anfrage auf hunde.ts");
-    console.log("Req.body (Partial):");
-    console.log(req.body);
-    console.log("req.files (image-Datei):");
-    console.log(req.files);
     
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
     const fehler: string[] = [];
@@ -55,7 +50,6 @@ router.post('/', async(req, res) => {
         finalPath = './../../../../resources/default/defaultdog.png';
     }
 
-    console.log("Vor hundeDAO.create");
     //Nach erfolgreicher Validierung, wird der Hund erstellt
     const hundNeu = await hundeDAO.create({
         besitzerId: req.body.besitzerId,
@@ -65,36 +59,38 @@ router.post('/', async(req, res) => {
         infos: req.body.infos,
         imgPath: finalPath
     });
-    console.log("Nach hundeDAO.create");
 
     //erfolgreiche Erstellung
     authService.createAndSetToken({id: hundNeu.id}, res);
     res.status(201).json(hundNeu);
 });
 
-//TODO: ExpressMiddleware
-router.get('/', async(req, res) => {
-    console.log("Get-Anfrage an hunde.ts");
-    console.log(res.locals);
+router.get('/', authService.expressMiddleware, async(req, res) => {
+    console.log("Get-Request an /hunde/");
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
-    const filter: Partial<Hund> = { besitzerId: "TODO" }  //TODO besitzerId
+    const filter: Partial<Hund> = { besitzerId: res.locals.user.id }
     const hunde = (await hundeDAO.findAll(filter)).map(hund => {
         return { ...hund };
     });
-    res.json({results: hunde });
+    if(hunde.length == 0){
+        console.log('404');
+        res.sendStatus(404);
+    }
+    else{
+        console.log('200');
+        res.status(200).json({results: hunde });
+    }
 });
 
-//TODO: authService.expressMiddleware
-router.delete('/:id', async(req, res) =>{
-    console.log('delete-request');
+router.delete('/:id', authService.expressMiddleware, async(req, res) =>{
+    console.log('Delete-Anfrage auf /' + req.params.id + 'erhalten');
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
     await hundeDAO.delete(req.params.id);
     res.status(200).end();
 });
 
 
-//TODO: middleware
-router.get('/:id', async(req, res) => {
+router.get('/:id', authService.expressMiddleware, async(req, res) => {
     console.log('Get-Anfrage an hunde/' + req.params.id);
     try{
         const hundDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;

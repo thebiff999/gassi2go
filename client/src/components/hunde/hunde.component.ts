@@ -1,11 +1,13 @@
 import { css, customElement, html, internalProperty, LitElement, unsafeCSS } from "lit-element";
 import { repeat } from 'lit-html/directives/repeat';
 import { Hund } from "../../../../api-server/src/models/hunde";
+import { router } from "../../router";
 import { httpClient } from "../../http-client";
 import { PageMixin } from '../page.mixin';
 
 const hundeComponentSCSS = require('./hunde.component.scss');
 
+/* Custom-Element zur Anzeige der eigenen Hunde */
 @customElement('app-hunde')
 export class HundeComponent extends PageMixin(LitElement){
 
@@ -25,6 +27,7 @@ export class HundeComponent extends PageMixin(LitElement){
             <div id="link-div"> 
                 <a href="/user/dogs/new" class="btn-routing">Hund hinzufügen</a>
             </div>
+            ${this.renderNotification()}
             <div id="hunde" class="container-fluid">
                 <div class="row">
                     ${repeat(this.hunde, (hund) => hund.besitzerId, (hund) =>
@@ -52,19 +55,31 @@ export class HundeComponent extends PageMixin(LitElement){
         `
     }
 
+    /* Wird im Lit-Lifecycle einmalig aufgerufen, nachdem das Element das erste Mal gerendert wurde.
+    Schickt einen Get-Request an /hunde, um alle Hunde des aktuellen Users zu erhalten. */
     async firstUpdated(){
         try{
             const response = await httpClient.get('/hunde');
             const responseJSON = await response.json();
             this.hunde = responseJSON.results;
-            console.log(this.hunde);
         }
         catch({message, statusCode}){
-            console.log(message);
-            console.log(statusCode);
+            if(statusCode == 404){
+                this.setNotification({ infoMessage: 'Sie haben noch keine Hunde angelegt.'});
+            }
+            else{
+                if(statusCode == 401){
+                    router.navigate('/user/sign-in');
+                }
+                else{
+                this.setNotification({ errorMessage: message });
+                }
+            }
         }
     }
 
+    /* Methode zum Löschen eines Hundes in der Datenbank und 
+        in der InternalProperty mithilfe der ID. */
     async delete(id: string){
         if(confirm('Möchten Sie den Hund wirklich löschen?')){
             try{
@@ -77,6 +92,7 @@ export class HundeComponent extends PageMixin(LitElement){
         }
     }
     
+    /* Zufallswiedergabe von Alerts */
     async pet(name: string){
         const rndInt = Math.floor(Math.random() * 4) + 1;
         if(rndInt === 1){
