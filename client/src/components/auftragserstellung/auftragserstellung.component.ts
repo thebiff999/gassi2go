@@ -227,13 +227,18 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
                     lat: this.lat,
                     lng: this.lng
                 }
-                const response = await httpClient.post('/entries/', auftragData)
-                .then(() => {
-                    this.setNotification({ infoMessage: 'Auftrag wurde erfolgreich angelegt.'});
-                })
+                const response = await httpClient.post('/entries/', auftragData);
+                this.setNotification({ infoMessage: 'Auftrag wurde erfolgreich angelegt.'});
             }
-            catch({ message }){
-                this.setNotification({ errorMessage: message })
+            catch({ message, statusCode }){
+                switch(statusCode){
+                    case 401:
+                        this.setNotification({ infoMessage: 'Die aktuelle Session ist abgelaufen. Sie werden zurück zur Anmeldung navigiert.'});
+                        window.setTimeout(() => {router.navigate('/user/sign-in')}, 5000);
+                        break;
+                    default:
+                        this.setNotification({ errorMessage: message });
+                }
             }
         } 
         else{
