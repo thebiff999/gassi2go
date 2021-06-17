@@ -33,7 +33,7 @@ class EntryComponent extends PageMixin(LitElement) {
                 <div class="list-item">
                     <div class="desktop shadow">
                         <span class="image">
-                            <img src="${assignment.imgData}">
+                            <img src="data:image/jpeg;base64,${assignment.imgData}">
                         </span>
                         <span class="name">
                             ${assignment.dogName}
@@ -56,7 +56,7 @@ class EntryComponent extends PageMixin(LitElement) {
                     </div>
                     <div class="row mobile shadow">
                         <div class="col-sm-6 image">
-                            <img src="${assignment.imgData}">
+                            <img src="data:image/jpeg;base64,${assignment.imgData}">
                         </div>
                         <div class="col-sm-6 details">
                             <p>${assignment.dogName}</p>
