@@ -135,7 +135,6 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
                     </div>
                 </div>
 
-                
                 <div class="form-group col-md-12">
                     <label for="auftragBeschreibung">Beschreibung</label>
                     <textarea class="form-control" id="auftragBeschreibung" rows="5" minlength="30" maxlength="900" required
@@ -223,7 +222,8 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
                     hundId: selHund!.id,
                     hundName: selHund!.name,
                     hundRasse: selHund!.rasse,
-                    imgPath: selHund!.imgPath,
+                    imgName: selHund!.imgName,
+                    imgData: selHund!.imgData,
                     lat: this.lat,
                     lng: this.lng
                 }

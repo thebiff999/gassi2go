@@ -122,6 +122,8 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
                     credentials: "include" //damit das jqt-token für den authService mitgeschickt werden kann
                 });
                 if(response.ok){
+                    this.setNotification({ infoMessage: 'Ihr Hund wurde erfolgreich angelegt. Sie werden zur Hundeübersicht weitergeleitet. '});
+                    window.setTimeout(() => {router.navigate('/user/dogs')}, 5000);
                     return response;
                 }
                 else{
