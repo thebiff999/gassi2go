@@ -37,7 +37,7 @@ class EntryComponent extends PageMixin(LitElement) {
             <div class="row">
                 <div class="col-sm-12 col-lg-5 image">
                     <i id="mobile-button" class="fas fa-arrow-circle-left fa-3x back-button hover-button mobile-button" style="color: white" @click="${this.navigateBack}"></i>
-                    <img class="img-fluid" src="${this.entry?.imageUrl}">
+                    <img class="img-fluid" src="${this.entry?.imgData}">
                 </div>
                 <div class="h-100 col-sm-12 col-lg-7">
                     <div class="details">

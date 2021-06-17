@@ -83,7 +83,7 @@ class EntriesComponent extends PageMixin(LitElement) {
                 <div class="col">
                     <div class="card shadow entry">
                         <div class="card-body">
-                            <img class="card-img-top" src="${entry.imageUrl}">
+                            <img class="card-img-top" src="${entry.imgData}">
                             <p>Name: ${entry.dogName}</p>
                             <p>Entfernung: ${getDistance(entry.lat, entry.lng, this.location.lat, this.location.lng)} km</p>
                             ${this.renderButton(entry.type, entry.id)}
@@ -241,7 +241,7 @@ class EntriesComponent extends PageMixin(LitElement) {
         var infoWindow = new google.maps.InfoWindow({
             content: `
             <div style="float:left">
-                <img src="${entry.imageUrl}" width="200px" height="150px">
+                <img src="${entry.imgData}" width="200px" height="150px">
             </div>
             <div style="float:right; padding: 10px;">
                 <h5>${entry.dogName}</h5>

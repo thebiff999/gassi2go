@@ -16,6 +16,7 @@ export interface Entry extends Entity{
     dogRace: string;
     lat: string;
     lng: string;
-    imageUrl: string;
-    requesterId?: string;
+    imgName: string;
+    imgData: string;
+    requesterId?: string | null;
 }

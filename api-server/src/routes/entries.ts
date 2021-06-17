@@ -3,6 +3,7 @@
 import express from 'express';
 import { GenericDAO } from '../models/generic.dao';
 import { Entry } from '../models/entry';
+import { Hund } from '../models/hunde';
 import { authService } from '../services/auth.service';
 import {} from 'uuid';
 
@@ -34,6 +35,11 @@ router.get('/', authService.expressMiddleware, async (req, res) => {
 //returnes the entry with the requested id
 router.get('/id/:id', authService.expressMiddleware, async(req, res) => {
     console.log('received get on /entries/' + req.params.id);
+    //validate that the id only contains expected characters
+    var regexp = /[0-9/\-]+/
+    if (!req.params.id.match(regexp)) {
+        res.sendStatus(400);
+    }
     try {
         const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
         const entry = (await entryDAO.findOne({id: req.params.id}));
@@ -81,6 +87,26 @@ router.get('/assigned', authService.expressMiddleware ,async (req, res) => {
 //creates a new entry
 router.post('/', authService.expressMiddleware ,async (req,res) => {
     console.log('received post on /entries');
+
+    //validate that the user is owner of the dog
+    try {
+        const dogDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
+        const dog = (await dogDAO.findOne({id: req.body.hundId}));
+        if (!dog) {
+            res.sendStatus(404);
+        }
+        else {
+            if(dog.besitzerId != res.locals.user.id) {
+                let message = 'Ungültige Anfrage';
+                res.status(400).json(message);
+                authService.removeToken(res);
+            }
+        }        
+    }
+    catch (err) {
+        console.log(err.stack);
+    }
+
     const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
     const createdEntry = await entryDAO.create({
         type: req.body.art,
@@ -94,7 +120,8 @@ router.post('/', authService.expressMiddleware ,async (req,res) => {
         dogRace: req.body.hundRasse,
         lat: req.body.lat,
         lng: req.body.lng,
-        imageUrl: req.body.imgPath
+        imgName: req.body.imgName,
+        imgData: req.body.imgData
     });
     res.status(201).json({
         createdEntry
@@ -104,6 +131,38 @@ router.post('/', authService.expressMiddleware ,async (req,res) => {
 //update entry with the requesterId
 router.patch('/id/:id', authService.expressMiddleware,async (req, res) => {
     console.log('received patch on /entries/id/' + req.params.id);
+
+    const invalidRequest = (message = 'Ungültige Nachfrage') => {
+        res.status(400).json(message);
+        authService.removeToken(res);
+    }
+
+    //validate that the id only contains expected characters
+    var regexp = /[0-9/\-]+/
+    if (!req.params.id.match(regexp)) {
+        invalidRequest();
+    }
+
+    //validate the sent entry-status
+    if (!(req.body.status != 'assigned' || 'done')) {
+        invalidRequest();
+    }
+
+    //validate that the user is actually assigned to the entry before checking it as 'done'
+    if (req.body.status == 'done') {
+        try {
+            const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
+            const entry = (await entryDAO.findOne({id: req.params.id}));
+
+            if(entry?.requesterId != res.locals.user.id) {
+                invalidRequest();
+            }
+        }
+        catch (err){
+            console.log(err.stack);
+        }
+    }
+
     const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
 
     const partialEntry: Partial<Entry> = { id: req.params.id};
@@ -112,6 +171,36 @@ router.patch('/id/:id', authService.expressMiddleware,async (req, res) => {
 
     await entryDAO.update(partialEntry);
     res.status(200).end();
+});
+
+router.delete('/user/:id', authService.expressMiddleware, async (req, res) => {
+    console.log('received delete on /user/' + req.params.id);
+
+    //validate that the requested id matches the user id
+    if (req.params.id != res.locals.user.id) {
+        let message = 'Ungültige Anfrage';
+        res.status(400).json(message);
+        authService.removeToken(res);
+    }
+
+    //delete entries where the user is owner and reset entries which he requested
+    try {
+        const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
+        const ownedEntries = (await entryDAO.deleteAll({ownerId: req.params.id}));
+        const requestedEntries = (await entryDAO.findAll({requesterId: req.params.id, status: 'assigned'}));
+
+        for (let i = 0; i < requestedEntries.length; i++) {
+            var partialEntry: Partial<Entry> = { id: requestedEntries[i].id, requesterId: null, status: 'open', }
+            await entryDAO.update(partialEntry);
+        }
+
+        res.status(204).json('Verbundene Aufträge gelöscht');
+    }
+    catch (err) {
+        console.log(err.stack);
+        res.status(500).end();
+    }
+
 });
 
 export default router;
