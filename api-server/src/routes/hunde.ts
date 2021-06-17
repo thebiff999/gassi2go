@@ -2,23 +2,20 @@
 
 import express from 'express';
 import fileUpload, { UploadedFile } from 'express-fileupload';
-import { v4 as uuidv4 } from 'uuid';
 import { GenericDAO } from '../models/generic.dao';
 import { Hund } from '../models/hunde';
 import { authService } from '../services/auth.service';
 import fs from 'fs';
+import { cryptoService } from '../services/crypto.service';
 
 const router = express.Router();
 
 router.use(fileUpload());
 
+/* API-Service zum Anlegen eines Hundes in der Datenbank. */
 router.post('/', authService.expressMiddleware, async(req, res) => {
     console.log('Post-Request an /hunde/');
-    let uploadPath =  './../../../client/resources/uploads/';  //Pfad zum Verschieben der Images
-    let imagePath = './../../../resources/uploads/';  //Pfad zum Hinterlegen in der DB
-    var image = req.files?.image as UploadedFile;
-    var uniqueName = uuidv4() + image?.name; //Erzeugung eines eindeutigen Namen, um Dopplungen zu vermeiden
-    var finalPath = imagePath + uniqueName;
+    const image = req.files?.image as UploadedFile;
     let stringBuffer = "";
     let imageName = "";
     
@@ -35,10 +32,9 @@ router.post('/', authService.expressMiddleware, async(req, res) => {
         return sendeFehlermeldung(fehler.join('\n'));
     }
 
-    //TODO weitere Validierungen
-
-    
-    if(req.files){
+    /* Falls ein Bild mitgeschickt wurde, werden die Übergabeparameter hier gesetzt.
+        Wenn kein Bild mitgeschickt wurde, werden Defaultwerte gesetzt. */
+    if(req.files){ 
         stringBuffer = image?.data.toString('base64');
         imageName = image?.name;
     }
@@ -47,27 +43,38 @@ router.post('/', authService.expressMiddleware, async(req, res) => {
         imageName = 'defaultImage';
     }
 
-    //Nach erfolgreicher Validierung, wird der Hund erstellt
+    /* Nach erfolgreicher Validierung, wird eine hundeDAO erstellt, die den Hund in der Datenbank anlegt.
+        Dabei werden alle Daten verschlüsselt, die möglicherweise persönliche Daten beinhalten könnten. */
     const hundNeu = await hundeDAO.create({
         besitzerId: res.locals.user.id,
-        name: req.body.name,
-        rasse: req.body.rasse,
-        gebDate: req.body.gebDate,
-        infos: req.body.infos,
-        imgPath: finalPath,
-        imgName: imageName,
-        imgData: stringBuffer
+        name: cryptoService.encrypt(req.body.name),
+        rasse: cryptoService.encrypt(req.body.rasse),
+        gebDate: cryptoService.encrypt(req.body.gebDate),
+        infos: cryptoService.encrypt(req.body.infos),
+        imgName: cryptoService.encrypt(imageName),
+        imgData: cryptoService.encrypt(stringBuffer)
     });
 
     res.status(201).json(hundNeu);
 });
 
+/* API-Service zum Holen aller Hunde zum aktuellen User. */
 router.get('/', authService.expressMiddleware, async(req, res) => {
     console.log("Get-Request an /hunde/");
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
     const filter: Partial<Hund> = { besitzerId: res.locals.user.id }
+    /* Ruft alle zum aktuellen User zugehörigen Hunde aus der Datenbank
+    und entschlüsselt die persönlichen Daten */
     const hunde = (await hundeDAO.findAll(filter)).map(hund => {
-        return { ...hund };
+        return {
+            ...hund,  
+            name: cryptoService.decrypt(hund.name),
+            rasse: cryptoService.decrypt(hund.rasse),
+            gebDate: cryptoService.decrypt(hund.gebDate),
+            infos: cryptoService.decrypt(hund.infos),
+            imgName: cryptoService.decrypt(hund.imgName),
+            imgData: cryptoService.decrypt(hund.imgData)
+        };
     });
     if(hunde.length == 0){
         console.log('404');
@@ -79,6 +86,7 @@ router.get('/', authService.expressMiddleware, async(req, res) => {
     }
 });
 
+/* API-Service zum Löschen eines Hundes mithilfe der ID */
 router.delete('/:id', authService.expressMiddleware, async(req, res) =>{
     console.log('Delete-Anfrage auf /' + req.params.id + 'erhalten');
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
@@ -86,22 +94,25 @@ router.delete('/:id', authService.expressMiddleware, async(req, res) =>{
     res.status(200).end();
 });
 
-
+/* API-Service zum Abfragen eines spezifischen Hundes aus der Datenbank mithilfe der ID */
 router.get('/:id', authService.expressMiddleware, async(req, res) => {
     console.log('Get-Anfrage an hunde/' + req.params.id);
-    try{
-        const hundDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
-        const hund = await hundDAO.findOne({ id : req.params.id});
-        if(!hund){
-            res.status(404).json({message: `Es wurde kein Hund mit der ID ${req.params.id} gefunden.`});
-        }else{
-            res.status(200).json({
-                hund
-            });
-        }
+    const hundDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
+    const hund = await hundDAO.findOne({ id : req.params.id});
+    if(!hund){
+        res.status(404).json({message: `Es wurde kein Hund mit der ID ${req.params.id} gefunden.`});
     }
-    catch(error){
-        console.log(error);
+    else{
+        //Entschlüsselung der persönlichen Daten und Rückgabe des Hundes
+        res.status(200).json({
+            ...hund,
+            name: cryptoService.decrypt(hund.name),
+            rasse: cryptoService.decrypt(hund.rasse),
+            gebDate: cryptoService.decrypt(hund.gebDate),
+            infos: cryptoService.decrypt(hund.infos),
+            imgName: cryptoService.decrypt(hund.imgName),
+            imgData: cryptoService.decrypt(hund.imgData)
+        });
     }
 });
 
