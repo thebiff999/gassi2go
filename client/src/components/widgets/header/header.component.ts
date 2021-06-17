@@ -70,7 +70,7 @@ class Header extends LitElement{
         `;
     }
 
-    //Click-Event, dass das Dropdown-Menü öffnet, die Links verzögert einblendet und für die Animation des Pfeils sorgt 
+    //Click-Event, das das Dropdown-Menü öffnet, die Links verzögert einblendet und für die Animation des Pfeils sorgt 
     toggleDropdown = () => {
         const root = document.querySelector("app-root");
         const header = root?.shadowRoot?.querySelector("app-header");

@@ -1,6 +1,8 @@
 /* Autor: Simon Flathmann */ 
-import { css, customElement, html, LitElement, query, unsafeCSS } from "lit-element";
+import { css, customElement, html, LitElement, query, unsafeCSS } from 'lit-element';
+import { router } from '../../router';
 import { PageMixin} from '../page.mixin';
+import defaultdog from '../../../resources/default/defaultdog.jpg';
 
 const hundeerstellungComponentSCSS = require('./hundeerstellung.component.scss');
 
@@ -42,7 +44,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
             ${this.renderNotification()}
             <div class="border border-success" id="formdiv">
                 <form action="/" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>
-                    <div class="form-row m-4">
+                    <div class="form-row mx-4 mt-4">
                         <div class="col-lg-8">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
@@ -64,7 +66,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
                         </div>
                         <div class="col-lg-4">
                             <div class="picture m-auto">
-                                <img src="./../../../../resources/default/defaultdog.png" id="hunde-image">
+                                <img src="${defaultdog}" id="hunde-image" class="mt-4">
                             </div>
                             <div class="pictureinput m-4">
                                 <input type="file" id="file" name="image" class="form-control" hidden>
@@ -73,7 +75,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
                             </div>
                         </div>
                     </div>
-                    <div class="form-row m-4">
+                    <div class="form-row mx-4 mb-4">
                         <div class="form-group col-md-12">
                                     <label for="info">Zusätzliche Informationen</label>
                                     <textarea class="form-control" id="info" rows="5" minlength="30" maxlength="600" required
@@ -110,7 +112,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
 
             try{
                 /* const response = await httpClient.post('/hunde', hund);  
-                => Der HttpClient-Service kann an dieser Stelle nicht verwendet werden, da ein File mitgeschickt werden kann.
+                Der HttpClient-Service kann an dieser Stelle nicht verwendet werden, da ein File mitgeschickt werden kann.
                 */
                 const port = location.protocol === 'https:' ? 3443 : location.protocol === 'https:' ? 3443 : 3000;
                 const baseURL = `${location.protocol}//${location.hostname}:${port}/api/`; 
@@ -118,21 +120,32 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
                     method: 'post',
                     body: formData,
                     credentials: "include" //damit das jqt-token für den authService mitgeschickt werden kann
-                })
-                .then(response => {
-                    this.setNotification({ infoMessage: 'Der Hund wurde erfolgreich angelegt.'});
-                    alert("Hund erfolgreich angelegt.");
-                    window.setTimeout(() => {this.setNotification({ infoMessage: 'Der Hund wurde erfolgreich angelegt.'})}, 1000);
-                    return response.json();
-                })   
-                .then(data => {console.log(data)})
-                .then(() => history.back())      //Nach erfolgreichem Anlegen, wird zurück zur Hundeübersicht navigiert
-                .catch((error) => {
-                    console.log("Fehler: " + error)
                 });
+                if(response.ok){
+                    return response;
+                }
+                else{
+                    let message = await response.text();
+                    try{
+                        message = JSON.parse(message).message;
+                    } 
+                    catch (error){
+                        message = error.message;
+                    }
+                    message = message || response.statusText;
+                    throw {message, statusCode : response.status};
+                }
             }
-            catch({message}){
-                this.setNotification({ errorMessage: message});
+            catch({message, statusCode}){
+                switch(statusCode){
+                    //Benachritigung, dass die Session abgelaufen ist und Navigation zur Anmeldung nach 5 Sekunden
+                    case 401:
+                        this.setNotification({ infoMessage: 'Die aktuelle Session ist abgelaufen. Sie werden zurück zur Anmeldung navigiert.'});
+                        window.setTimeout(() => {router.navigate('/user/sign-in')}, 5000);
+                        break;
+                    default:
+                        this.setNotification({ errorMessage: message });
+                }
             }
         }
         else{
@@ -142,7 +155,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
     
     //Validierung der eingegebenen Daten
     checkInputs(){
-        var allowedExtensions = /(\.jpg|\.jpeg)$/i;
+        var allowedExtensions = /(\.jpg|\.jpeg)$/i; //erlaubte Datentypen
 
         //Falls eine Datei hochgeladen wurde, wird diese auf den Datentypen überprüft
         if(this.file.value !== ""){
@@ -154,7 +167,6 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
                 this.file.setCustomValidity('');
             }
         }
-
         return this.form.checkValidity();
     }
 

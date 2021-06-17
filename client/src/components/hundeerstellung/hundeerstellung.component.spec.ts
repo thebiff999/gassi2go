@@ -1,3 +1,5 @@
+/* Autor: Simon Flathmann */
+
 import { LitElement } from 'lit-element';
 import './hundeerstellung.component';
 import { HundeerstellungComponent} from './hundeerstellung.component';

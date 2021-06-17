@@ -1,3 +1,5 @@
+/* Autor: Simon Flathmann */
+
 import { css, customElement, html, internalProperty, LitElement, unsafeCSS } from "lit-element";
 import { repeat } from 'lit-html/directives/repeat';
 import { Hund } from "../../../../api-server/src/models/hunde";
@@ -36,7 +38,6 @@ export class HundeComponent extends PageMixin(LitElement){
                                     <div class="card text-center m-4 p-3 rounded-lg shadow-lg" id="dogcard">
                                         <div class="card-block" m-md-2> 
                                             <img class="img-fluid border" id="dogimg" src="data:image/jpeg;base64,${hund.imgData}" alt="hunde image">
-                                            <img class="img-fluid border" id="dogimg" src="${hund.imgPath}" alt="hunde image">
                                             <div class="card-title m-1">
                                                 <h5>${hund.name}</h5>
                                             </div> 
@@ -65,16 +66,16 @@ export class HundeComponent extends PageMixin(LitElement){
             this.hunde = responseJSON.results;
         }
         catch({message, statusCode}){
-            if(statusCode == 404){
-                this.setNotification({ infoMessage: 'Sie haben noch keine Hunde angelegt.'});
-            }
-            else{
-                if(statusCode == 401){
-                    router.navigate('/user/sign-in');
-                }
-                else{
-                this.setNotification({ errorMessage: message });
-                }
+            switch(statusCode){
+                case 404:
+                    this.setNotification({ infoMessage: 'Sie haben noch keine Hunde angelegt.'});
+                    break;
+                case 401: 
+                    this.setNotification({ infoMessage: 'Die aktuelle Session ist abgelaufen. Sie werden zurück zur Anmeldung navigiert.'});
+                    window.setTimeout(() => {router.navigate('/user/sign-in')}, 5000);
+                    break;
+                default:
+                    this.setNotification({ errorMessage: message});
             }
         }
     }

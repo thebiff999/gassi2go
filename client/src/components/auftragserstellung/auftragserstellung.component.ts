@@ -1,4 +1,5 @@
 /* Autor: Simon Flathmann */ 
+
 import { css, customElement, html, internalProperty, LitElement, property, query, queryAll, unsafeCSS} from "lit-element";
 import { repeat } from 'lit-html/directives/repeat';
 import { Hund } from "../../../../api-server/src/models/hunde";

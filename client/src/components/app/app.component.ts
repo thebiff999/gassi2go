@@ -30,6 +30,7 @@ class AppComponent extends LitElement {
     router.subscribe(() => this.requestUpdate());
   }
 
+  /* Router-Outler für den Main-Container */
   renderRouterOutlet() {
     return router.select(
       {
@@ -49,7 +50,7 @@ class AppComponent extends LitElement {
     );
   }
 
-  //Eigener Router Outlet für den Header, um eigene Titel mitzugeben und Routen ohne Header zu ermöglichen
+  //Eigener Router-Outlet für den Header, um eigene Titel mitzugeben und Routen ohne Header zu ermöglichen
   renderHeaderOutlet(){
     return router.select(
       {
@@ -68,7 +69,6 @@ class AppComponent extends LitElement {
       () => html`<app-header title="${this.title}"></app-header>`
     );
   }
-
 
   render() {
     return html`

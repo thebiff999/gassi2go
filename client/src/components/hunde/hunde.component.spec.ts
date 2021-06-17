@@ -1,3 +1,5 @@
+/* Autor: Simon Flathmann */
+
 import { LitElement } from 'lit-element';
 import { httpClient } from '../../http-client';
 import { HundeComponent } from './hunde.component';
