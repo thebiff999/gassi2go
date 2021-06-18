@@ -4,6 +4,7 @@ import express from 'express';
 import fileUpload, { UploadedFile } from 'express-fileupload';
 import { GenericDAO } from '../models/generic.dao';
 import { Hund } from '../models/hunde';
+import { Entry } from '../models/entry';
 import { authService } from '../services/auth.service';
 import fs from 'fs';
 import { cryptoService } from '../services/crypto.service';
@@ -90,7 +91,9 @@ router.get('/', authService.expressMiddleware, async(req, res) => {
 router.delete('/:id', authService.expressMiddleware, async(req, res) =>{
     console.log('Delete-Anfrage auf /' + req.params.id + 'erhalten');
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
+    const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
     await hundeDAO.delete(req.params.id);
+    await entryDAO.deleteAll({dogId: req.params.id});
     res.status(200).end();
 });
 

@@ -34,22 +34,13 @@ class SignInComponent extends PageMixin(LitElement) {
     return html`
     ${this.renderNotification()}
 
-    <!-- SIDENAV with Poster -->
-
-        <div class='sidenav' id='sidenav'>
-          <img src='../../resources/images/login_dog.jpeg'>
-        </div>
-
-        <!-- SIDENAV END -->
-
 
     <!-- MAIN-FORM -->
     
         <div class='main container background' id='main'>
-          <div class="row">
+          <div class="row ">
             <div class='col-md-6 col-sm-6'>
 
-            <form> 
                     <button
                       class='btn btn-primary btn-lg'
                       type='button'
@@ -67,7 +58,6 @@ class SignInComponent extends PageMixin(LitElement) {
                     >
                       REGISTRIEREN
                     </button>
-                </form>
 
                 <!-- NAVIGATE BUTTON END -->
 
@@ -79,10 +69,10 @@ class SignInComponent extends PageMixin(LitElement) {
               <!-- LOGIN-TEXT-FORM -->
 
               <fieldset id='login'>
-                <div class='input-group col-md-14'>
-                <div class="input-group-prepend">
-                  <span class='input-group-text' for='email'>Email</span>
-                </div>
+                <div class='input-group col-md-12'>
+                  <div class="input-group-prepend">
+                    <span class='input-group-text' for='email'>Email</span>
+                  </div>
                   <input
                     class='form-control'
                     type='text'
@@ -105,7 +95,7 @@ class SignInComponent extends PageMixin(LitElement) {
                   </div>
                 </div>
 
-                <div class='input-group col-md-14'>
+                <div class='input-group col-md-12'>
                   <div class="input-group-prepend">
                   <span class='input-group-text' for='password'>Passwort</span>
                   </div>

@@ -24,9 +24,6 @@ class SignOutComponent extends PageMixin(LitElement) {
   render() {
     return html`
     ${this.renderNotification()}
-      <div class='sidenav' id='sidenav'>
-        <img src='../src/assets/img/login_dog.jpg'>
-      </div>
 
       <div class='main' id='main'>
         <h1>

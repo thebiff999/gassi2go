@@ -84,8 +84,8 @@ class EntriesComponent extends PageMixin(LitElement) {
                     <div class="card shadow entry">
                         <div class="card-body">
                             <img class="card-img-top" src="data:image/jpeg;base64,${entry.imgData}">
-                            <p>Name: ${entry.dogName}</p>
-                            <p>Entfernung: ${getDistance(entry.lat, entry.lng, this.location.lat, this.location.lng)} km</p>
+                            <p class="name">Name: ${entry.dogName}</p>
+                            <p class="distance">Entfernung: ${getDistance(entry.lat, entry.lng, this.location.lat, this.location.lng)} km</p>
                             ${this.renderButton(entry.type, entry.id)}
                         </div>
                     </div>
