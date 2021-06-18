@@ -75,9 +75,9 @@ router.delete('/', authService.expressMiddleware, async (req, res) => {
   const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
   const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
 
-  hundeDAO.deleteAll({ besitzerId: res.locals.user.id });
-  entryDAO.deleteAll({ ownerId: res.locals.user.id });
-  userDAO.delete(res.locals.user.id);
+  await hundeDAO.deleteAll({ besitzerId: res.locals.user.id });
+  await entryDAO.deleteAll({ ownerId: res.locals.user.id });
+  await userDAO.delete(res.locals.user.id);
 
   authService.removeToken(res);
   res.status(200).end();
