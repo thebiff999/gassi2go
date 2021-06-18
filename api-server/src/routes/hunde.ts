@@ -55,7 +55,15 @@ router.post('/', authService.expressMiddleware, async(req, res) => {
         imgName: cryptoService.encrypt(imageName),
         imgData: cryptoService.encrypt(stringBuffer)
     });
-    res.status(201).json(hundNeu);
+    res.status(201).json({
+        ...hundNeu,
+        name: cryptoService.decrypt(hundNeu.name),
+        rasse: cryptoService.decrypt(hundNeu.rasse),
+        gebDate: cryptoService.decrypt(hundNeu.gebDate),
+        infos: cryptoService.decrypt(hundNeu.infos),
+        imgName: cryptoService.decrypt(hundNeu.imgName),
+        imgData: cryptoService.decrypt(hundNeu.imgData)
+    });
 });
 
 /* API-Service zum Holen aller Hunde zum aktuellen User. */

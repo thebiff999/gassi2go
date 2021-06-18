@@ -80,7 +80,7 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
                     <div class="form-group col-md-6">
                         <label for="auftragDatum">Datum</label>
                         <input type="date" class="form-control" id="auftragDatum" required>
-                        <div class="invalid-feedback"> Bitte wähle ein valides Datum. </div>
+                        <div class="invalid-feedback">Bitte wähle ein valides Datum.</div>
                     </div>
                 </div>
 
@@ -104,7 +104,7 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
                                 <span class="input-group-text" id="inputGroupPrepend">€</span>
                             </div>
                             <input type="number" value="0.00" min="0" step="0.1" id="inputEntlohnung" placeholder="Entlohnung" class="form-control" required>
-                            <div class="invalid-feedback"> Die Entlohnung ist erforderlich und darf nicht im negativen Bereich liegen. </div>
+                            <div class="invalid-feedback">Die Entlohnung ist erforderlich und darf nicht im negativen Bereich liegen.</div>
                         </div>
                     </div>
                 </div>
@@ -113,12 +113,12 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
                     <div class="form-group col-md-9">
                         <label for="inputstraße">Straße</label>
                         <input type="text" class="form-control" id="inputStraße" placeholder="Beispielstraße" required>
-                        <div class="invalid-feedback"> Eine Straße ist erforderlich. </div>
+                        <div class="invalid-feedback">Eine Straße ist erforderlich.</div>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="inputHausNr">HausNr.</label>
                         <input type="text" class="form-control" id="inputHausNr" placeholder="42" maxlength="5" required>
-                        <div class="invalid-feedback"> Die Hausnummer ist erforderlich und muss gültig sein. </div>
+                        <div class="invalid-feedback">Die Hausnummer ist erforderlich und muss gültig sein.</div>
                     </div>
                 </div>
 
@@ -126,12 +126,12 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
                     <div class="form-group col-md-3">
                         <label for="inputPLZ">PLZ</label>
                         <input type="text" class="form-control" id="inputPLZ" pattern="[0-9]{5}" placeholder="12345" required>
-                        <div class="invalid-feedback"> Bitte geben Sie eine gültige Postleitzahl ein. </div>
+                        <div class="invalid-feedback">Bitte geben Sie eine gültige Postleitzahl ein.</div>
                     </div>
                     <div class="form-group col-md-9">
                         <label for="inputOrt">Ort</label>
                         <input type="text" class="form-control" id="inputOrt" placeholder="Musterort" required>
-                        <div class="invalid-feedback"> Bitte geben Sie ihren Ort ein. </div>
+                        <div class="invalid-feedback">Bitte geben Sie ihren Ort ein.</div>
                     </div>
                 </div>
 
@@ -139,7 +139,7 @@ class AuftragsErstellungComponent extends PageMixin(LitElement){
                     <label for="auftragBeschreibung">Beschreibung</label>
                     <textarea class="form-control" id="auftragBeschreibung" rows="5" minlength="30" maxlength="900" required
                     placeholder="Hier können Sie ihre Vierbeiner beschreiben und alle wichtigen Informationen nennen. Bei der Hundebetreuung sollte Sie hier angeben, wie lange auf den Hund aufgepasst werden soll. " ></textarea>
-                    <div class="invalid-feedback"> Die Beschreibung ist erforderlich und muss 30 bis 900 Zeichen lang sein. </div>
+                    <div class="invalid-feedback">Die Beschreibung ist erforderlich und muss 30 bis 900 Zeichen lang sein.</div>
                 </div>
 
                 <div class="form-row">

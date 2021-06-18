@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 import config from './config';
 
 export class UserSession {
-  //name: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -16,7 +15,6 @@ export class UserSession {
 
   constructor() {
     const uuid = uuidv4();
-    //this.name = `name_${uuid}`;
     this.firstName = `firstname_${uuid}`;
     this.lastName = `lastname_${uuid}`;
     this.email = `email_${uuid}@example.org`;
@@ -48,7 +46,6 @@ export class UserSession {
   }
 
   signUpData() {
-    //return { name: this.name, email: this.email, password: this.password, passwordCheck: this.password };
     return { firstName: this.firstName, lastName: this.lastName, email: this.email, password: this.password, passwordCheck: this.password };
   }
 

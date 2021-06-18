@@ -45,8 +45,8 @@ export class HundeComponent extends PageMixin(LitElement){
                                             <div class="card-text mb-2">Geb.: ${hund.gebDate}</div>
                                             <div class="card-text mb-2">${hund.infos}</div>
                                             <div>
-                                                <button @click="${() => this.pet(hund.name)}" class="btn btn-light"><i class="far fa-heart"></i> Streicheln</button>
-                                                <button @click="${() => this.delete(hund.id)}" class="btn btn-light"><i class="far fa-trash-alt"></i> Löschen </button>
+                                                <button id="petbtn" @click="${() => this.pet(hund.name)}" class="btn btn-light"><i class="far fa-heart"></i> Streicheln</button>
+                                                <button id="deletebtn" @click="${() => this.delete(hund.id)}" class="btn btn-light"><i class="far fa-trash-alt"></i> Löschen </button>
                                             </div>
                                         </div>
                                     </div>

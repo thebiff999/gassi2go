@@ -60,7 +60,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement){
                                 <div class="form-group col-md-12">
                                     <label for="geb">Geburtsdatum</label>
                                     <input type="date" class="form-control" id="geb" required>
-                                    <div class="invalid-feedback">Bitte wähle ein Datum in der Vergangenheit.</div>
+                                    <div class="invalid-feedback">Bitte wähle ein valides Datum.</div>
                                 </div>
                             </div>
                         </div>
