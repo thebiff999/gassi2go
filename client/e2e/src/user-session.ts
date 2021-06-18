@@ -6,20 +6,28 @@ import { BrowserContext } from 'playwright';
 import config from './config';
 
 export class UserSession {
-  //name: string;
   firstName: string;
   lastName: string;
   email: string;
   password: string;
   token?: string;
 
+  name: string;
+  rasse: string;
+  gebDate: string;
+  infos: string;
+
   constructor(public context: BrowserContext) {
     const uuid = uuidv4();
-    //this.name = `name_${uuid}`;
     this.firstName = `firstname_${uuid}`;
     this.lastName = `lastname_${uuid}`;
     this.email = `email_${uuid}@example.org`;
     this.password = `pw_${uuid}`;
+
+    this.name = 'Janka';
+    this.rasse = 'Bernasenne';
+    this.gebDate = '2016-03-17';
+    this.infos = 'Hund für die Auftragserstellung e2e-Tests';
   }
 
   signInData() {
@@ -27,8 +35,11 @@ export class UserSession {
   }
 
   signUpData() {
-    //return { name: this.name, email: this.email, password: this.password, passwordCheck: this.password };
     return { firstName: this.firstName, lastName: this.lastName, email: this.email, password: this.password, passwordCheck: this.password };
+  }
+
+  dogData() {
+    return { name: this.name, rasse: this.rasse, gebDate: this.gebDate,  infos: this.infos };
   }
 
   async registerUser() {
@@ -58,4 +69,14 @@ export class UserSession {
     }
     await this.context.clearCookies();
   }
+
+  //Autor: Simon Flathmann
+  async createDog() {
+    const response = await fetch(config.serverUrl('hunde'), {
+      method: 'POST',
+      body: JSON.stringify(this.dogData()),
+      headers: { Cookie: `jwt-token=${this.token}`, 'Content-Type': 'application/json' }
+    });
+  }
+
 }

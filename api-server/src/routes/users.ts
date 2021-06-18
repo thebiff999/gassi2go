@@ -2,6 +2,8 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import { GenericDAO } from '../models/generic.dao.js';
 import { User } from '../models/user.js';
+import { Hund } from '../models/hunde';
+import { Entry } from '../models/entry';
 import { authService } from '../services/auth.service.js';
 
 const router = express.Router();
@@ -70,8 +72,12 @@ router.delete('/sign-out', (req, res) => {
 
 router.delete('/', authService.expressMiddleware, async (req, res) => {
   const userDAO: GenericDAO<User> = req.app.locals.userDAO;
+  const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
+  const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
 
-  userDAO.delete(res.locals.user.id);
+  await hundeDAO.deleteAll({ besitzerId: res.locals.user.id });
+  await entryDAO.deleteAll({ ownerId: res.locals.user.id });
+  await userDAO.delete(res.locals.user.id);
 
   authService.removeToken(res);
   res.status(200).end();
