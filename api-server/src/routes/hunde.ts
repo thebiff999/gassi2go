@@ -4,6 +4,7 @@ import express from 'express';
 import fileUpload, { UploadedFile } from 'express-fileupload';
 import { GenericDAO } from '../models/generic.dao';
 import { Hund } from '../models/hunde';
+import { Entry } from '../models/entry';
 import { authService } from '../services/auth.service';
 import fs from 'fs';
 import { cryptoService } from '../services/crypto.service';
@@ -18,7 +19,7 @@ router.post('/', authService.expressMiddleware, async(req, res) => {
     const image = req.files?.image as UploadedFile;
     let stringBuffer = "";
     let imageName = "";
-    
+
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
     const fehler: string[] = [];
 
@@ -54,7 +55,6 @@ router.post('/', authService.expressMiddleware, async(req, res) => {
         imgName: cryptoService.encrypt(imageName),
         imgData: cryptoService.encrypt(stringBuffer)
     });
-
     res.status(201).json(hundNeu);
 });
 
@@ -77,20 +77,22 @@ router.get('/', authService.expressMiddleware, async(req, res) => {
         };
     });
     if(hunde.length == 0){
-        console.log('404');
         res.sendStatus(404);
     }
     else{
-        console.log('200');
         res.status(200).json({results: hunde });
     }
 });
 
-/* API-Service zum Löschen eines Hundes mithilfe der ID */
+/* API-Service zum Löschen eines Hundes mithilfe der ID. Außerdem werden
+    alle Aufträge gelöscht, mit diesem Hund. */
 router.delete('/:id', authService.expressMiddleware, async(req, res) =>{
     console.log('Delete-Anfrage auf /' + req.params.id + 'erhalten');
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
+    const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
+
     await hundeDAO.delete(req.params.id);
+    await entryDAO.deleteAll({ dogId: req.params.id });
     res.status(200).end();
 });
 
