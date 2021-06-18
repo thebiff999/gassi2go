@@ -98,9 +98,14 @@ router.delete('/:id', authService.expressMiddleware, async(req, res) =>{
     console.log('Delete-Anfrage auf /' + req.params.id + 'erhalten');
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
     const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
+<<<<<<< HEAD
+    await hundeDAO.delete(req.params.id);
+    await entryDAO.deleteAll({dogId: req.params.id});
+=======
 
     await hundeDAO.delete(req.params.id);
     await entryDAO.deleteAll({ dogId: req.params.id });
+>>>>>>> e156bffc7188c0514eaff7ac32bc7e2b7c5d7ea5
     res.status(200).end();
 });
 

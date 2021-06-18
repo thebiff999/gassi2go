@@ -56,7 +56,7 @@ class SignUpComponent extends PageMixin(LitElement) {
 
       <!-- MAIN-FORM -->
 
-      <div class="main" id="main">
+      <div class="main row" id="main">
         <div class="col-md-6 col-sm-12">
           <h1>Gassi2Go</h1>
           <h3>Der Hund zum ausgehen</h3>
@@ -90,7 +90,7 @@ class SignUpComponent extends PageMixin(LitElement) {
 
           <form>
             <fieldset id="register1">
-              <div class="input-group col-md-14">
+              <div class="input-group col-md-12">
                 <div class="input-group-prepend">
                   <span class="input-group-text" for="firstName">Vorname</span>
                 </div>
@@ -106,7 +106,7 @@ class SignUpComponent extends PageMixin(LitElement) {
                 <div class="invalid-feedback">Vorname ist erforderlich</div>
               </div>
 
-              <div class="input-group col-md-14">
+              <div class="input-group col-md-12">
                 <div class="input-group-prepend">
                   <span class="input-group-text" for="lastName">Nachname</span>
                 </div>
@@ -122,7 +122,7 @@ class SignUpComponent extends PageMixin(LitElement) {
                 <div class="invalid-feedback">Nachname ist erforderlich</div>
               </div>
 
-              <div class="input-group col-md-14">
+              <div class="input-group col-md-12">
                 <div class="input-group-prepend">
                   <span class="input-group-text" for="email">Email</span>
                 </div>
@@ -132,7 +132,7 @@ class SignUpComponent extends PageMixin(LitElement) {
             </fieldset>
 
             <fieldset id="register2">
-              <div class="input-group col-md-14">
+              <div class="input-group col-md-12">
                 <div class="input-group-prepend">
                   <span class="input-group-text" for="password">Passwort</span>
                 </div>
@@ -153,7 +153,7 @@ class SignUpComponent extends PageMixin(LitElement) {
               </div>
 
               <div>
-                <div class="input-group col-md-14">
+                <div class="input-group col-md-12 col-lg-6">
                   <div class="input-group-prepend">
                     <span class="input-group-text" for="password-check">Passwort wiederholen</span>
                   </div>

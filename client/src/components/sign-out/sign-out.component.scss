@@ -2,16 +2,10 @@
 @import "bootstrap/scss/bootstrap";
 
 h1 {
-	position: relative;
-	left: +210px;
-	top: -360px;
 	margin-top: 80%;
 }
 
 h3 {
-	position: relative;
-	left: +260px;
-	top: -360px;
 	display: inline;
 }
  
@@ -34,7 +28,7 @@ img:hover {
 }
 
 #absenden {
-	position: relative;
+	position: static;
 	left: 225px;
 	top: -100px;
 	height: 60px;
@@ -42,7 +36,15 @@ img:hover {
 }
 
 .main {
-	margin-left: 40%;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.main > * {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
 }
 
 

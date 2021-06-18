@@ -3,8 +3,14 @@
 
 .background {
 	background-image: url("../../../resources/images/login_dog.jpg");
+	width: 100vw;
+	height: 100%;
+	object-fit: cover;
+	margin-left: 0;
+	margin-right: 0;
+	padding-top: 70px;
+	background-repeat: no-repeat;
 }
-
 /*
 h1 {
 	text-align: right;
