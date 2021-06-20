@@ -54,7 +54,7 @@ class Header extends LitElement{
                     </a>
                 </div>
 
-                <a href='/auftrag/new' class="auftrag-link">
+                <a href='/entires/new' class="auftrag-link">
                     <h3>Auftrag erstellen</h3>
                 </a>
             </div>

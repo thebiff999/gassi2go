@@ -4,7 +4,7 @@ import { Browser, BrowserContext, Page, chromium } from 'playwright';
 import { UserSession } from './user-session';
 import config from './config';
 
-describe('/auftrag/new', () => {
+describe('/entires/new', () => {
     let browser: Browser;
     let context: BrowserContext;
     let page: Page;
@@ -34,13 +34,13 @@ describe('/auftrag/new', () => {
     });
 
     it('should render the title "Auftragserstellung"', async() => {
-        await page.goto(config.clientUrl('/auftrag/new'));
+        await page.goto(config.clientUrl('/entires/new'));
         const title = await page.textContent('app-header .title h2');
         expect(title).toBe('Auftragserstellung');
     });
 
     it('should sucessfully create an entry', async() => {
-        await page.goto(config.clientUrl('/auftrag/new'));
+        await page.goto(config.clientUrl('/entires/new'));
         await page.fill('input[type="date"]', '2021-09-30');
         await page.selectOption('#inputHunde', {label: 'Janka'});
         await page.fill('[placeholder="Entlohnung"]', '10.00');
@@ -53,7 +53,7 @@ describe('/auftrag/new', () => {
     });
 
     it('should show invalid-feedback when no dog was chosen', async() =>{
-        await page.goto(config.clientUrl('/auftrag/new'));
+        await page.goto(config.clientUrl('/entires/new'));
         await page.fill('input[type="date"]', '2021-09-30');
         await page.fill('[placeholder="Entlohnung"]', '10.00');
         await page.fill('[placeholder="Beispielstraße"]', 'Corrensstraße');
@@ -67,7 +67,7 @@ describe('/auftrag/new', () => {
     });
 
     it('should show invalid-feedback when plz does not match the ReqExr', async() =>{
-        await page.goto(config.clientUrl('/auftrag/new'));
+        await page.goto(config.clientUrl('/entires/new'));
         await page.fill('input[type="date"]', '2021-09-30');
         await page.selectOption('#inputHunde', {label: 'Janka'});
         await page.fill('[placeholder="Entlohnung"]', '10.00');
@@ -82,7 +82,7 @@ describe('/auftrag/new', () => {
     });
 
     it('should show invalid-feedback when "entlohnung" is below zero', async() =>{
-        await page.goto(config.clientUrl('/auftrag/new'));
+        await page.goto(config.clientUrl('/entires/new'));
         await page.fill('input[type="date"]', '2021-09-30');
         await page.selectOption('#inputHunde', {label: 'Janka'});
         await page.fill('[placeholder="Entlohnung"]', '-10.00');
@@ -97,7 +97,7 @@ describe('/auftrag/new', () => {
     });
 
     it('should show 3 invalid-feedback messages when required fields are not set', async() => {
-        await page.goto(config.clientUrl('/auftrag/new'));
+        await page.goto(config.clientUrl('/entires/new'));
         await page.fill('input[type="date"]', '2021-09-30');
         await page.selectOption('#inputHunde', {label: 'Janka'});
         await page.fill('[placeholder="Entlohnung"]', '10.00');
@@ -109,7 +109,7 @@ describe('/auftrag/new', () => {
     });
 
     it('should show invalid-feedback when the description is too short', async() => {
-        await page.goto(config.clientUrl('/auftrag/new'));
+        await page.goto(config.clientUrl('/entires/new'));
         await page.fill('input[type="date"]', '2021-09-30');
         await page.selectOption('#inputHunde', {label: 'Janka'});
         await page.fill('[placeholder="Entlohnung"]', '10.00');

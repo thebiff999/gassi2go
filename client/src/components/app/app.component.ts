@@ -34,7 +34,7 @@ class AppComponent extends LitElement {
   renderRouterOutlet() {
     return router.select(
       {
-        '/auftrag/new': () => html`<app-auftragserstellung></app-auftragserstellung>`,
+        '/entires/new': () => html`<app-auftragserstellung></app-auftragserstellung>`,
         '/entries': () => html`<app-entries></app-entries>`,
         '/entries/:id': params => html`<app-entry-details .entryId=${params.id}></app-entry-details>`,
         '/user': () => html`<app-account></app-account>`,
@@ -54,7 +54,7 @@ class AppComponent extends LitElement {
   renderHeaderOutlet(){
     return router.select(
       {
-        '/auftrag/new': () => html`<app-header title="Auftragserstellung"></app-header>`,
+        '/entires/new': () => html`<app-header title="Auftragserstellung"></app-header>`,
         '/entries': () => html`<app-header title="Auftragsübersicht"></app-header>`,
         '/entries/:id': params => html`<app-header title="Auftrag Detailansicht"></app-header>`,
         '/user': () => html`<app-header title="Profil"></app-header>`,
