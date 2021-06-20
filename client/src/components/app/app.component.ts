@@ -57,7 +57,7 @@ class AppComponent extends LitElement {
       {
         '/entries': () => html`<app-header title="Auftragsübersicht"></app-header>`,
         '/entries/new': () => html`<app-header title="Auftragserstellung"></app-header>`,
-        '/entries/:id': params => html`<app-header title="Auftrag Detailansicht"></app-header>`,
+        '/entries/:id': () => html`<app-header title="Auftrag Detailansicht"></app-header>`,
         '/user': () => html`<app-header title="Profil"></app-header>`,
         '/user/password': () => html`<app-header title="Password"></app-header>`,
         '/user/sign-in': () => html``,
