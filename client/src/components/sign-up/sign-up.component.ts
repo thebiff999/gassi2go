@@ -19,25 +19,25 @@ class SignUpComponent extends PageMixin(LitElement) {
   ];
 
   @query('form')
-  form!: HTMLFormElement;
+  private form!: HTMLFormElement;
 
   @query('#screenName')
-  screenNameElement!: HTMLInputElement;
+  private screenNameElement!: HTMLInputElement;
 
   @query('#firstName')
-  firstNameElement!: HTMLInputElement;
+  private firstNameElement!: HTMLInputElement;
 
   @query('#lastName')
-  lastNameElement!: HTMLInputElement;
+  private lastNameElement!: HTMLInputElement;
 
   @query('#email')
-  emailElement!: HTMLInputElement;
+  private emailElement!: HTMLInputElement;
 
   @query('#password')
-  passwordElement!: HTMLInputElement;
+  private passwordElement!: HTMLInputElement;
 
   @query('#password-check')
-  passwordCheckElement!: HTMLInputElement;
+  private passwordCheckElement!: HTMLInputElement;
 
   render() {
     return html`
@@ -45,8 +45,7 @@ class SignUpComponent extends PageMixin(LitElement) {
 
       <!-- SIDENAV with Poster -->
 
-      <div class="sidenav" id="sidenav">
-      </div>
+      <div class="sidenav" id="sidenav"></div>
 
       <!-- SIDENAV END -->
 
@@ -123,7 +122,7 @@ class SignUpComponent extends PageMixin(LitElement) {
                   <span class="input-group-text" for="email">Email</span>
                 </div>
                 <input class="form-control" type="email" required id="email" name="email" automcomplete="off" />
-                <div class="invalid-feedback">E-Mail ist erforderlich und muss gültig sein</div>
+                <div class="invalid-feedback">E-Mail ist notwendig und muss gültig sein</div>
               </div>
             </fieldset>
 
@@ -142,10 +141,9 @@ class SignUpComponent extends PageMixin(LitElement) {
                   automcomplete="off"
                 />
                 <small id="passwordHelpBlock" class="form-text text-muted">
-                  Dein Passwort muss 8-20 Zeichen lang sein. Es darf Buchstaben und Nummer enthalten, aber keine
-                  Leerzeichen oder Spezialbuchstaben.
+                  Dein Passwort muss mindestens 8 Zeichen lang sein
                 </small>
-                <div class="invalid-feedback">Passwort ist erforderlich und muss mind. 8 Zeichen lang sein</div>
+                <div class="invalid-feedback">Passwort ist erforderlich und muss mindestens 8 Zeichen lang sein</div>
               </div>
 
               <div>

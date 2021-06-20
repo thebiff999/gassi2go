@@ -15,9 +15,9 @@ describe('app-header', () => {
     element.remove();
   });
 
-  it('should render four links in dropdown', async () => {
+  it('should render five links in dropdown', async () => {
     await element.updateComplete;
     const lielems = element.shadowRoot!.querySelectorAll('.toggle-links li');
-    expect(lielems.length).toBe(4);
+    expect(lielems.length).toBe(5);
   });
 });

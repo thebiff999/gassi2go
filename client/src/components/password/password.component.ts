@@ -19,13 +19,13 @@ class AccountComponent extends PageMixin(LitElement) {
   ];
 
   @query('form')
-  form!: HTMLFormElement;
+  private form!: HTMLFormElement;
 
   @query('#email')
-  emailElement!: HTMLInputElement;
+  private emailElement!: HTMLInputElement;
 
   @query('#password')
-  passwordElement!: HTMLInputElement;
+  private passwordElement!: HTMLInputElement;
 
   render() {
     return html`

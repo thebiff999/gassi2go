@@ -26,13 +26,13 @@ class AccountComponent extends PageMixin(LitElement) {
     `
   ];
   @query('form')
-  form!: HTMLFormElement;
+  private form!: HTMLFormElement;
 
   @query('#email')
-  emailElement!: HTMLInputElement;
+  private emailElement!: HTMLInputElement;
 
   @query('#password')
-  passwordElement!: HTMLInputElement;
+  private passwordElement!: HTMLInputElement;
 
   @property()
   private myAccount: Account[] = [];
@@ -43,8 +43,7 @@ class AccountComponent extends PageMixin(LitElement) {
 
       <!-- SIDENAV BEGIN -->
 
-      <div class="sidenav">
-      </div>
+      <div class="sidenav"></div>
 
       <!-- SIDENAV END -->
       <div class="container">

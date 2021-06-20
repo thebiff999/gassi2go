@@ -6,7 +6,6 @@ import { httpClient } from '../../http-client';
 import { router } from '../../router';
 import { PageMixin } from '../page.mixin';
 
-//const sharedCSS = require('../shared.scss');
 const componentCSS = require('./sign-in.component.scss');
 
 @customElement('app-sign-in')
@@ -20,13 +19,13 @@ class SignInComponent extends PageMixin(LitElement) {
   ];
 
   @query('form')
-  form!: HTMLFormElement;
+  private form!: HTMLFormElement;
 
   @query('#email')
-  usernameElement!: HTMLInputElement;
+  private usernameElement!: HTMLInputElement;
 
   @query('#password')
-  passwordElement!: HTMLInputElement;
+  private passwordElement!: HTMLInputElement;
 
   render() {
     return html`
