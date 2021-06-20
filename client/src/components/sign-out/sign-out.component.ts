@@ -5,7 +5,6 @@ import { httpClient } from '../../http-client';
 import { router } from '../../router';
 import { PageMixin } from '../page.mixin';
 
-//const sharedCSS = require('../shared.scss');
 const componentCSS = require('./sign-out.component.scss');
 
 @customElement('app-sign-out')
@@ -13,9 +12,6 @@ class SignOutComponent extends PageMixin(LitElement) {
   // eslint-disable-line @typescript-eslint/no-unused-vars
 
   static styles = [
-    //css`
-    //${unsafeCSS(sharedCSS)}
-    //`,
     css`
       ${unsafeCSS(componentCSS)}
     `
@@ -25,7 +21,6 @@ class SignOutComponent extends PageMixin(LitElement) {
     return html`
     ${this.renderNotification()}
       <div class='sidenav' id='sidenav'>
-        <img src='../src/assets/img/login_dog.jpg'>
       </div>
 
       <div class='main' id='main'>

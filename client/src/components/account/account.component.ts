@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* Autor: Martin Feldman */
 
 import { css, customElement, html, LitElement, query, property, unsafeCSS } from 'lit-element';
 import { httpClient } from '../../http-client';
 import { router } from '../../router';
 import { PageMixin } from '../page.mixin';
-
 
 interface Account {
   userId: number;
@@ -14,7 +14,6 @@ interface Account {
   email: string;
 }
 
-//const sharedCSS = require('../shared.scss');
 const componentCSS = require('./account.component.scss');
 
 @customElement('app-account')
@@ -22,14 +21,10 @@ class AccountComponent extends PageMixin(LitElement) {
   // eslint-disable-line @typescript-eslint/no-unused-vars
 
   static styles = [
-    //constcss`
-    //${unsafeCSS(sharedCSS)}
-    //`,
     css`
       ${unsafeCSS(componentCSS)}
     `
   ];
-
   @query('form')
   form!: HTMLFormElement;
 
@@ -42,27 +37,6 @@ class AccountComponent extends PageMixin(LitElement) {
   @property()
   private myAccount: Account[] = [];
 
-  async firstUpdated() {
-    /*
-    try {
-      //const userId = await httpClient.get('userAdministration/account/id');
-      //const urlId:string = "userAdministration/account/" + userId;
-      //const response = await httpClient.get('userAdministration/account/');
-
-      // get json
-      //this.myAccount = await response.json();
-      //const response = await httpClient.get('tasks' + location.search);
-
-    } catch ({ message, statusCode }) {
-      if (statusCode === 401) {
-        router.navigate('/userAdministration/sign-in');
-      } else {
-        this.setNotification({errorMessage: message});
-      }
-    }
-    */
-  }
-
   render() {
     return html`
       ${this.renderNotification()}
@@ -70,7 +44,6 @@ class AccountComponent extends PageMixin(LitElement) {
       <!-- SIDENAV BEGIN -->
 
       <div class="sidenav">
-        <img src="../src/assets/img/login_dog.jpg" alt="Login Gassi2Go" />
       </div>
 
       <!-- SIDENAV END -->
@@ -188,9 +161,6 @@ class AccountComponent extends PageMixin(LitElement) {
     `;
   }
 
-  /**
-   * navigate to /user/account
-   */
   async navigateToAccount() {
     try {
       router.navigate('user/account');
@@ -199,9 +169,6 @@ class AccountComponent extends PageMixin(LitElement) {
     }
   }
 
-  /**
-   * navigate to /user/password
-   */
   async navigateToPassword() {
     try {
       router.navigate('user/password');

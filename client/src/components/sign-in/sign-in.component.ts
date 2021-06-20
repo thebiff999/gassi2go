@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* Autor: Martin Feldman */
 
 import { css, customElement, html, LitElement, query, unsafeCSS } from 'lit-element';
@@ -13,9 +14,6 @@ class SignInComponent extends PageMixin(LitElement) {
   // eslint-disable-line @typescript-eslint/no-unused-vars
 
   static styles = [
-    //css`
-    //${unsafeCSS(sharedCSS)}
-    //`,
     css`
       ${unsafeCSS(componentCSS)}
     `
@@ -36,9 +34,7 @@ class SignInComponent extends PageMixin(LitElement) {
 
       <!-- SIDENAV with Poster -->
 
-      <div class="sidenav" id="sidenav">
-        <img src="../../resources/images/login_dog.jpeg" />
-      </div>
+      <div class="sidenav" id="sidenav"></div>
 
       <!-- SIDENAV END -->
 

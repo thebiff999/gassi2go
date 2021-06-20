@@ -46,7 +46,6 @@ class SignUpComponent extends PageMixin(LitElement) {
       <!-- SIDENAV with Poster -->
 
       <div class="sidenav" id="sidenav">
-        <img src="../src/assets/img/login_dog.jpg" />
       </div>
 
       <!-- SIDENAV END -->
@@ -209,6 +208,7 @@ class SignUpComponent extends PageMixin(LitElement) {
   async submit() {
     if (this.isFormValid()) {
       const accountData = {
+        screenName: this.screenNameElement.value,
         firstName: this.firstNameElement.value,
         lastName: this.lastNameElement.value,
         email: this.emailElement.value,
@@ -228,7 +228,7 @@ class SignUpComponent extends PageMixin(LitElement) {
 
   isFormValid() {
     if (this.passwordElement.value !== this.passwordCheckElement.value) {
-      this.passwordCheckElement.setCustomValidity('Passwörter müssen gleich sein');
+      this.passwordCheckElement.setCustomValidity('Beide Passwörter müssen gleich sein');
     } else {
       this.passwordCheckElement.setCustomValidity('');
     }
