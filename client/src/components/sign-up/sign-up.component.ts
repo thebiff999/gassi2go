@@ -100,7 +100,7 @@ class SignUpComponent extends PageMixin(LitElement) {
                   name="firstName"
                   automcomplete="off"
                 />
-                <div class="invalid-feedback">Vorname ist erforderlich</div>
+                <div class="invalid-feedback">Dein Vorname ist erforderlich</div>
               </div>
 
               <div class="input-group col-md-12">
@@ -116,7 +116,7 @@ class SignUpComponent extends PageMixin(LitElement) {
                   name="lastName"
                   automcomplete="off"
                 />
-                <div class="invalid-feedback">Nachname ist erforderlich</div>
+                <div class="invalid-feedback">Dein Nachname ist erforderlich</div>
               </div>
 
               <div class="input-group col-md-12">
@@ -124,7 +124,7 @@ class SignUpComponent extends PageMixin(LitElement) {
                   <span class="input-group-text" for="email">Email</span>
                 </div>
                 <input class="form-control" type="email" required id="email" name="email" automcomplete="off" />
-                <div class="invalid-feedback">E-Mail ist erforderlich und muss gültig sein</div>
+                <div class="invalid-feedback">Eine E-Mail-Adresse ist erforderlich und muss gültig sein</div>
               </div>
             </fieldset>
 
@@ -143,8 +143,7 @@ class SignUpComponent extends PageMixin(LitElement) {
                   automcomplete="off"
                 />
                 <small id="passwordHelpBlock" class="form-text text-muted">
-                  Dein Passwort muss 8-20 Zeichen lang sein. Es darf Buchstaben und Nummer enthalten, aber keine
-                  Leerzeichen oder Spezialbuchstaben.
+                  Dein Passwort muss 8-20 Zeichen lang sein. Es darf Buchstaben, Zahlen und Sonderzeichen enthalten.
                 </small>
                 <div class="invalid-feedback">Passwort ist erforderlich und muss mind. 8 Zeichen lang sein</div>
               </div>
@@ -175,7 +174,7 @@ class SignUpComponent extends PageMixin(LitElement) {
 
             <fieldset>
               <button class="btn btn-primary btn-lg" type="button" id="absenden" @click="${this.submit}">
-                KONTO ERSTELLEN
+                Konto Erstellen
               </button>
             </fieldset>
 
@@ -190,33 +189,25 @@ class SignUpComponent extends PageMixin(LitElement) {
     `;
   }
 
-  /**
-   * Button, which navigate to "userAdministration/sign-up"
-   */
+ 
   async navigateToSignUp() {
     try {
-      router.navigate('userAdministration/sign-up');
+      router.navigate('user/sign-up');
     } catch ({ message }) {
       this.setNotification({ errorMessage: message });
     }
   }
 
-  /**
-   * Button, which navigate to "userAdministration/sign-in"
-   */
+  
   async navigateToSignIn() {
     try {
-      router.navigate('userAdministration/sign-in');
+      router.navigate('user/sign-in');
     } catch ({ message }) {
       this.setNotification({ errorMessage: message });
     }
   }
 
-  /**
-   * submit accountData and POST to "/userAdministration/sign-up"
-   * Server send JWT back
-   * TODO
-   */
+  
   async submit() {
     if (this.isFormValid()) {
       const accountData = {
@@ -239,7 +230,7 @@ class SignUpComponent extends PageMixin(LitElement) {
 
   isFormValid() {
     if (this.passwordElement.value !== this.passwordCheckElement.value) {
-      this.passwordCheckElement.setCustomValidity('Passwörter müssen gleich sein');
+      this.passwordCheckElement.setCustomValidity('Beide Passwörter müssen gleich sein');
     } else {
       this.passwordCheckElement.setCustomValidity('');
     }

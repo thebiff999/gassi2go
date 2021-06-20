@@ -11,9 +11,6 @@ class AccountComponent extends PageMixin(LitElement) {
   // eslint-disable-line @typescript-eslint/no-unused-vars
 
   static styles = [
-    //css`
-    //${unsafeCSS(sharedCSS)}
-    //`,
     css`
       ${unsafeCSS(componentCSS)}
     `
@@ -32,42 +29,32 @@ class AccountComponent extends PageMixin(LitElement) {
     return html`
       ${this.renderNotification()}
 
-        <!-- SIDENAV BEGIN -->
+      <!-- SIDENAV BEGIN -->
 
-        <div class='sidenav'>
-            <img src='../src/assets/img/login_dog.jpg>
-        </div>
+      <div class="sidenav"><img src='../src/assets/img/login_dog.jpg></div>
 
-        <!-- SIDENAV END -->
+      <!-- SIDENAV END -->
 
-        <div class='container'>
+      <div class="container">
         <!-- NAVIGATION BEGIN -->
 
-        <ul class='nav nav-pills flex-sm-row flex-nowrap' id='navigation'>
-          <li class='nav-item'>
-            <a 
-              class='nav-link flex-sm-fill text-sm-center' 
-              id = 'navigateToAccount'
-              @click='${this.navigateToAccount}'
-            >
+        <ul class="nav nav-pills flex-sm-row flex-nowrap" id="navigation">
+          <li class="nav-item">
+            <a class="nav-link flex-sm-fill text-sm-center" id="navigateToAccount" @click="${this.navigateToAccount}">
               Dein Account
             </a>
           </li>
-          <li class='nav-item'>
-            <a 
-              class='nav-link active flex-sm-fill text-sm-center' 
-              id = 'navigateToPassword'
-              @click='${this.navigateToPassword}'
+          <li class="nav-item">
+            <a
+              class="nav-link active flex-sm-fill text-sm-center"
+              id="navigateToPassword"
+              @click="${this.navigateToPassword}"
             >
               Passwort ändern
             </a>
           </li>
-          <li class='nav-item'>
-            <a 
-              class='nav-link flex-sm-fill text-sm-center'
-              id = 'navigateToSetting'
-              @click='${this.navigateToSetting}'
-            >
+          <li class="nav-item">
+            <a class="nav-link flex-sm-fill text-sm-center" id="navigateToSetting" @click="${this.navigateToSetting}">
               Einstellungen
             </a>
           </li>
@@ -75,75 +62,70 @@ class AccountComponent extends PageMixin(LitElement) {
 
         <!-- NAVIGATION END -->
 
-
         <!-- MAIN BEGIN -->
-    
-        <div class='main'>
-          <div class='col-md-6 col-sm-12'>
-            <div class='login-form'>
 
+        <div class="main">
+          <div class="col-md-6 col-sm-12">
+            <div class="login-form">
               <h1>Dein Passwort</h1>
-            ´
+              ´
 
               <!-- PASSWORD CHANGE FORM BEGIN -->
 
               <form>
-                <fieldset id='passwordChange'>
-                    <div class='form-group'>
-                      <label class='control-label' for='oldPassword'>Altes Passwort</label>
-                      <input
-                        class='form-control'
-                        type='password'
-                        required
-                        minlength='10'
-                        id='password'
-                        placeholder = '********'
-                        name='oldPassword'
-                        automcomplete='off'
-                      />
-                      <div class='invalid-feedback'>
-                        Passwort ist erforderlich und muss mind. 10 Zeichen lang sein
-                      </div>
-                    </div>
+                <fieldset id="passwordChange">
+                  <div class="form-group">
+                    <label class="control-label" for="oldPassword">Altes Passwort</label>
+                    <input
+                      class="form-control"
+                      type="password"
+                      required
+                      minlength="10"
+                      id="password"
+                      placeholder="********"
+                      name="oldPassword"
+                      automcomplete="off"
+                    />
+                    <div class="invalid-feedback">Passwort ist erforderlich und muss mind. 10 Zeichen lang sein</div>
+                  </div>
 
-                    <div class='form-group'>
-                      <label class='control-label' for='newPassword'>Neues Passwort</label>
-                      <input
-                        class='form-control'
-                        type='password'
-                        required
-                        minlength='10'
-                        id='password-check'
-                        placeholder = '********'
-                        name='newPassword'
-                        automcomplete='off'
-                      />
-                      <div class='invalid-feedback'>
-                        Erneute Passworteingabe ist erforderlich und muss mit der ersten
-                        Passworteingabe übereinstimmen
-                      </div>
+                  <div class="form-group">
+                    <label class="control-label" for="newPassword">Neues Passwort</label>
+                    <input
+                      class="form-control"
+                      type="password"
+                      required
+                      minlength="10"
+                      id="password-check"
+                      placeholder="********"
+                      name="newPassword"
+                      automcomplete="off"
+                    />
+                    <div class="invalid-feedback">
+                      Erneute Passworteingabe ist erforderlich und muss mit der ersten Passworteingabe übereinstimmen
                     </div>
+                  </div>
 
-                    <div class='form-group'>
-                      <label class='control-label' for='newPasswordCheck'>Neues Passwort bestätigen</label>
-                      <input
-                        class='form-control'
-                        type='password'
-                        required
-                        minlength='10'
-                        id='password'
-                        placeholder = '********'
-                        name='newPasswordCheck'
-                        automcomplete='off'
-                      />
-                      <small id='passwordHelpBlock' class='form-text text-muted'>
-                        Dein Passwort muss 8-20 Zeichen lang sein. Es darf Buchstaben und Nummer
-                        enthalten, aber keine Leerzeichen oder Sonderzeichen.
-                      </small>
-                      <div class='invalid-feedback'>
-                        Passwort ist erforderlich und muss mind. 8 Zeichen lang sein
-                      </div>
+                  <div class="form-group">
+                    <label class="control-label" for="newPasswordCheck">Neues Passwort bestätigen</label>
+                    <input
+                      class="form-control"
+                      type="password"
+                      required
+                      minlength="10"
+                      id="password"
+                      placeholder="********"
+                      name="newPasswordCheck"
+                      automcomplete="off"
+                    />
+                    <small id="passwordHelpBlock" class="form-text text-muted">
+                      Dein Passwort muss 8-20 Zeichen lang sein. Es darf Buchstaben und Nummer enthalten, aber keine
+                      Leerzeichen oder Sonderzeichen.
+                    </small>
+                    <div class="invalid-feedback">
+                      Passwort ist erforderlich und muss mindestens 8 Zeichen lang sein
                     </div>
+                  </div>
                 </fieldset>
 
                 <!-- PASSWORD CHANGE FORM END -->
@@ -151,26 +133,19 @@ class AccountComponent extends PageMixin(LitElement) {
                 <!-- SUBMIT BEGIN -->
 
                 <fieldset>
-                  <button 
-                    class='btn btn-primary btn-lg' 
-                    type='button'
-                    id='absenden'
-                    @click='${this.submit}'
-                  >
+                  <button class="btn btn-primary btn-lg" type="button" id="absenden" @click="${this.submit}">
                     ÄNDERN
                   </button>
-                </fielset>
+                </fieldset>
 
                 <!-- SUBMIT END -->
-
               </form>
-
             </div>
           </div>
         </div>
-        </div>
+      </div>
 
-        <!-- MAIN END -->
+      <!-- MAIN END -->
     `;
   }
 
@@ -186,7 +161,7 @@ class AccountComponent extends PageMixin(LitElement) {
   }
 
   /**
-   * navigate to /userAdministration/password
+   * navigate to /user/password
    */
   async navigateToPassword() {
     try {
