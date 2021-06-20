@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* Autor: Martin Feldman */
 
 import { css, customElement, html, LitElement, query, unsafeCSS } from 'lit-element';
@@ -5,7 +6,6 @@ import { httpClient } from '../../http-client';
 import { router } from '../../router';
 import { PageMixin } from '../page.mixin';
 
-//const sharedCSS = require('../shared.scss');
 const componentCSS = require('./sign-up.component.scss');
 
 @customElement('app-sign-up')
@@ -13,9 +13,6 @@ class SignUpComponent extends PageMixin(LitElement) {
   // eslint-disable-line @typescript-eslint/no-unused-vars
 
   static styles = [
-    //css`
-    //${unsafeCSS(sharedCSS)}
-    //`,
     css`
       ${unsafeCSS(componentCSS)}
     `
@@ -216,7 +213,7 @@ class SignUpComponent extends PageMixin(LitElement) {
   }
 
   /**
-   * submit accountData and POST to "/userAdministration/sign-up"
+   * submit accountData and POST to "/user/sign-up"
    * Server send JWT back
    * TODO
    */
