@@ -12,7 +12,7 @@ const router = express.Router();
 //returns all open entries
 router.get('/', authService.expressMiddleware, async (req, res) => {
     try {
-        console.log('received get on /entries');
+        console.log('GET-Request on /entries');
         const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
         const filter: Partial<Entry> = {status: 'open'};
         const entries = (await entryDAO.findAll(filter)).map(entry => {
@@ -34,7 +34,7 @@ router.get('/', authService.expressMiddleware, async (req, res) => {
 
 //returnes the entry with the requested id
 router.get('/id/:id', authService.expressMiddleware, async(req, res) => {
-    console.log('received get on /entries/' + req.params.id);
+    console.log('GET-Request on /entries/' + req.params.id);
     //validate that the id only contains expected characters
     var regexp = /[0-9/\-]+/
     if (!req.params.id.match(regexp)) {
@@ -64,13 +64,12 @@ router.get('/id/:id', authService.expressMiddleware, async(req, res) => {
 //returns all entries assigned to the requesting user
 router.get('/assigned', authService.expressMiddleware ,async (req, res) => {
     try {
-        console.log('received get on /entries/assigned')
+        console.log('GET-Request on /entries/assigned')
         const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
         const filter: Partial<Entry> = { requesterId: res.locals.user.id, status: 'assigned' };
         const entries = (await entryDAO.findAll(filter)).map(entry => {
             return {...entry};
         });
-        console.log(entries);
         if (entries.length > 0) {
             res.status(200).json({ results: entries});
         }
@@ -86,7 +85,7 @@ router.get('/assigned', authService.expressMiddleware ,async (req, res) => {
 
 //creates a new entry
 router.post('/', authService.expressMiddleware ,async (req,res) => {
-    console.log('received post on /entries');
+    console.log('POST-Request on /entries');
 
     //validate that the user is owner of the dog
     try {
@@ -130,7 +129,7 @@ router.post('/', authService.expressMiddleware ,async (req,res) => {
 
 //update entry with the requesterId
 router.patch('/id/:id', authService.expressMiddleware,async (req, res) => {
-    console.log('received patch on /entries/id/' + req.params.id);
+    console.log('PATCH-Request on /entries/id/' + req.params.id);
 
     const invalidRequest = (message = 'Ungültige Nachfrage') => {
         res.status(400).json(message);
@@ -174,7 +173,7 @@ router.patch('/id/:id', authService.expressMiddleware,async (req, res) => {
 });
 
 router.delete('/user/:id', authService.expressMiddleware, async (req, res) => {
-    console.log('received delete on /user/' + req.params.id);
+    console.log('DELETE-Request on /user/' + req.params.id);
 
     //validate that the requested id matches the user id
     if (req.params.id != res.locals.user.id) {

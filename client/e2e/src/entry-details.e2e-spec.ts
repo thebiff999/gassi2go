@@ -6,6 +6,7 @@ import config from './config';
 import { Entry } from '../../../api-server/src/models/entry';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
+import path from 'node:path';
 
 describe('entry-details', () => {
   let browser: Browser;
@@ -63,8 +64,9 @@ describe('entry-details', () => {
         await userSession.createEntry(entry);
 
         await page.goto('http://localhost:8080/app/');
-        await page.click('text=Führ mich aus');
-        expect(await page.$('app-entry-details img')).not.toBeNull();
+        await Promise.all([page.click('text=Führ mich aus'), page.waitForNavigation()]);
+        await page.screenshot({path: 'screenshots/entry-details.png'});
+        expect(await page.$('text=' + name)).not.toBeNull();
     }, 10000);
 
     it('should render an error when accessing assigned entry-details', async () => {
@@ -78,7 +80,7 @@ describe('entry-details', () => {
         const url = await page.url();
         await page.click('text=Ich führe dich aus');
         await page.goto('http://localhost:8080/app/');
-        await page.goto(url);
+        await page.goto(url, {waitUntil: 'networkidle'});
 
         expect(await page.$('text=Der Eintrag ist bereits im Status "zugeordnet"')).not.toBeNull();
     }, 10000);

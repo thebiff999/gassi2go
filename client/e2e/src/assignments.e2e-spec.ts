@@ -6,7 +6,7 @@ import config from './config';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 
-describe('entries', () => {
+describe('assignments', () => {
   let browser: Browser;
   let context: BrowserContext;
   let page: Page;
@@ -40,7 +40,6 @@ describe('entries', () => {
         entlohnung: 20,
         status: 'open',
         beschreibung: 'Wuffi ist ein ganz lieber und kann gut mit Kindern',
-        hundId: '12345',
         hundName: name,
         hundRasse: 'Dackel',
         lat: '5.0000',
@@ -49,32 +48,44 @@ describe('entries', () => {
         imgData: image
     }
 
-    it('should render the title "Auftragssuche"', async() => {
-        await page.goto(config.clientUrl('/search'));
-        const pageTitle = await page.textContent('app-header .title h2');
-        expect(pageTitle).toBe('Auftragssuche');
-    });
 
-    it('should render newly added entries', async () => {
-        
+    it('should render the assignment', async () => {
         await userSession.createDog(name);
         await userSession.createEntry(entry);
 
-        await page.goto('http://localhost:8080/app');
-        expect(await page.$('text=Name: ' + name)).not.toBeNull();
+        await page.goto('http://localhost:8080/app/');
+        await Promise.all([page.click('text=Führ mich aus'), page.waitForNavigation()]);
+        await page.click('text=Ich führe dich aus');
+        await page.goto('http://localhost:8080/app/user/entries');
+        await page.screenshot({path: 'screenshots/assigned-assignment.png'});
+        const text = 'text=' + name;
+        expect(await page.$(text)).not.toBeNull();
 
+    }, 10000);
+
+    it('should not render assignments', async () => {
+        await page.goto('http://localhost:8080/app/user/entries');
+        const text = 'text=' + name;
+        expect(await page.$(text)).toBeNull();
     });
 
-    it('should not render an assigend entry', async () => {
-        
+    it('should display an error message when there are no assigned entries', async() => {
+        await page.goto('http://localhost:8080/app/user/entries');
+        expect(await page.$('text=Keine zugeordneten Aufträge')).not.toBeNull();
+    });
+    
+    it('should delete done assignments from frontend', async () => {
         await userSession.createDog(name);
         await userSession.createEntry(entry);
 
         await page.goto('http://localhost:8080/app/');
         await page.click('text=Führ mich aus');
         await page.click('text=Ich führe dich aus');
-        await page.goto('http://localhost:8080/app/');
-        expect(await page.$('text=Name: ' + name)).toBeNull();
+        await page.goto('http://localhost:8080/app/user/entries');
+        await page.click('.button');
+        await page.screenshot({path: 'screenshots/done-assignment.png'});
+        const text = 'text=' + name;
+        expect(await page.$(text)).toBeNull();
     });
 
 });
