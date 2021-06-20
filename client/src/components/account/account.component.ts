@@ -215,7 +215,7 @@ class AccountComponent extends PageMixin(LitElement) {
                   >
                     ÄNDERN
                   </button>
-                </fielset>
+                </fieldset>
 
                 <!-- SUBMIT END -->
 

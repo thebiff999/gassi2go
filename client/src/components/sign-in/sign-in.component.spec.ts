@@ -22,6 +22,9 @@ describe('app-sign-in', () => {
     element.remove();
   });
 
+  /**
+   * button should navigate to SignIn
+   */
   it('button should navigate to SignIn', async () => {
     const navigate = element.shadowRoot!.querySelector('#navigateToSignIn') as HTMLElement;
     navigate.click();
@@ -32,6 +35,9 @@ describe('app-sign-in', () => {
     expect(sidenav.className).toBe('sidenav');
   });
 
+  /**
+   * button should navigate to SignUp
+   */
   it('button should navigate to SignUp', async () => {
     const navigate = element.shadowRoot!.querySelector('#navigateToSignUp') as HTMLElement;
     navigate.click();
@@ -42,6 +48,10 @@ describe('app-sign-in', () => {
     expect(sidenav.className).toBe('sidenav');
   });
 
+  /**
+   * submit() should route to /search
+   * TODO
+   */
   it('button should navigate to SignIn"', async () => {
     const submit = element.shadowRoot!.querySelector('#absenden') as HTMLElement;
     submit.click();
@@ -57,11 +67,19 @@ describe('app-sign-in', () => {
     expect(main.className).toBe('main');
   });
 
+  /**
+   * find poster ans should say, if it is shown
+   * TODO
+   */
   it('should find the poster', async () => {
     const poster = element.shadowRoot!.querySelector('#poster') as HTMLElement;
     expect(poster.id).toBe('poster');
   });
 
+  /**
+   * find email textfield ans should say, if it is shown
+   * TODO
+   */
   it('should find the textfield', async () => {
     const emailText = element.shadowRoot!.querySelector('#email') as HTMLElement;
     expect(emailText.id).toBe('email');
