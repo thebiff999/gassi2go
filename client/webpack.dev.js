@@ -34,14 +34,18 @@ module.exports = {
           'to-string-loader',
           { loader: 'css-loader', options: { sourceMap: true, esModule: false } },
           { loader: 'postcss-loader', options: { sourceMap: true } },
-          { loader: 'sass-loader', options: { sourceMap: true , sassOptions: {
-            plugins: function () { // post css plugins, can be exported to postcss.config.js
-              return [
-                require('precss'),
-                require('autoprefixer')
-              ];
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+              sassOptions: {
+                plugins: function () {
+                  // post css plugins, can be exported to postcss.config.js
+                  return [require('precss'), require('autoprefixer')];
+                }
+              }
             }
-          } } }
+          }
         ]
       },
       {
@@ -50,13 +54,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [{loader: 'css-loader'}]
+        use: [{ loader: 'css-loader' }]
       },
       {
         test: /\.(png|jpe?g|gif)?$/,
-        use: [{ loader: 'file-loader'}]
+        use: [{ loader: 'file-loader' }]
       }
-      
     ]
   },
   plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })]

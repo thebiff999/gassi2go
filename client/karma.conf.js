@@ -31,7 +31,7 @@ module.exports = function (config) {
           },
           {
             test: /\.(png|jpe?g|gif)?$/,
-            use: [{ loader: 'file-loader'}]
+            use: [{ loader: 'file-loader' }]
           },
           {
             test: /\.ts$/,

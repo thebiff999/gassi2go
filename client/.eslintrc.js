@@ -7,6 +7,12 @@ module.exports = {
   parserOptions: { ecmaVersion: 2015 },
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
   rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto'
+      }
+    ],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/member-ordering': 'error',
     '@typescript-eslint/no-non-null-assertion': 'off',
@@ -14,7 +20,7 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-duplicate-imports': 'error',
     //'@typescript-eslint/complexity': 'error',
-    '@typescript-eslint/no-empty-function': 'warn',
+    '@typescript-eslint/no-empty-function': 'warn'
     //'@typescript-eslint/curly': 'error',
     //'@typescript-eslint/yoda': 'warn',
     //'@typescript-eslint/max-len': ['warn', {"code": 150 ,"ignoreUrls": true}]

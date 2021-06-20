@@ -57,7 +57,7 @@ describe('app-assignments', () => {
       description: 'Bitte einmal auf diese süße Dame für 2 Nächte aufpassen. Wird auch gut bezahlt!',
       dogRace: 'Bernasenne'
     }
-  ]
+  ];
 
   it('should fetch the assigned entries', async () => {
     spyOn(httpClient, 'get');
@@ -66,7 +66,7 @@ describe('app-assignments', () => {
   });
 
   it('should render the fetched entries', async () => {
-    spyOn(Cookies, 'get').and.returnValue({lat: "52.248286199999995", lng: "7.376411999999998"});
+    spyOn(Cookies, 'get').and.returnValue({ lat: '52.248286199999995', lng: '7.376411999999998' });
     spyOn(httpClient, 'get').and.returnValue(
       Promise.resolve({
         json() {
@@ -84,7 +84,7 @@ describe('app-assignments', () => {
   });
 
   it('should render the correct type', async () => {
-    spyOn(Cookies, 'get').and.returnValue({lat: "52.248286199999995", lng: "7.376411999999998"});
+    spyOn(Cookies, 'get').and.returnValue({ lat: '52.248286199999995', lng: '7.376411999999998' });
     spyOn(httpClient, 'get').and.returnValue(
       Promise.resolve({
         json() {
@@ -106,7 +106,7 @@ describe('app-assignments', () => {
   });
 
   it('should submit the done assignment', async () => {
-    spyOn(Cookies, 'get').and.returnValue({lat: "52.248286199999995", lng: "7.376411999999998"});
+    spyOn(Cookies, 'get').and.returnValue({ lat: '52.248286199999995', lng: '7.376411999999998' });
     spyOn(httpClient, 'get').and.returnValue(
       Promise.resolve({
         json() {
@@ -120,8 +120,8 @@ describe('app-assignments', () => {
     await element.updateComplete;
 
     spyOn(httpClient, 'patch').and.stub();
-    let url = '/entries/id/c2c0f8d1-8301-402e-979c-9a0f345a9093';
-    let body =     {
+    const url = '/entries/id/c2c0f8d1-8301-402e-979c-9a0f345a9093';
+    const body = {
       dogName: 'Rocky',
       lng: '7.61257',
       lat: '51.97612',
@@ -137,10 +137,10 @@ describe('app-assignments', () => {
       pay: '25.00',
       description: 'Rocky ist super lieb, aber ein wahres Kraftpaket. Beim Gassi gehen sind Mukkis von Nöten',
       dogRace: 'Deutsche Dogge'
-    }
+    };
 
     const buttons = element.shadowRoot!.querySelectorAll('.btn-primary');
-    let button: HTMLElement = buttons[0] as HTMLElement;
+    const button: HTMLElement = buttons[0] as HTMLElement;
     button.click();
 
     expect(httpClient.patch).toHaveBeenCalledWith(url, body);
@@ -154,6 +154,4 @@ describe('app-assignments', () => {
 
     expect(router.navigate).toHaveBeenCalledWith('/user/sign-in');
   });
-
-
-})
+});

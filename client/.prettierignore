@@ -1,0 +1,4 @@
+*.js
+**/dist/main.js
+**/typings/*.*
+index.d.ts
