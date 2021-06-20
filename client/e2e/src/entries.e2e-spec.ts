@@ -59,12 +59,12 @@ describe('entries', () => {
     expect(pageTitle).toBe('Auftragssuche');
   });
 
-  /*it('should render newly added entries', async () => {
+  it('should render newly added entries', async () => {
     await userSession.createEntry(entry);
 
-    await page.goto('http://localhost:8080/app');
+    await page.goto('http://localhost:8080/app', { waitUntil: 'networkidle' });
     expect(await page.$('text=Name: ' + name)).not.toBeNull();
-  });*/
+  });
 
   it('should not render an assigend entry', async () => {
     await userSession.createEntry(entry);
