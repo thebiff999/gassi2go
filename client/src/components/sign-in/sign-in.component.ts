@@ -32,86 +32,89 @@ class SignInComponent extends PageMixin(LitElement) {
 
   render() {
     return html`
-    ${this.renderNotification()}
+      ${this.renderNotification()}
 
+      <!-- SIDENAV with Poster -->
 
-    <!-- MAIN-FORM -->
-    
-        <div class='main container background' id='main'>
-          <div class="row ">
-            <div class='col-md-6 col-sm-6'>
+      <div class="sidenav" id="sidenav">
+        <img src="../../resources/images/login_dog.jpeg" />
+      </div>
 
-                    <button
-                      class='btn btn-primary btn-lg'
-                      type='button'
-                      id='navigateToSignIn'
-                      @click='${this.navigateToSignIn}'
-                    >
-                      ANMELDEN
-                    </button>
-                  
-                    <button
-                      class='btn btn-primary btn-lg'
-                      type='button'
-                      id='navigateToSignUp'
-                      @click='${this.navigateToSignUp}'
-                    >
-                      REGISTRIEREN
-                    </button>
+      <!-- SIDENAV END -->
 
-                <!-- NAVIGATE BUTTON END -->
+      <!-- MAIN-FORM -->
 
-  
+      <div class="main container background" id="main">
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <form>
+              <button
+                class="btn btn-primary btn-lg"
+                type="button"
+                id="navigateToSignIn"
+                @click="${this.navigateToSignIn}"
+              >
+                ANMELDEN
+              </button>
+
+              <button
+                class="btn btn-primary btn-lg"
+                type="button"
+                id="navigateToSignUp"
+                @click="${this.navigateToSignUp}"
+              >
+                REGISTRIEREN
+              </button>
+            </form>
+
+            <!-- NAVIGATE BUTTON END -->
+
             <!-- LOGIN-FORM -->
 
             <form>
-
               <!-- LOGIN-TEXT-FORM -->
 
-              <fieldset id='login'>
-                <div class='input-group col-md-12'>
+              <fieldset id="login">
+                <div class="input-group col-md-14">
                   <div class="input-group-prepend">
-                    <span class='input-group-text' for='email'>Email</span>
+                    <span class="input-group-text" for="email">Email</span>
                   </div>
                   <input
-                    class='form-control'
-                    type='text'
+                    class="form-control"
+                    type="text"
                     autofocus
                     required
-                    minlength='2'
-                    maxlength='40'
-                    id='email'
-                    name='email'
-                    placeholder='email@email.com'
-                    automcomplete='off'
+                    minlength="2"
+                    maxlength="40"
+                    id="email"
+                    name="email"
+                    placeholder="email@email.com"
+                    automcomplete="off"
                   />
-                  <small 
-                    id='emailHelp' 
-                    class='form-text 
-                    text-muted'>
+                  <small
+                    id="emailHelp"
+                    class="form-text 
+                    text-muted"
+                  >
                   </small>
-                  <div class='invalid-feedback'>
-                    E-Mail ist erforderlich und muss gültig sein
-                  </div>
+                  <div class="invalid-feedback">E-Mail ist erforderlich und muss gültig sein</div>
                 </div>
 
-                <div class='input-group col-md-12'>
+                <div class="input-group col-md-14">
                   <div class="input-group-prepend">
-                  <span class='input-group-text' for='password'>Passwort</span>
+                    <span class="input-group-text" for="password">Passwort</span>
                   </div>
                   <input
-                    class='form-control'
-                    type='password'
+                    class="form-control"
+                    type="password"
                     required
-                    minlength='8'
-                    id='password'
-                    name='password'
-                    placeholder='Password'
-                    automcomplete='off'
+                    minlength="8"
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                    automcomplete="off"
                   />
-                  <div class='invalid-feedback'>
-                    Passwort ist erforderlich
-                  </div>
+                  <div class="invalid-feedback">Passwort ist erforderlich</div>
                 </div>
               </fieldset>
 
@@ -120,27 +123,20 @@ class SignInComponent extends PageMixin(LitElement) {
               <!-- LOGIN-SUBMIT-BUTTON -->
 
               <fieldset>
-                <button 
-                  class='btn btn-primary btn-lg' 
-                  type='button'
-                  id='absenden'
-                  @click='${this.submit}'
-                >
+                <button class="btn btn-primary btn-lg" type="button" id="absenden" @click="${this.submit}">
                   ANMELDEN
                 </button>
-              </fielset>
+              </fieldset>
 
               <!-- LOGIN-SUBMIT-BUTTON-END -->
-
             </form>
 
             <!-- LOGIN-FORM-END -->
           </div>
         </div>
-    </div>
+      </div>
 
-    <!-- MAIN-FORM-END -->
-
+      <!-- MAIN-FORM-END -->
     `;
   }
 
