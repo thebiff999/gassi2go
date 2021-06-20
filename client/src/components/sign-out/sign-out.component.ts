@@ -36,7 +36,7 @@ class SignOutComponent extends PageMixin(LitElement) {
         </h1>
         <h3
           <nobr>  
-            &hellip; bis zum nächsten Mal
+            &hellip; bis zum nächsten Mal!
           </nobr>
         </h3>
         <button 
@@ -55,7 +55,7 @@ class SignOutComponent extends PageMixin(LitElement) {
     try {
       await httpClient.delete('users/sign-out');
       this.setNotification({ infoMessage: 'Sie wurden erfolgreich abgemeldet!' });
-      router.navigate('userAdministration/sign-in');
+      router.navigate('user/sign-in');
     } catch ({ message }) {
       this.setNotification({ errorMessage: message });
     }

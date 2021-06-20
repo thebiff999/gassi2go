@@ -190,33 +190,22 @@ class SignUpComponent extends PageMixin(LitElement) {
     `;
   }
 
-  /**
-   * Button, which navigate to "userAdministration/sign-up"
-   */
   async navigateToSignUp() {
     try {
-      router.navigate('userAdministration/sign-up');
+      router.navigate('user/sign-up');
     } catch ({ message }) {
       this.setNotification({ errorMessage: message });
     }
   }
 
-  /**
-   * Button, which navigate to "userAdministration/sign-in"
-   */
   async navigateToSignIn() {
     try {
-      router.navigate('userAdministration/sign-in');
+      router.navigate('user/sign-in');
     } catch ({ message }) {
       this.setNotification({ errorMessage: message });
     }
   }
 
-  /**
-   * submit accountData and POST to "/user/sign-up"
-   * Server send JWT back
-   * TODO
-   */
   async submit() {
     if (this.isFormValid()) {
       const accountData = {
