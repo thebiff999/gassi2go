@@ -23,7 +23,7 @@ class SignOutComponent extends PageMixin(LitElement) {
       <div class='sidenav' id='sidenav'>
       </div>
 
-      <div class='main' id='main'>
+      <div class='main' id='main'></div>
         <h1>
           <nobr>
             Dein Hund ist in guten Händen

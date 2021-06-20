@@ -87,6 +87,24 @@ class SignUpComponent extends PageMixin(LitElement) {
             <fieldset id="register1">
               <div class="input-group col-md-14">
                 <div class="input-group-prepend">
+                  <span class="input-group-text" for="screenName">Nickname</span>
+                </div>
+                <input
+                  class="form-control"
+                  type="text"
+                  autofocus
+                  required
+                  minlength="2"
+                  id="screenName"
+                  name="screenName"
+                  automcomplete="off"
+                />
+                <div class="valid-feedback">Sieht gut aus!</div>
+                <div class="invalid-feedback">Nickname ist erforderlich</div>
+              </div>
+              <div class="invalid-feedback">Vorname ist erforderlich</div>
+              <div class="input-group col-md-14">
+                <div class="input-group-prepend">
                   <span class="input-group-text" for="firstName">Vorname</span>
                 </div>
                 <input
