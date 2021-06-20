@@ -62,7 +62,7 @@ describe('app-auftragserstellung', () => {
 
   it('should set the min-attribute of the date input', async () => {
     await element.updateComplete;
-    let input = element.shadowRoot!.querySelector('#auftragDatum') as HTMLInputElement;
+    const input = element.shadowRoot!.querySelector('#auftragDatum') as HTMLInputElement;
     expect(input.getAttribute('min')).toBeDefined();
   });
 });

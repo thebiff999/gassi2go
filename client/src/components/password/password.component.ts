@@ -11,19 +11,21 @@ class AccountComponent extends PageMixin(LitElement) {
   // eslint-disable-line @typescript-eslint/no-unused-vars
 
   static styles = [
+    // eslint-disable-next-line prettier/prettier
+
     css`
       ${unsafeCSS(componentCSS)}
     `
   ];
 
   @query('form')
-  form!: HTMLFormElement;
+  private form!: HTMLFormElement;
 
   @query('#email')
-  emailElement!: HTMLInputElement;
+  private emailElement!: HTMLInputElement;
 
   @query('#password')
-  passwordElement!: HTMLInputElement;
+  private passwordElement!: HTMLInputElement;
 
   render() {
     return html`
@@ -31,7 +33,7 @@ class AccountComponent extends PageMixin(LitElement) {
 
       <!-- SIDENAV BEGIN -->
 
-      <div class="sidenav"><img src='../src/assets/img/login_dog.jpg></div>
+      <div class="sidenav"></div>
 
       <!-- SIDENAV END -->
 
@@ -122,9 +124,7 @@ class AccountComponent extends PageMixin(LitElement) {
                       Dein Passwort muss 8-20 Zeichen lang sein. Es darf Buchstaben und Nummer enthalten, aber keine
                       Leerzeichen oder Sonderzeichen.
                     </small>
-                    <div class="invalid-feedback">
-                      Passwort ist erforderlich und muss mindestens 8 Zeichen lang sein
-                    </div>
+                    <div class="invalid-feedback">Passwort ist erforderlich und muss mind. 8 Zeichen lang sein</div>
                   </div>
                 </fieldset>
 
@@ -149,34 +149,25 @@ class AccountComponent extends PageMixin(LitElement) {
     `;
   }
 
-  /**
-   * navigate to /userAdministration/account
-   */
   async navigateToAccount() {
     try {
-      router.navigate('userAdministration/account');
+      router.navigate('user/account');
     } catch ({ message }) {
       this.setNotification({ errorMessage: message });
     }
   }
 
-  /**
-   * navigate to /user/password
-   */
   async navigateToPassword() {
     try {
-      router.navigate('userAdministration/password');
+      router.navigate('user/password');
     } catch ({ message }) {
       this.setNotification({ errorMessage: message });
     }
   }
 
-  /**
-   * navigate to /userAdministration/setting
-   */
   async navigateToSetting() {
     try {
-      router.navigate('userAdministration/setting');
+      router.navigate('user/setting');
     } catch ({ message }) {
       this.setNotification({ errorMessage: message });
     }
@@ -189,8 +180,8 @@ class AccountComponent extends PageMixin(LitElement) {
         password: this.passwordElement.value
       };
       try {
-        await httpClient.post('app/userAdministration/update', authData);
-        router.navigate('app/userAdministration/account');
+        await httpClient.post('app/user/update', authData);
+        router.navigate('app/user/account');
       } catch ({ message }) {
         this.setNotification({ errorMessage: message });
       }

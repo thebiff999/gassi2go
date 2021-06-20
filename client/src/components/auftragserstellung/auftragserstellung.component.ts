@@ -6,9 +6,7 @@ import {
   html,
   internalProperty,
   LitElement,
-  property,
   query,
-  queryAll,
   unsafeCSS
 } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';

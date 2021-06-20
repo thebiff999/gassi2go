@@ -1,4 +1,5 @@
-/* Autor: Simon Flathmann */
+/* Autor: Simon Flathmann */ 
+
 import { css, customElement, html, LitElement, query, unsafeCSS } from 'lit-element';
 import { router } from '../../router';
 import { PageMixin } from '../page.mixin';
