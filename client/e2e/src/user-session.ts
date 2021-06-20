@@ -77,10 +77,7 @@ export class UserSession {
   }
 
   //Autor: Simon Flathmann
-  async createDog(name?: string) {
-    if (name) {
-      this.name = name;
-    }
+  async createDog() {
     await fetch(config.serverUrl('hunde'), {
       method: 'POST',
       body: JSON.stringify(this.dogData()),
@@ -91,26 +88,14 @@ export class UserSession {
   //Autor: Dennis Heuermann
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async createEntry(entry: any) {
-    //fetching dogs to get the dogId
-    console.log('creating dog');
-    const response1 = await fetch(config.serverUrl('hunde'), {
-      method: 'GET',
-      headers: { 'Cookie': `jwt-token=${this.token}`, 'Content-Type': 'application/json' }
-    });
-    console.log('response status ' + response1.status);
-    const dogs = (await response1.json()).results;
-    const dog = dogs[0];
-    console.log('dog name ' + dog.name);
-    entry.hundId = dog.id;
-
     //creating an entry
     console.log('creating entry');
-    const response2 = await fetch(config.serverUrl('entries'), {
+    const response = await fetch(config.serverUrl('entries'), {
       method: 'POST',
       body: JSON.stringify(entry),
       headers: { 'Cookie': `jwt-token=${this.token}`, 'Content-Type': 'application/json' }
     });
-    console.log('response status ' + response2.status);
+    console.log('response status ' + response.status);
   }
 
   //Autor: Dennis Heuermann
