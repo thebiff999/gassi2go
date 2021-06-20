@@ -166,7 +166,6 @@ class SignInComponent extends PageMixin(LitElement) {
     }
   }
 
-  
   async submit() {
     if (this.isFormValid()) {
       const loginData = {
