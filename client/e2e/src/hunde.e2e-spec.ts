@@ -54,6 +54,6 @@ describe('/user/dogs/new', () => {
         await Promise.all([page.waitForResponse('**'), await page.click('text=Löschen')]);
         const dogsAfterDelete = await page.$$eval('#dogcard', elem => elem.length);
         expect(dogsAfterDelete).toBe(0);
-    });
+    }, 20000);
 
 });

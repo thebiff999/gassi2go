@@ -55,6 +55,7 @@ router.post('/', authService.expressMiddleware, async(req, res) => {
         imgName: cryptoService.encrypt(imageName),
         imgData: cryptoService.encrypt(stringBuffer)
     });
+    console.log('hund ' + req.body.name + ' angelegt');
     res.status(201).json({
         ...hundNeu,
         name: cryptoService.decrypt(hundNeu.name),

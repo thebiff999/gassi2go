@@ -4,6 +4,8 @@ import fetch from 'node-fetch';
 import { v4 as uuidv4 } from 'uuid';
 import { BrowserContext } from 'playwright';
 import config from './config';
+import { Entry } from '../../../api-server/src/models/entry';
+import { response } from 'express';
 
 export class UserSession {
   firstName: string;
@@ -71,12 +73,60 @@ export class UserSession {
   }
 
   //Autor: Simon Flathmann
-  async createDog() {
+  async createDog(name?: string) {
+    if (name) {
+      this.name = name;
+    }
     const response = await fetch(config.serverUrl('hunde'), {
       method: 'POST',
       body: JSON.stringify(this.dogData()),
       headers: { Cookie: `jwt-token=${this.token}`, 'Content-Type': 'application/json' }
     });
+  }
+
+  //Autor: Dennis Heuermann
+  async createEntry(entry: any) {
+
+    //fetching dogs to get the dogId
+    console.log('creating dog');
+    const response1 = await fetch(config.serverUrl('hunde'), {
+      method: 'GET',
+      headers: { Cookie: `jwt-token=${this.token}`, 'Content-Type': 'application/json' }
+    });
+    console.log('response status ' + response1.status);
+    const dogs = (await response1.json()).results;
+    const dog = dogs[0]
+    console.log('dog name ' + dog.name);
+    entry.hundId = dog.id;
+
+    //creating an entry
+    console.log('creating entry');
+    const response2 = await fetch(config.serverUrl('entries'), {
+      method: 'POST',
+      body: JSON.stringify(entry),
+      headers: { Cookie: `jwt-token=${this.token}`, 'Content-Type': 'application/json' }
+    });
+    console.log('response status ' + response2.status);
+  }
+
+  //Autor: Dennis Heuermann
+  async deleteEntry() {
+
+    //fetching entries to get the ownerId
+    console.log('deleting entry');
+    const response = await fetch(config.serverUrl('entries'), {
+      method: 'GET',
+      headers: { Cookie: `jwt-token=${this.token}`, 'Content-Type': 'application/json' }
+    });
+    const entries = (await response.json()).results;
+    const id = entries[0].ownerId;
+
+    await fetch(config.serverUrl('entries/user/' + id), {
+      method: 'DELETE',
+      headers: { Cookie: `jwt-token=${this.token}`, 'Content-Type': 'application/json' }
+    });
+
+
   }
 
 }

@@ -95,7 +95,7 @@ class EntryComponent extends PageMixin(LitElement) {
             const response = await httpClient.patch('/entries/id/' + this.entryId, requestBody);
             let notification = 'Du hast den Auftrag angenommen und kannst ihn unter Meine Aufträge finden';
             this.setNotification({ infoMessage: notification });
-            setTimeout(this.navigateBack, 6000);
+            setTimeout(this.navigateBack, 4000);
         }
         catch ({message}) {
             this.setNotification({ errorMessage: message });
@@ -116,7 +116,7 @@ class EntryComponent extends PageMixin(LitElement) {
                     router.navigate('/user/sign-in');
                     break;
                 case 403:
-                    this.setNotification({ infoMessage: 'Der Eintrag ist bereits einem anderen User zugeordnet'});
+                    this.setNotification({ infoMessage: 'Der Eintrag ist bereits im Status "zugeordnet"'});
                     break;
                 case 404:
                     this.setNotification({ errorMessage: 'Dieser Eintrag existiert nicht'});
