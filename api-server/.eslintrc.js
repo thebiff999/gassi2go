@@ -7,6 +7,12 @@ module.exports = {
   parserOptions: { ecmaVersion: 2020 },
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
   rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto'
+      }
+    ],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/member-ordering': 'error',
     '@typescript-eslint/no-non-null-assertion': 'off',

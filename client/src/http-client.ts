@@ -33,7 +33,7 @@ export class HttpClient {
 
   private async createFetch(method: string, url: string, body?: unknown) {
     const requestOptions: RequestInit = {
-      headers: { 'Content-Type': 'application/json; charset=utf-8'},
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       method: method,
       credentials: 'include'
     };

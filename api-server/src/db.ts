@@ -60,7 +60,6 @@ async function connectToPsql() {
     port: 5432,
     keepAlive: true,
     keepAliveInitialDelayMillis: 1500
-
   });
   try {
     await client.connect();

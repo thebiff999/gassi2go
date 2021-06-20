@@ -189,7 +189,6 @@ class SignUpComponent extends PageMixin(LitElement) {
     `;
   }
 
- 
   async navigateToSignUp() {
     try {
       router.navigate('user/sign-up');
@@ -198,7 +197,6 @@ class SignUpComponent extends PageMixin(LitElement) {
     }
   }
 
-  
   async navigateToSignIn() {
     try {
       router.navigate('user/sign-in');
@@ -207,7 +205,6 @@ class SignUpComponent extends PageMixin(LitElement) {
     }
   }
 
-  
   async submit() {
     if (this.isFormValid()) {
       const accountData = {
