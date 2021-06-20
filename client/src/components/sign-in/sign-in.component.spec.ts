@@ -22,7 +22,6 @@ describe('app-sign-in', () => {
     element.remove();
   });
 
-
   it('button should navigate to SignIn', async () => {
     const navigate = element.shadowRoot!.querySelector('#navigateToSignIn') as HTMLElement;
     navigate.click();
@@ -33,7 +32,6 @@ describe('app-sign-in', () => {
     expect(sidenav.className).toBe('sidenav');
   });
 
- 
   it('button should navigate to SignUp', async () => {
     const navigate = element.shadowRoot!.querySelector('#navigateToSignUp') as HTMLElement;
     navigate.click();
@@ -43,7 +41,6 @@ describe('app-sign-in', () => {
     const sidenav = element.shadowRoot!.querySelector('#sidenav') as HTMLElement;
     expect(sidenav.className).toBe('sidenav');
   });
-
 
   it('button should navigate to SignIn"', async () => {
     const submit = element.shadowRoot!.querySelector('#absenden') as HTMLElement;
@@ -64,7 +61,6 @@ describe('app-sign-in', () => {
     const poster = element.shadowRoot!.querySelector('#poster') as HTMLElement;
     expect(poster.id).toBe('poster');
   });
-
 
   it('should find the textfield', async () => {
     const emailText = element.shadowRoot!.querySelector('#email') as HTMLElement;

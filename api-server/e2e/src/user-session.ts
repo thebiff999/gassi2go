@@ -46,7 +46,13 @@ export class UserSession {
   }
 
   signUpData() {
-    return { firstName: this.firstName, lastName: this.lastName, email: this.email, password: this.password, passwordCheck: this.password };
+    return {
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      password: this.password,
+      passwordCheck: this.password
+    };
   }
 
   async registerUser() {

@@ -7,6 +7,7 @@ import { router } from '../../router';
 const appComponentSCSS = require('./app.component.scss');
 
 @customElement('app-root')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class AppComponent extends LitElement {
   static styles = [
     css`
@@ -51,11 +52,11 @@ class AppComponent extends LitElement {
   }
 
   //Eigener Router-Outlet für den Header, um eigene Titel mitzugeben und Routen ohne Header zu ermöglichen
-  renderHeaderOutlet(){
+  renderHeaderOutlet() {
     return router.select(
       {
         '/entries': () => html`<app-header title="Auftragsübersicht"></app-header>`,
-        '/entries/:id': params => html`<app-header title="Auftrag Detailansicht"></app-header>`,
+        '/entries/:id': () => html`<app-header title="Auftrag Detailansicht"></app-header>`,
         '/entires/new': () => html`<app-header title="Auftragserstellung"></app-header>`,
         '/user': () => html`<app-header title="Profil"></app-header>`,
         '/user/password': () => html`<app-header title="Password"></app-header>`,

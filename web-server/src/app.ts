@@ -13,7 +13,7 @@ export async function start(port: number, dir: string, withHttps = false) {
   app.use('/app', (_, res) => {
     res.sendFile(path.join(dir, 'index.html'));
   });
-  app.get('/*', (req,res) => {
+  app.get('/*', (req, res) => {
     res.sendFile(path.join(dir, 'index.html'));
   });
   const createOptions = () => {

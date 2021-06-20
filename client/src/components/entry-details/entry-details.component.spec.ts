@@ -22,9 +22,9 @@ describe('app-entry-details', () => {
   const lng = '7.37208';
   const lat = '52.24285';
   const id = '34b1da40-0a0d-4123-b0a8-d8f190c8333b';
-  const imageUrl = './../../../resources/uploads/d52f472b-7a97-49f1-ab0e-321dd26dac6cbernasenne.jpg'
+  const imageUrl = './../../../resources/uploads/d52f472b-7a97-49f1-ab0e-321dd26dac6cbernasenne.jpg';
   const ownerId = '1';
-  const dogId = '46b823da-6482-4823-a70f-ba0080fbb400'
+  const dogId = '46b823da-6482-4823-a70f-ba0080fbb400';
   const status = 'open';
   const requesterId = null;
   const createdAt = '1623157466507';
@@ -50,7 +50,7 @@ describe('app-entry-details', () => {
     pay: pay,
     description: description,
     dogRace: dogRace
-  }
+  };
 
   it('should fetch the entries on first update', async () => {
     spyOn(httpClient, 'get');
@@ -59,7 +59,6 @@ describe('app-entry-details', () => {
   });
 
   it('should render the received entry', async () => {
-
     spyOn(httpClient, 'get').and.returnValue(
       Promise.resolve({
         json() {
@@ -82,7 +81,7 @@ describe('app-entry-details', () => {
     expect(renderRace?.innerText).toBe(dogRace);
 
     const renderPay = element.shadowRoot!.querySelector('.flex-container')?.querySelectorAll('p')[2];
-    expect(renderPay?.innerText).toBe(pay.toString()+'€');
+    expect(renderPay?.innerText).toBe(pay.toString() + '€');
 
     const renderDate = element.shadowRoot!.querySelector('.flex-container')?.querySelectorAll('p')[3];
     expect(renderDate?.innerText).toBe(date);
@@ -92,39 +91,38 @@ describe('app-entry-details', () => {
   });
 
   it('should render the correct type', async () => {
-      
     spyOn(httpClient, 'get').and.returnValue(
-        Promise.resolve({
-            json() {
-                return Promise.resolve(entry);
-            }
-            } as Response)
-        );
-    
-        await element.updateComplete;
-        element.requestUpdate();
-        await element.updateComplete;
+      Promise.resolve({
+        json() {
+          return Promise.resolve(entry);
+        }
+      } as Response)
+    );
 
-        const renderType = element.shadowRoot!.querySelector('.flex-container')?.querySelectorAll('p')[1];
-        expect(renderType?.innerText).toBe('Aufpassen');
+    await element.updateComplete;
+    element.requestUpdate();
+    await element.updateComplete;
+
+    const renderType = element.shadowRoot!.querySelector('.flex-container')?.querySelectorAll('p')[1];
+    expect(renderType?.innerText).toBe('Aufpassen');
   });
 
   it('should navigate back', async () => {
     spyOn(httpClient, 'get').and.returnValue(
-        Promise.resolve({
-          json() {
-            return Promise.resolve(entry);
-          }
-        } as Response)
-      );
-  
-      await element.updateComplete;
-      element.requestUpdate();
-      await element.updateComplete;
+      Promise.resolve({
+        json() {
+          return Promise.resolve(entry);
+        }
+      } as Response)
+    );
 
-    spyOn(history, 'back').and.callFake( () => console.log('hello world'));
+    await element.updateComplete;
+    element.requestUpdate();
+    await element.updateComplete;
 
-    let button: HTMLElement = element.shadowRoot!.querySelector('#desktop-button')!;
+    spyOn(history, 'back').and.callFake(() => console.log('hello world'));
+
+    const button: HTMLElement = element.shadowRoot!.querySelector('#desktop-button')!;
     button.click();
 
     expect(history.back).toHaveBeenCalled();
@@ -132,29 +130,29 @@ describe('app-entry-details', () => {
 
   it('should send the patched entry', async () => {
     spyOn(httpClient, 'get').and.returnValue(
-        Promise.resolve({
-          json() {
-            return Promise.resolve(entry);
-          }
-        } as Response)
-      );
-  
-      await element.updateComplete;
-      element.requestUpdate();
-      await element.updateComplete;
+      Promise.resolve({
+        json() {
+          return Promise.resolve(entry);
+        }
+      } as Response)
+    );
 
-      spyOn(httpClient, 'patch').and.returnValue(
-        Promise.resolve({
-            json() {
-              return Promise.resolve({ status: 200 });
-            }
-          } as Response)
-      )
+    await element.updateComplete;
+    element.requestUpdate();
+    await element.updateComplete;
 
-      let button: HTMLElement = element.shadowRoot!.querySelector('.btn-primary')!;
-      button.click();
+    spyOn(httpClient, 'patch').and.returnValue(
+      Promise.resolve({
+        json() {
+          return Promise.resolve({ status: 200 });
+        }
+      } as Response)
+    );
 
-      expect(httpClient.patch).toHaveBeenCalled();
+    const button: HTMLElement = element.shadowRoot!.querySelector('.btn-primary')!;
+    button.click();
+
+    expect(httpClient.patch).toHaveBeenCalled();
   });
 
   it('should route users who are not logged in to the sign-in page', async () => {
@@ -170,8 +168,7 @@ describe('app-entry-details', () => {
     spyOn(httpClient, 'get').and.returnValue(Promise.reject({ message: 'entry does not exist', statusCode: 404 }));
     await element.updateComplete;
 
-    let content = element.shadowRoot!.querySelector('.container')
+    const content = element.shadowRoot!.querySelector('.container');
     expect(content).toBeNull();
   });
-
-})
+});

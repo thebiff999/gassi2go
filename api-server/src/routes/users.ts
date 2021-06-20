@@ -50,7 +50,7 @@ router.post('/sign-in', async (req, res) => {
 
   if (!hasRequiredFields(req.body, ['email', 'password'], errors)) {
     res.status(400).json({ message: errors.join('\n') });
-    console.log(errors)
+    console.log(errors);
     return;
   }
 
