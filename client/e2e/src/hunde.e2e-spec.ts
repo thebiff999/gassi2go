@@ -3,7 +3,6 @@
 import { Browser, BrowserContext, Page, chromium } from 'playwright';
 import { UserSession } from './user-session';
 import config from './config';
-import exp, { DH_NOT_SUITABLE_GENERATOR } from 'node:constants';
 
 describe('/user/dogs/new', () => {
     let browser: Browser;
@@ -48,10 +47,12 @@ describe('/user/dogs/new', () => {
     it('should delete the dog', async() =>{
         await userSession.createDog();
         await page.goto(config.clientUrl('/user/dogs'));
+        await page.waitForResponse('**'); //Warten bis die Hunde geladen sind
         const dogsBeforeDelete = await page.$$eval('#dogcard', elem => elem.length);
         expect(dogsBeforeDelete).toBe(1);
         page.on('dialog', dialog => dialog.accept());  //Löschen benötigt Bestätigung
         await Promise.all([page.waitForResponse('**'), await page.click('text=Löschen')]);
+        await page.reload();
         const dogsAfterDelete = await page.$$eval('#dogcard', elem => elem.length);
         expect(dogsAfterDelete).toBe(0);
     }, 20000);

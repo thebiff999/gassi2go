@@ -15,7 +15,7 @@ router.use(fileUpload());
 
 /* API-Service zum Anlegen eines Hundes in der Datenbank. */
 router.post('/', authService.expressMiddleware, async(req, res) => {
-    console.log('Post-Request an /hunde/');
+    console.log('Post-Request an /api/hunde/');
     const image = req.files?.image as UploadedFile;
     let stringBuffer = "";
     let imageName = "";
@@ -69,7 +69,7 @@ router.post('/', authService.expressMiddleware, async(req, res) => {
 
 /* API-Service zum Holen aller Hunde zum aktuellen User. */
 router.get('/', authService.expressMiddleware, async(req, res) => {
-    console.log("Get-Request an /hunde/");
+    console.log("Get-Request an /api/hunde/");
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
     const filter: Partial<Hund> = { besitzerId: res.locals.user.id }
     /* Ruft alle zum aktuellen User zugehörigen Hunde aus der Datenbank
@@ -96,7 +96,7 @@ router.get('/', authService.expressMiddleware, async(req, res) => {
 /* API-Service zum Löschen eines Hundes mithilfe der ID. Außerdem werden
     alle Aufträge gelöscht, mit diesem Hund. */
 router.delete('/:id', authService.expressMiddleware, async(req, res) =>{
-    console.log('Delete-Anfrage auf /' + req.params.id + 'erhalten');
+    console.log('Delete-Anfrage auf /api/hunde/' + req.params.id + ' erhalten');
     const hundeDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
     const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
     await hundeDAO.delete(req.params.id);
@@ -106,7 +106,7 @@ router.delete('/:id', authService.expressMiddleware, async(req, res) =>{
 
 /* API-Service zum Abfragen eines spezifischen Hundes aus der Datenbank mithilfe der ID */
 router.get('/:id', authService.expressMiddleware, async(req, res) => {
-    console.log('Get-Anfrage an hunde/' + req.params.id);
+    console.log('Get-Anfrage an /api/hunde/' + req.params.id);
     const hundDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
     const hund = await hundDAO.findOne({ id : req.params.id});
     if(!hund){
