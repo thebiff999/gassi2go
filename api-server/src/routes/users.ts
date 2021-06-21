@@ -7,6 +7,7 @@ import { User } from '../models/user.js';
 import { Hund } from '../models/hunde';
 import { Entry } from '../models/entry';
 import { authService } from '../services/auth.service.js';
+import { cryptoService } from '../services/crypto.service';
 
 const router = express.Router();
 
@@ -35,9 +36,9 @@ router.post('/', async (req, res) => {
   }
 
   const createdUser = await userDAO.create({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
+    firstName: cryptoService.encrypt(req.body.firstName),
+    lastName: cryptoService.encrypt(req.body.lastName),
+    email: cryptoService.encrypt(req.body.email),
     password: await bcrypt.hash(req.body.password, 10)
   });
   authService.createAndSetToken({ id: createdUser.id }, res);
