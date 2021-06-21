@@ -82,7 +82,6 @@ describe('app-assignments', () => {
     await element.updateComplete;
 
     const items = element.shadowRoot!.querySelectorAll('.list-item');
-    console.log(items);
     expect(items.length).toBeGreaterThan(0);
   });
 
