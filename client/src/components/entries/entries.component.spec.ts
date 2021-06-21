@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import { router } from '../../router';
 import './entries.component';
 
-fdescribe('app-entries', () => {
+describe('app-entries', () => {
   let element: LitElement;
 
   // Callback darf nicht async sein, da sonst in der Komponente firstUpdated() aufgerufen wird,
@@ -37,7 +37,7 @@ fdescribe('app-entries', () => {
       type: 'walk',
       date: '2021-06-16',
       pay: '0.00',
-      description: 'GrevenerstraßeGrevenerstraßeGrevenerstraßeGrevenerstraßeGrevenerstraßeGrevenerstraße',
+      description: 'Grevenerstraße Grevenerstraße Grevenerstraße Grevenerstraße Grevenerstraße Grevenerstraße',
       dogRace: 'Deutsche Dogge'
     },
     {
