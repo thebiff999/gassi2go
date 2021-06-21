@@ -49,7 +49,7 @@ class Header extends LitElement {
           </div>
 
           <div class="profil">
-            <a href="/user">
+            <a href="/user/account">
               <img id="profil-img" src="${profile}" />
             </a>
           </div>
@@ -63,7 +63,6 @@ class Header extends LitElement {
           <li><a href="/entries">Auftrag suchen</a></li>
           <li><a href="/user/entries">Meine Aufträge</a></li>
           <li><a href="/user/dogs">Meine Hunde</a></li>
-          <li><a href="/user/account">Mein Konto</a></li>
           <li><a href="/user/sign-out">Abmelden</a></li>
         </ul>
       </nav>
