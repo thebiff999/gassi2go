@@ -37,6 +37,27 @@ class AccountComponent extends PageMixin(LitElement) {
   @property()
   private myAccount: Account[] = [];
 
+  async firstUpdated() {
+    /*
+      try {
+        //const userId = await httpClient.get('user/account/id');
+        //const urlId:string = "user/account/" + userId;
+        //const response = await httpClient.get('user/account/');
+  
+        // get json
+        //this.myAccount = await response.json();
+        //const response = await httpClient.get('tasks' + location.search);
+  
+      } catch ({ message, statusCode }) {
+        if (statusCode === 401) {
+          router.navigate('/user/sign-in');
+        } else {
+          this.setNotification({errorMessage: message});
+        }
+      }
+      */
+  }
+
   render() {
     return html`
       ${this.renderNotification()}
@@ -95,7 +116,7 @@ class AccountComponent extends PageMixin(LitElement) {
                       automcomplete="off"
                     />
                     <div class="valid-feedback">Sieht gut aus!</div>
-                    <div class="invalid-feedback">Nickname ist erforderlich</div>
+                    <div class="invalid-feedback">Ein Nickname ist erforderlich</div>
                   </div>
 
                   <div class="form-group">
@@ -109,7 +130,7 @@ class AccountComponent extends PageMixin(LitElement) {
                       name="firstname"
                       automcomplete="off"
                     />
-                    <div class="invalid-feedback">Vorname ist erforderlich</div>
+                    <div class="invalid-feedback">Ein Vorname ist erforderlich</div>
                   </div>
 
                   <div class="form-group">
@@ -123,7 +144,7 @@ class AccountComponent extends PageMixin(LitElement) {
                       name="lastname"
                       automcomplete="off"
                     />
-                    <div class="invalid-feedback">Nachname ist erforderlich</div>
+                    <div class="invalid-feedback">Ein Nachname ist erforderlich</div>
                   </div>
                 </fieldset>
 
