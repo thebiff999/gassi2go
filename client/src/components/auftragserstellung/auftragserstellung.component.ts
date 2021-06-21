@@ -1,14 +1,9 @@
 /* Autor: Simon Flathmann */
 
-import {
-  css,
-  customElement,
-  html,
-  internalProperty,
-  LitElement,
-  query,
-  unsafeCSS
-} from 'lit-element';
+/* eslint-disable prettier/prettier */  //Muss wegen der Form deaktiviert werden
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import { css, customElement, html, internalProperty, LitElement, query, unsafeCSS } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
 import { Hund } from '../../../../api-server/src/models/hunde';
 import { router } from '../../router';
@@ -20,6 +15,7 @@ const axios = require('axios').default;
 
 /* Custom-Element zur Erstellung von neuen Aufträgen */
 @customElement('app-auftragserstellung')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class AuftragsErstellungComponent extends PageMixin(LitElement) {
   static styles = [
     css`
@@ -31,10 +27,10 @@ class AuftragsErstellungComponent extends PageMixin(LitElement) {
   private hunde: Hund[] = [];
 
   @internalProperty()
-  private lat: number = 0;
+  private lat = 0;
 
   @internalProperty()
-  private lng: number = 0;
+  private lng = 0;
 
   constructor() {
     super();
@@ -105,7 +101,7 @@ class AuftragsErstellungComponent extends PageMixin(LitElement) {
                 ${repeat(
                   this.hunde,
                   hund => hund.besitzerId,
-                  (hund, index) => html` <option value="${hund.id}">${hund.name}</option> `
+                  hund => html` <option value="${hund.id}">${hund.name}</option> `
                 )}
               </select>
               <div class="invalid-feedback">Bitte wählen Sie einen Hund aus.</div>
@@ -127,9 +123,7 @@ class AuftragsErstellungComponent extends PageMixin(LitElement) {
                   class="form-control"
                   required
                 />
-                <div class="invalid-feedback">
-                  Die Entlohnung ist erforderlich und darf nicht im negativen Bereich liegen.
-                </div>
+                <div class="invalid-feedback">Die Entlohnung ist erforderlich und darf nicht im negativen Bereich liegen.</div>
               </div>
             </div>
           </div>
@@ -191,6 +185,7 @@ class AuftragsErstellungComponent extends PageMixin(LitElement) {
       const response = await httpClient.get('/hunde');
       const responseJSON = await response.json();
       this.hunde = responseJSON.results;
+
     } catch ({ message, statusCode }) {
       switch (statusCode) {
         case 404:
@@ -214,15 +209,15 @@ class AuftragsErstellungComponent extends PageMixin(LitElement) {
 
   /** Methode zum dynamischen Setzen des Min-Attributs für das Auftragsdatum */
   setMinDate = () => {
-    var today = new Date();
-    var ddNum = today.getDate();
-    var dd = today.getDate().toString();
+    const today = new Date();
+    const ddNum = today.getDate();
+    let dd = today.getDate().toString();
 
-    var mmNum = today.getMonth() + 1; //Januar startet bei 0
-    var mm = mmNum.toString();
+    const mmNum = today.getMonth() + 1; //Januar startet bei 0
+    let mm = mmNum.toString();
 
-    var yyyyNum = today.getFullYear();
-    var yyyy = yyyyNum.toString();
+    const yyyyNum = today.getFullYear();
+    const yyyy = yyyyNum.toString();
 
     if (ddNum < 10) {
       dd = '0' + dd;
@@ -231,7 +226,7 @@ class AuftragsErstellungComponent extends PageMixin(LitElement) {
       mm = '0' + mm;
     }
 
-    var todayStr = yyyy + '-' + mm + '-' + dd;
+    const todayStr = yyyy + '-' + mm + '-' + dd;
     const root = document.querySelector('app-root');
     const auftragserstellung = root?.shadowRoot?.querySelector('app-auftragserstellung');
     auftragserstellung?.shadowRoot?.getElementById('auftragDatum')?.setAttribute('min', todayStr);
@@ -245,7 +240,7 @@ class AuftragsErstellungComponent extends PageMixin(LitElement) {
     if (this.checkInputs()) {
       try {
         await this.geocode();
-        var selHund = this.getHund(this.auftragHund.value);
+        const selHund = this.getHund(this.auftragHund.value);
         const auftragData = {
           art: this.auftragArt.value,
           datum: this.auftragDatum.value,
@@ -259,8 +254,11 @@ class AuftragsErstellungComponent extends PageMixin(LitElement) {
           lat: this.lat,
           lng: this.lng
         };
-        const response = await httpClient.post('/entries/', auftragData);
-        this.setNotification({ infoMessage: 'Auftrag wurde erfolgreich angelegt.' });
+        await httpClient.post('/entries/', auftragData);
+        this.setNotification({ infoMessage: 'Auftrag wurde erfolgreich angelegt. Sie werden zur Auftragsübersicht weitergeleitet.' });
+        window.setTimeout(() => {
+          router.navigate('/entries');
+        }, 5000);
       } catch ({ message, statusCode }) {
         switch (statusCode) {
           case 401:
@@ -288,12 +286,12 @@ class AuftragsErstellungComponent extends PageMixin(LitElement) {
    *   der vom Nutzer angegebenen Adresse und dem Setzen von Latitude und Longitude. */
   geocode = async () => {
     console.log('Berechnung der Koordinaten.');
-    var straße = this.straße.value;
-    var hsnr = this.hausnr.value;
-    var plz = this.plz.value;
-    var ort = this.ort.value;
-    var location = straße + ' ' + hsnr + ' ' + plz + ' ' + ort;
-    var endcodeURL = encodeURI(location);
+    const straße = this.straße.value;
+    const hsnr = this.hausnr.value;
+    const plz = this.plz.value;
+    const ort = this.ort.value;
+    const location = straße + ' ' + hsnr + ' ' + plz + ' ' + ort;
+    const endcodeURL = encodeURI(location);
     await axios
       .get('https://api.tomtom.com/search/2/geocode/' + endcodeURL + '.json', {
         params: {

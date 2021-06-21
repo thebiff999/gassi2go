@@ -1,9 +1,10 @@
 /* Autor: Simon Flathmann */
 
+import './hunde.component';
 import { LitElement } from 'lit-element';
 import { httpClient } from '../../http-client';
+// eslint-disable-next-line @typescript-eslint/no-duplicate-imports
 import { HundeComponent } from './hunde.component';
-import './hunde.component';
 
 describe('app-hunde', () => {
   let element: LitElement;
@@ -54,7 +55,7 @@ describe('app-hunde', () => {
   });
 
   it('should give the user an alert after pet', async () => {
-    let spy = spyOn(window, 'alert');
+    const spy = spyOn(window, 'alert');
     const elem = element as HundeComponent;
     await elem.pet('Felix');
     expect(spy).toHaveBeenCalledTimes(1);
@@ -130,7 +131,7 @@ describe('app-hunde', () => {
 
   it('should do nothing if user cancels delete', async () => {
     spyOn(window, 'confirm').and.returnValue(false);
-    let httpClientSpy = spyOn(httpClient, 'delete');
+    const httpClientSpy = spyOn(httpClient, 'delete');
     const elem = element as HundeComponent;
     await elem.delete('46b823da-6482-4823-a70f-ba0080fbb400');
     expect(httpClientSpy).toHaveBeenCalledTimes(0);

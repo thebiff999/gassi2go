@@ -1,4 +1,5 @@
-/* Autor: Simon Flathmann */ 
+/* Autor: Simon Flathmann */
+/* eslint-disable prettier/prettier */  //Muss wegen der Form deaktiviert werden
 
 import { css, customElement, html, LitElement, query, unsafeCSS } from 'lit-element';
 import { router } from '../../router';
@@ -97,9 +98,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement) {
                 required
                 placeholder="Hier können Sie ihren Hund beschreiben."
               ></textarea>
-              <div class="invalid-feedback">
-                Die Zusätzlichen Informationen sind erforderlich und müssen zwischen 30 und 1000 Zeichen lang sein.
-              </div>
+              <div class="invalid-feedback">Die Zusätzlichen Informationen sind erforderlich und müssen zwischen 30 und 1000 Zeichen lang sein.</div>
             </div>
           </div>
           <div class="form-row">
@@ -180,7 +179,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement) {
 
   //Validierung der eingegebenen Daten
   checkInputs() {
-    var allowedExtensions = /(\.jpg|\.jpeg)$/i; //erlaubte Datentypen
+    const allowedExtensions = /(\.jpg|\.jpeg)$/i; //erlaubte Datentypen
 
     //Falls eine Datei hochgeladen wurde, wird diese auf den Datentypen überprüft
     if (this.file.value !== '') {
@@ -195,15 +194,15 @@ export class HundeerstellungComponent extends PageMixin(LitElement) {
 
   /* Setzt für das Input-Elements vom Geburtstag das max-Date auf den aktuellen Tag */
   setMaxDate() {
-    var today = new Date();
-    var ddNum = today.getDate();
-    var dd = ddNum.toString();
+    const today = new Date();
+    const ddNum = today.getDate();
+    let dd = ddNum.toString();
 
-    var mmNum = today.getMonth() + 1;
-    var mm = mmNum.toString();
+    const mmNum = today.getMonth() + 1;
+    let mm = mmNum.toString();
 
-    var yyyyNum = today.getFullYear();
-    var yyyy = yyyyNum.toString();
+    const yyyyNum = today.getFullYear();
+    const yyyy = yyyyNum.toString();
 
     if (ddNum < 10) {
       dd = '0' + dd;
@@ -212,7 +211,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement) {
       mm = '0' + mm;
     }
 
-    var todayStr = yyyy + '-' + mm + '-' + dd;
+    const todayStr = yyyy + '-' + mm + '-' + dd;
     console.log('Attribut max vom Geburtsdatum wird auf ' + todayStr + ' gesetzt.');
     this.shadowRoot!.getElementById('geb')?.setAttribute('max', todayStr);
   }
@@ -220,10 +219,10 @@ export class HundeerstellungComponent extends PageMixin(LitElement) {
   /* Setzt einen EventListener für den Upload-Button, welches das unsichtbare input-Element aufruft. 
         Diesem wird ein auch ein EventListener hinzugefügt, welcher beim Datenupload das src-Attribut vom img-Element ändert. */
   initPictureUpload() {
-    var component = this.shadowRoot!;
-    var uploadbtn = component!.getElementById('uploadbtn');
-    var file = component!.getElementById('file');
-    var img = component!.getElementById('hunde-image');
+    const component = this.shadowRoot!;
+    const uploadbtn = component!.getElementById('uploadbtn');
+    const file = component!.getElementById('file');
+    const img = component!.getElementById('hunde-image');
 
     uploadbtn!.addEventListener('click', openDialog);
     function openDialog() {
@@ -231,8 +230,8 @@ export class HundeerstellungComponent extends PageMixin(LitElement) {
     }
 
     file!.addEventListener('change', function () {
-      let file2 = file! as HTMLInputElement;
-      let uploadedFile = file2.files![0];
+      const file2 = file! as HTMLInputElement;
+      const uploadedFile = file2.files![0];
 
       if (uploadedFile) {
         //Preview der Bild-Datei

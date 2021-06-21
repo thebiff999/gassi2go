@@ -7,6 +7,7 @@ import profile from '../../../../resources/images/logo_user_dog.png';
 const headerComponentSCSS = require('./header.component.scss');
 
 @customElement('app-header')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class Header extends LitElement {
   static styles = [
     css`

@@ -2,6 +2,7 @@
 
 import { LitElement } from 'lit-element';
 import './hundeerstellung.component';
+// eslint-disable-next-line @typescript-eslint/no-duplicate-imports
 import { HundeerstellungComponent } from './hundeerstellung.component';
 
 describe('app-hundeerstellung', () => {
@@ -17,19 +18,19 @@ describe('app-hundeerstellung', () => {
   });
 
   it('should call initPictureUpload once', async () => {
-    let spy = spyOn(element as HundeerstellungComponent, 'initPictureUpload');
+    const spy = spyOn(element as HundeerstellungComponent, 'initPictureUpload');
     await element.updateComplete;
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('should set the max-attribute of the date input', async () => {
     await element.updateComplete;
-    let input = element.shadowRoot!.querySelector('#geb') as HTMLInputElement;
+    const input = element.shadowRoot!.querySelector('#geb') as HTMLInputElement;
     expect(input.getAttribute('max')).toBeDefined();
   });
 
   it('should fail input validation', async () => {
-    let elem = element as HundeerstellungComponent;
+    const elem = element as HundeerstellungComponent;
     await element.updateComplete;
     elem.create();
     expect(elem.form.classList).toContain('was-validated');
