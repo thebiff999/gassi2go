@@ -32,7 +32,7 @@ describe('/hunde', () => {
       expect(jsonRes.imgData).toBeTruthy();
       expect(jsonRes.id).toBeTruthy();
       expect(jsonRes.createdAt).toBeTruthy();
-    });
+    }, 10000);
 
     it('should fail required fields test', async () => {
       const response = await userSession.post('/hunde', {
@@ -41,7 +41,7 @@ describe('/hunde', () => {
         infos: 'Ein kleiner, verschmuster Hund. Bellt immer, wenn jemand an der Tür klingelt.'
       });
       expect(response.status).toBe(400);
-    });
+    }, 10000);
   });
 
   describe('#GET', () => {
@@ -69,7 +69,7 @@ describe('/hunde', () => {
       expect(jsonRes.results.length).toBe(2);
       expect(jsonRes.results[0].name).toBe('Maja');
       expect(jsonRes.results[1].name).toBe('Felix');
-    });
+    }, 20000);
 
     it('should return the a specific dog', async () => {
       await userSession.post('/hunde', {
@@ -92,7 +92,7 @@ describe('/hunde', () => {
       expect(singleRes.status).toBe(200);
       const jsonSingle = await singleRes.json();
       expect(jsonSingle.name).toBe('Felix');
-    });
+    }, 20000);
   });
 
   describe('#DELETE', () => {
@@ -112,6 +112,6 @@ describe('/hunde', () => {
       expect(delResponse.status).toBe(200);
       const afterDelete = await userSession.get('/hunde');
       expect(afterDelete.status).toBe(404);
-    });
+    }, 20000);
   });
 });
