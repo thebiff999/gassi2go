@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import { router } from '../../router';
 import './entries.component';
 
-describe('app-entries', () => {
+fdescribe('app-entries', () => {
   let element: LitElement;
 
   // Callback darf nicht async sein, da sonst in der Komponente firstUpdated() aufgerufen wird,

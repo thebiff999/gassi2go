@@ -5,7 +5,7 @@ import { LitElement } from 'lit-element';
 import { router } from '../../router';
 import './entry-details.component';
 
-describe('app-entry-details', () => {
+fdescribe('app-entry-details', () => {
   let element: LitElement;
 
   // Callback darf nicht async sein, da sonst in der Komponente firstUpdated() aufgerufen wird,

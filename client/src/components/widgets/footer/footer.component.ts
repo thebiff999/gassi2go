@@ -19,9 +19,9 @@ class Footer extends LitElement {
           <p id="copyright">&copy;${this.getYear()} Gassi2Go</p>
           <p id="project">Ein Web-Enginerring Projekt von</p>
           <span id="names">
-            <p>Simon Flathmann</p>
-            <p>Dennis Heuermann</p>
-            <p>Martin Feldman</p>
+            <p class="name">Simon Flathmann</p>
+            <p class="name">Dennis Heuermann</p>
+            <p class="name">Martin Feldman</p>
           </span>
         </div>
         <div class="col" id="right-col">
