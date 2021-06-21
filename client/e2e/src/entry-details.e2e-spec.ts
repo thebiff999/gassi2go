@@ -64,7 +64,6 @@ describe('entry-details', () => {
 
     await page.goto('http://localhost:8080/app/');
     await Promise.all([page.click('text=Führ mich aus'), page.waitForNavigation()]);
-    await page.screenshot({ path: 'screenshots/entry-details.png' });
     expect(await page.$('text=' + name)).not.toBeNull();
   }, 10000);
 

@@ -62,7 +62,6 @@ describe('assignments', () => {
     page.click('text=Ich führe dich aus');
     await page.waitForNavigation();
     await page.goto('http://localhost:8080/app/user/entries', { waitUntil: 'networkidle' });
-    await page.screenshot({ path: 'screenshots/assigned-assignment.png' });
     const text = 'text=' + name;
     expect(await page.$(text)).not.toBeNull();
   }, 10000);*/
@@ -89,7 +88,6 @@ describe('assignments', () => {
     await page.goto('http://localhost:8080/app/user/entries');
     await page.click('.button');
     await page.waitForNavigation();
-    await page.screenshot({ path: 'screenshots/done-assignment.png' });
     const text = 'text=' + name;
     expect(await page.$(text)).toBeNull();
   }, 10000);*/
