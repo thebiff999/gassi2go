@@ -1,0 +1,56 @@
+/* Autor: Dennis Heuermann */
+
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts'; 
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@fortawesome/fontawesome-free/scss/solid';
+@import '@fortawesome/fontawesome-free/scss/regular';
+
+#project {
+    margin-bottom: 0;
+}
+
+#names p {
+    margin-right: 25px;
+    font-weight: 400;
+}
+
+p {
+    color: white;
+    font-weight: 600;
+}
+
+#left-col {
+    flex: 60%;
+}
+
+#right-col {
+    flex: 40%;
+    font-weight: 400;
+}
+
+
+
+@media screen and (min-width: 920px) {
+    #footer {
+        display: flex;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    #right-col {
+        padding-left: 30px;
+    }
+}
+
+@media screen and(max-width: 919px) {
+    #footer {
+        padding-left:15px;
+        padding-right: 15px;
+    }
+}
+
+@media screen and(min-width: 525px) {
+    #names {
+        display: flex;
+        flex-wrap: wrap;
+    }
+}

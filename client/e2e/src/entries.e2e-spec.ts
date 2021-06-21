@@ -35,15 +35,16 @@ describe('entries', () => {
     await userSession.deleteUser();
     await context.close();
   });
-  const name = 'Wuffi' + uuidv4().toString();
+  const name = 'Wuffi' + uuidv4();
   const image = fs.readFileSync(__dirname + '/../../../api-server/resources/default.txt').toString();
+  const id = uuidv4();
   const entry = {
     art: 'walk',
     datum: '2022-12-12',
     entlohnung: 20,
     status: 'open',
     beschreibung: 'Wuffi ist ein ganz lieber und kann gut mit Kindern',
-    hundId: '12345',
+    hundId: id,
     hundName: name,
     hundRasse: 'Dackel',
     lat: '5.0000',
@@ -59,15 +60,13 @@ describe('entries', () => {
   });
 
   it('should render newly added entries', async () => {
-    await userSession.createDog(name);
     await userSession.createEntry(entry);
 
-    await page.goto('http://localhost:8080/app');
+    await page.goto('http://localhost:8080/app', { waitUntil: 'networkidle' });
     expect(await page.$('text=Name: ' + name)).not.toBeNull();
   });
 
   it('should not render an assigend entry', async () => {
-    await userSession.createDog(name);
     await userSession.createEntry(entry);
 
     await page.goto('http://localhost:8080/app/');

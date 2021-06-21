@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* Autor: Martin Feldman */
 
 import { css, customElement, html, LitElement, query, unsafeCSS } from 'lit-element';
@@ -5,7 +6,6 @@ import { httpClient } from '../../http-client';
 import { router } from '../../router';
 import { PageMixin } from '../page.mixin';
 
-//const sharedCSS = require('../shared.scss');
 const componentCSS = require('./sign-up.component.scss');
 
 @customElement('app-sign-up')
@@ -13,34 +13,31 @@ class SignUpComponent extends PageMixin(LitElement) {
   // eslint-disable-line @typescript-eslint/no-unused-vars
 
   static styles = [
-    //css`
-    //${unsafeCSS(sharedCSS)}
-    //`,
     css`
       ${unsafeCSS(componentCSS)}
     `
   ];
 
   @query('form')
-  form!: HTMLFormElement;
+  private form!: HTMLFormElement;
 
   @query('#screenName')
-  screenNameElement!: HTMLInputElement;
+  private screenNameElement!: HTMLInputElement;
 
   @query('#firstName')
-  firstNameElement!: HTMLInputElement;
+  private firstNameElement!: HTMLInputElement;
 
   @query('#lastName')
-  lastNameElement!: HTMLInputElement;
+  private lastNameElement!: HTMLInputElement;
 
   @query('#email')
-  emailElement!: HTMLInputElement;
+  private emailElement!: HTMLInputElement;
 
   @query('#password')
-  passwordElement!: HTMLInputElement;
+  private passwordElement!: HTMLInputElement;
 
   @query('#password-check')
-  passwordCheckElement!: HTMLInputElement;
+  private passwordCheckElement!: HTMLInputElement;
 
   render() {
     return html`
@@ -48,9 +45,7 @@ class SignUpComponent extends PageMixin(LitElement) {
 
       <!-- SIDENAV with Poster -->
 
-      <div class="sidenav" id="sidenav">
-        <img src="../src/assets/img/login_dog.jpg" />
-      </div>
+      <div class="sidenav" id="sidenav"></div>
 
       <!-- SIDENAV END -->
 
@@ -92,6 +87,24 @@ class SignUpComponent extends PageMixin(LitElement) {
             <fieldset id="register1">
               <div class="input-group col-md-14">
                 <div class="input-group-prepend">
+                  <span class="input-group-text" for="screenName">Nickname</span>
+                </div>
+                <input
+                  class="form-control"
+                  type="text"
+                  autofocus
+                  required
+                  minlength="2"
+                  id="screenName"
+                  name="screenName"
+                  automcomplete="off"
+                />
+                <div class="valid-feedback">Sieht gut aus!</div>
+                <div class="invalid-feedback">Nickname ist erforderlich</div>
+              </div>
+              <div class="invalid-feedback">Vorname ist erforderlich</div>
+              <div class="input-group col-md-14">
+                <div class="input-group-prepend">
                   <span class="input-group-text" for="firstName">Vorname</span>
                 </div>
                 <input
@@ -127,7 +140,7 @@ class SignUpComponent extends PageMixin(LitElement) {
                   <span class="input-group-text" for="email">Email</span>
                 </div>
                 <input class="form-control" type="email" required id="email" name="email" automcomplete="off" />
-                <div class="invalid-feedback">E-Mail ist erforderlich und muss gültig sein</div>
+                <div class="invalid-feedback">E-Mail ist notwendig und muss gültig sein</div>
               </div>
             </fieldset>
 
@@ -146,10 +159,9 @@ class SignUpComponent extends PageMixin(LitElement) {
                   automcomplete="off"
                 />
                 <small id="passwordHelpBlock" class="form-text text-muted">
-                  Dein Passwort muss 8-20 Zeichen lang sein. Es darf Buchstaben und Nummer enthalten, aber keine
-                  Leerzeichen oder Spezialbuchstaben.
+                  Dein Passwort muss mindestens 8 Zeichen lang sein
                 </small>
-                <div class="invalid-feedback">Passwort ist erforderlich und muss mind. 8 Zeichen lang sein</div>
+                <div class="invalid-feedback">Passwort ist erforderlich und muss mindestens 8 Zeichen lang sein</div>
               </div>
 
               <div>
@@ -193,36 +205,26 @@ class SignUpComponent extends PageMixin(LitElement) {
     `;
   }
 
-  /**
-   * Button, which navigate to "userAdministration/sign-up"
-   */
   async navigateToSignUp() {
     try {
-      router.navigate('userAdministration/sign-up');
+      router.navigate('user/sign-up');
     } catch ({ message }) {
       this.setNotification({ errorMessage: message });
     }
   }
 
-  /**
-   * Button, which navigate to "userAdministration/sign-in"
-   */
   async navigateToSignIn() {
     try {
-      router.navigate('userAdministration/sign-in');
+      router.navigate('user/sign-in');
     } catch ({ message }) {
       this.setNotification({ errorMessage: message });
     }
   }
 
-  /**
-   * submit accountData and POST to "/userAdministration/sign-up"
-   * Server send JWT back
-   * TODO
-   */
   async submit() {
     if (this.isFormValid()) {
       const accountData = {
+        screenName: this.screenNameElement.value,
         firstName: this.firstNameElement.value,
         lastName: this.lastNameElement.value,
         email: this.emailElement.value,
@@ -242,7 +244,7 @@ class SignUpComponent extends PageMixin(LitElement) {
 
   isFormValid() {
     if (this.passwordElement.value !== this.passwordCheckElement.value) {
-      this.passwordCheckElement.setCustomValidity('Passwörter müssen gleich sein');
+      this.passwordCheckElement.setCustomValidity('Beide Passwörter müssen gleich sein');
     } else {
       this.passwordCheckElement.setCustomValidity('');
     }

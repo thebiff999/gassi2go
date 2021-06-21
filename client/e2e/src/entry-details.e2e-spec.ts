@@ -36,7 +36,7 @@ describe('entry-details', () => {
     await context.close();
   });
 
-  const name = 'Wuffi' + uuidv4().toString();
+  const name = 'Wuffi' + uuidv4();
   const image = fs.readFileSync(__dirname + '/../../../api-server/resources/default.txt').toString();
   const entry = {
     art: 'walk',
@@ -60,7 +60,6 @@ describe('entry-details', () => {
   });
 
   it('should render the entry-details', async () => {
-    await userSession.createDog(name);
     await userSession.createEntry(entry);
 
     await page.goto('http://localhost:8080/app/');
@@ -70,7 +69,6 @@ describe('entry-details', () => {
   }, 10000);
 
   it('should render an error when accessing assigned entry-details', async () => {
-    await userSession.createDog(name);
     await userSession.createEntry(entry);
 
     //navigate to the entry-details view
@@ -85,12 +83,12 @@ describe('entry-details', () => {
   }, 10000);
 
   it('should render an error when requesting a non-existing id', async () => {
-    await page.goto('http://localhost:8080/app/entries/12345abcde');
+    const wrongId = uuidv4();
+    await page.goto('http://localhost:8080/app/entries/' + wrongId);
     expect(await page.$('text=Dieser Eintrag existiert nicht')).not.toBeNull();
   });
 
   it('should automatically return to the entry overview after clicking on the request button', async () => {
-    await userSession.createDog(name);
     await userSession.createEntry(entry);
 
     await page.goto('http://localhost:8080/app');
@@ -101,7 +99,6 @@ describe('entry-details', () => {
   }, 10000);
 
   it('should return to the entry overview when clicking on back', async () => {
-    await userSession.createDog(name);
     await userSession.createEntry(entry);
 
     await page.goto('http://localhost:8080/app');

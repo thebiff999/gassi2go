@@ -71,9 +71,6 @@ describe('app-entry-details', () => {
     element.requestUpdate();
     await element.updateComplete;
 
-    const renderImage = element.shadowRoot!.querySelector('.img-fluid');
-    expect(renderImage?.getAttribute('src')).toBe(imageUrl);
-
     const renderName = element.shadowRoot!.querySelector('.heading');
     expect(renderName?.innerHTML).toContain(dogName);
 
@@ -88,23 +85,6 @@ describe('app-entry-details', () => {
 
     const renderDescription = element.shadowRoot!.querySelector('.details')?.querySelectorAll('p')[5];
     expect(renderDescription?.innerText).toBe(description);
-  });
-
-  it('should render the correct type', async () => {
-    spyOn(httpClient, 'get').and.returnValue(
-      Promise.resolve({
-        json() {
-          return Promise.resolve(entry);
-        }
-      } as Response)
-    );
-
-    await element.updateComplete;
-    element.requestUpdate();
-    await element.updateComplete;
-
-    const renderType = element.shadowRoot!.querySelector('.flex-container')?.querySelectorAll('p')[1];
-    expect(renderType?.innerText).toBe('Aufpassen');
   });
 
   it('should navigate back', async () => {

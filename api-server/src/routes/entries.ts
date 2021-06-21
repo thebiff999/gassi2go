@@ -3,9 +3,9 @@
 import express from 'express';
 import { GenericDAO } from '../models/generic.dao';
 import { Entry } from '../models/entry';
-import { Hund } from '../models/hunde';
 import { authService } from '../services/auth.service';
 import {} from 'uuid';
+import validator from 'validator';
 
 const router = express.Router();
 
@@ -31,27 +31,26 @@ router.get('/', authService.expressMiddleware, async (req, res) => {
 
 //returnes the entry with the requested id
 router.get('/id/:id', authService.expressMiddleware, async (req, res) => {
-  console.log('GET-Request on /entries/' + req.params.id);
-  //validate that the id only contains expected characters
-  // eslint-disable-next-line no-useless-escape
-  const regexp = /[0-9/\-]+/;
-  if (!req.params.id.match(regexp)) {
+  console.log('GET-Request on /entries/id/' + req.params.id);
+  //validate that the id in the requested url is a uuid
+  if (!validator.isUUID(req.params.id, 4)) {
     res.sendStatus(400);
-  }
-  try {
-    const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
-    const entry = await entryDAO.findOne({ id: req.params.id });
-    if (!entry) {
-      res.sendStatus(404);
-    } else {
-      if (entry.status == 'open') {
-        res.status(200).json(entry);
+  } else {
+    try {
+      const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
+      const entry = await entryDAO.findOne({ id: req.params.id });
+      if (!entry) {
+        res.sendStatus(404);
       } else {
-        res.sendStatus(403);
+        if (entry.status == 'open') {
+          res.status(200).json(entry);
+        } else {
+          res.sendStatus(403);
+        }
       }
+    } catch (err) {
+      console.log(err.stack);
     }
-  } catch (err) {
-    console.log(err.stack);
   }
 });
 
@@ -77,43 +76,29 @@ router.get('/assigned', authService.expressMiddleware, async (req, res) => {
 //creates a new entry
 router.post('/', authService.expressMiddleware, async (req, res) => {
   console.log('POST-Request on /entries');
-
-  //validate that the user is owner of the dog
   try {
-    const dogDAO: GenericDAO<Hund> = req.app.locals.hundeDAO;
-    const dog = await dogDAO.findOne({ id: req.body.hundId });
-    if (!dog) {
-      res.sendStatus(404);
-    } else {
-      if (dog.besitzerId != res.locals.user.id) {
-        const message = 'Ungültige Anfrage';
-        res.status(400).json(message);
-        authService.removeToken(res);
-      }
-    }
+    const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
+    const createdEntry = await entryDAO.create({
+      type: req.body.art,
+      date: req.body.datum,
+      pay: req.body.entlohnung,
+      status: 'open',
+      description: req.body.beschreibung,
+      ownerId: res.locals.user.id,
+      dogId: req.body.hundId,
+      dogName: req.body.hundName,
+      dogRace: req.body.hundRasse,
+      lat: req.body.lat,
+      lng: req.body.lng,
+      imgName: req.body.imgName,
+      imgData: req.body.imgData
+    });
+    console.log('created entry for dogId ' + createdEntry.dogId);
+    res.status(201).json(createdEntry);
   } catch (err) {
     console.log(err.stack);
+    res.status(500).end();
   }
-
-  const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
-  const createdEntry = await entryDAO.create({
-    type: req.body.art,
-    date: req.body.datum,
-    pay: req.body.entlohnung,
-    status: 'open',
-    description: req.body.beschreibung,
-    ownerId: res.locals.user.id,
-    dogId: req.body.hundId,
-    dogName: req.body.hundName,
-    dogRace: req.body.hundRasse,
-    lat: req.body.lat,
-    lng: req.body.lng,
-    imgName: req.body.imgName,
-    imgData: req.body.imgData
-  });
-  res.status(201).json({
-    createdEntry
-  });
 });
 
 //update entry with the requesterId
@@ -121,18 +106,16 @@ router.patch('/id/:id', authService.expressMiddleware, async (req, res) => {
   console.log('PATCH-Request on /entries/id/' + req.params.id);
 
   const invalidRequest = (message = 'Ungültige Nachfrage') => {
-    res.status(400).json(message);
     authService.removeToken(res);
+    res.status(400).json(message).end();
   };
 
-  //validate that the id only contains expected characters
-  // eslint-disable-next-line no-useless-escape
-  const regexp = /[0-9/\-]+/;
-  if (!req.params.id.match(regexp)) {
+  //validate that the id in the url is a uuid
+  if (!validator.isUUID(req.params.id, 4)) {
     invalidRequest();
   }
 
-  //validate the sent entry-status
+  //validate the sent entry-status and that the url-id is a uuid
   // eslint-disable-next-line no-constant-condition
   if (!(req.body.status != 'assigned' || 'done')) {
     invalidRequest();
@@ -168,25 +151,25 @@ router.delete('/user/:id', authService.expressMiddleware, async (req, res) => {
   //validate that the requested id matches the user id
   if (req.params.id != res.locals.user.id) {
     const message = 'Ungültige Anfrage';
-    res.status(400).json(message);
     authService.removeToken(res);
-  }
+    res.status(400).json(message);
+  } else {
+    //delete entries where the user is owner and reset entries which he requested
+    try {
+      const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
+      await entryDAO.deleteAll({ ownerId: req.params.id });
+      const requestedEntries = await entryDAO.findAll({ requesterId: req.params.id, status: 'assigned' });
 
-  //delete entries where the user is owner and reset entries which he requested
-  try {
-    const entryDAO: GenericDAO<Entry> = req.app.locals.entryDAO;
-    await entryDAO.deleteAll({ ownerId: req.params.id });
-    const requestedEntries = await entryDAO.findAll({ requesterId: req.params.id, status: 'assigned' });
+      for (let i = 0; i < requestedEntries.length; i++) {
+        const partialEntry: Partial<Entry> = { id: requestedEntries[i].id, requesterId: null, status: 'open' };
+        await entryDAO.update(partialEntry);
+      }
 
-    for (let i = 0; i < requestedEntries.length; i++) {
-      const partialEntry: Partial<Entry> = { id: requestedEntries[i].id, requesterId: null, status: 'open' };
-      await entryDAO.update(partialEntry);
+      res.status(204).json('Verbundene Aufträge gelöscht');
+    } catch (err) {
+      console.log(err.stack);
+      res.status(500).end();
     }
-
-    res.status(204).json('Verbundene Aufträge gelöscht');
-  } catch (err) {
-    console.log(err.stack);
-    res.status(500).end();
   }
 });
 

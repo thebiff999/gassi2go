@@ -63,6 +63,7 @@ class Header extends LitElement {
           <li><a href="/entries">Auftrag suchen</a></li>
           <li><a href="/user/entries">Meine Aufträge</a></li>
           <li><a href="/user/dogs">Meine Hunde</a></li>
+          <li><a href="/user/account">Mein Konto</a></li>
           <li><a href="/user/sign-out">Abmelden</a></li>
         </ul>
       </nav>

@@ -15,8 +15,24 @@ class Footer extends LitElement {
   render() {
     return html`
       <div id="footer">
-        <h3>Hello, dis footer</h3>
+        <div class="col" id="left-col">
+          <p id="copyright">&copy;${this.getYear()} Gassi2Go</p>
+          <p id="project">Ein Web-Enginerring Projekt von</p>
+          <span id="names">
+            <p>Simon Flathmann</p>
+            <p>Dennis Heuermann</p>
+            <p>Martin Feldman</p>
+          </span>
+        </div>
+        <div class="col" id="right-col">
+          <p>Gassi2Go ist ein Vermittlungsdienst für das Ausführen und Aufpassen von Hunden</p>
+        </div>
       </div>
     `;
+  }
+
+  getYear() {
+    const dateObj = new Date();
+    return dateObj.getFullYear();
   }
 }
