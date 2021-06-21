@@ -81,7 +81,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement) {
                   Foto hochladen
                 </button>
                 <div class="invalid-feedback">
-                  Der Datentyp ist nicht valide. Die erlaubten Datentypen sind: jpg, jpeg und png.
+                  Der Datentyp ist nicht valide. Die erlaubten Datentypen sind: jpg, jpeg.
                 </div>
               </div>
             </div>
@@ -98,7 +98,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement) {
                 required
                 placeholder="Hier können Sie ihren Hund beschreiben."
               ></textarea>
-              <div class="invalid-feedback">Die Zusätzlichen Informationen sind erforderlich und müssen zwischen 30 und 1000 Zeichen lang sein.</div>
+              <div class="invalid-feedback">Die Zusätzlichen Informationen sind erforderlich und müssen zwischen 30 und 600 Zeichen lang sein.</div>
             </div>
           </div>
           <div class="form-row">
