@@ -35,10 +35,6 @@ describe('app-sign-in', () => {
     expect(sidenav.className).toBe('sidenav');
   });
 
-  it('button should navigate to SignIn"', async () => {
-    const submit = element.shadowRoot!.querySelector('#absenden') as HTMLElement;
-    submit.click();
-  });
 
   it('should find the textfield', async () => {
     const emailText = element.shadowRoot!.querySelector('#email') as HTMLElement;
