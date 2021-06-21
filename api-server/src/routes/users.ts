@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
   };
 
   if (
-    !hasRequiredFields(req.body, ['email', 'nickName', 'firstName', 'lastName', 'password', 'passwordCheck'], errors)
+    !hasRequiredFields(req.body, ['email', 'screenName', 'firstName', 'lastName', 'password', 'passwordCheck'], errors)
   ) {
     return sendErrorMessage(errors.join('\n'));
   }
