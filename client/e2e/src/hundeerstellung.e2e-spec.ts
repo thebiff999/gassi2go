@@ -84,7 +84,7 @@ describe('/user/dogs/new', () => {
     await page.click('text=Hund anlegen');
     const error = await page.textContent('app-hundeerstellung .invalid-feedback:visible');
     expect(error).toBe(
-      'Die Zusätzlichen Informationen sind erforderlich und müssen zwischen 30 und 1000 Zeichen lang sein.'
+      'Die Zusätzlichen Informationen sind erforderlich und müssen zwischen 30 und 600 Zeichen lang sein.'
     );
   });
 });
