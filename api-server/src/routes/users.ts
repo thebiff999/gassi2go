@@ -1,3 +1,5 @@
+/* Autor: Martin Feldman */
+
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import { GenericDAO } from '../models/generic.dao.js';
@@ -19,7 +21,9 @@ router.post('/', async (req, res) => {
     res.status(400).json({ message });
   };
 
-  if (!hasRequiredFields(req.body, ['email', 'firstName', 'lastName', 'password', 'passwordCheck'], errors)) {
+  if (
+    !hasRequiredFields(req.body, ['email', 'screenName', 'firstName', 'lastName', 'password', 'passwordCheck'], errors)
+  ) {
     return sendErrorMessage(errors.join('\n'));
   }
 

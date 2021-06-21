@@ -38,24 +38,14 @@ class AccountComponent extends PageMixin(LitElement) {
   private myAccount: Account[] = [];
 
   async firstUpdated() {
-    /*
-      try {
-        //const userId = await httpClient.get('user/account/id');
-        //const urlId:string = "user/account/" + userId;
-        //const response = await httpClient.get('user/account/');
-  
-        // get json
-        //this.myAccount = await response.json();
-        //const response = await httpClient.get('tasks' + location.search);
-  
-      } catch ({ message, statusCode }) {
-        if (statusCode === 401) {
-          router.navigate('/user/sign-in');
-        } else {
-          this.setNotification({errorMessage: message});
-        }
+    try {
+    } catch ({ message, statusCode }) {
+      if (statusCode === 401) {
+        router.navigate('/user/sign-in');
+      } else {
+        this.setNotification({ errorMessage: message });
       }
-      */
+    }
   }
 
   render() {

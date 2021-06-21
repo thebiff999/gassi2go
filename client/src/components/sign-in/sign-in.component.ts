@@ -46,15 +46,6 @@ class SignInComponent extends PageMixin(LitElement) {
               <button
                 class="btn btn-primary btn-lg"
                 type="button"
-                id="navigateToSignIn"
-                @click="${this.navigateToSignIn}"
-              >
-                ANMELDEN
-              </button>
-
-              <button
-                class="btn btn-primary btn-lg"
-                type="button"
                 id="navigateToSignUp"
                 @click="${this.navigateToSignUp}"
               >

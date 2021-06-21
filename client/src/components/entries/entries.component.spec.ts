@@ -37,7 +37,7 @@ describe('app-entries', () => {
       type: 'walk',
       date: '2021-06-16',
       pay: '0.00',
-      description: 'GrevenerstraßeGrevenerstraßeGrevenerstraßeGrevenerstraßeGrevenerstraßeGrevenerstraße',
+      description: 'Grevenerstraße Grevenerstraße Grevenerstraße Grevenerstraße Grevenerstraße Grevenerstraße',
       dogRace: 'Deutsche Dogge'
     },
     {
