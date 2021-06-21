@@ -35,6 +35,7 @@ describe('app-sign-in', () => {
     expect(sidenav.className).toBe('sidenav');
   });
 
+  // eslint-disable-next-line prettier/prettier
 
   it('should find the textfield', async () => {
     const emailText = element.shadowRoot!.querySelector('#email') as HTMLElement;

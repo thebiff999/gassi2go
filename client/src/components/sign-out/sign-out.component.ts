@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* Autor: Martin Feldman */
 
 import { css, customElement, html, LitElement, unsafeCSS } from 'lit-element';

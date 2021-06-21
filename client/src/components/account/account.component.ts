@@ -36,17 +36,6 @@ class AccountComponent extends PageMixin(LitElement) {
   @property()
   private myAccount: Account[] = [];
 
-  async firstUpdated() {
-    try {
-    } catch ({ message, statusCode }) {
-      if (statusCode === 401) {
-        router.navigate('/user/sign-in');
-      } else {
-        this.setNotification({ errorMessage: message });
-      }
-    }
-  }
-
   render() {
     return html`
       ${this.renderNotification()}
