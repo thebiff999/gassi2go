@@ -59,14 +59,6 @@ describe('entry-details', () => {
     expect(pageTitle).toBe('Auftrag Detailansicht');
   });
 
-  it('should render the entry-details', async () => {
-    await userSession.createEntry(entry);
-
-    await page.goto('http://localhost:8080/app/');
-    await Promise.all([page.click('text=Führ mich aus'), page.waitForNavigation()]);
-    expect(await page.$('text=' + name)).not.toBeNull();
-  }, 10000);
-
   it('should render an error when accessing assigned entry-details', async () => {
     await userSession.createEntry(entry);
 
