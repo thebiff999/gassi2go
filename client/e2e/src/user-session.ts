@@ -5,7 +5,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { BrowserContext } from 'playwright';
 import config from './config';
 
+//Autor: Martin Feldman
 export class UserSession {
+  screenName: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -17,8 +19,11 @@ export class UserSession {
   gebDate: string;
   infos: string;
 
+  //Autor: Martin Feldman
+
   constructor(public context: BrowserContext) {
     const uuid = uuidv4();
+    this.screenName = `screenname_${uuid}`;
     this.firstName = `firstname_${uuid}`;
     this.lastName = `lastname_${uuid}`;
     this.email = `email_${uuid}@example.org`;
@@ -29,13 +34,15 @@ export class UserSession {
     this.gebDate = '2016-03-17';
     this.infos = 'Hund für die Auftragserstellung e2e-Tests';
   }
-
+  //Autor: Martin Feldman
   signInData() {
     return { email: this.email, password: this.password };
   }
 
+  //Autor: Martin Feldman
   signUpData() {
     return {
+      screenName: this.screenName,
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
