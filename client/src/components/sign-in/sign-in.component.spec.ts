@@ -61,16 +61,12 @@ describe('app-sign-in', () => {
    * find first div-element with id "sidenav" and "main"
    */
   it('should show the divs "sidenav" and "main"', async () => {
-    const sidenav = element.shadowRoot!.querySelector('#sidenav') as HTMLElement;
-    expect(sidenav.className).toBe('sidenav');
+    //const sidenav = element.shadowRoot!.querySelector('#sidenav') as HTMLElement;
+    //expect(sidenav.className).toBe('sidenav');
     const main = element.shadowRoot!.querySelector('#main') as HTMLElement;
     expect(main.className).toBe('main');
   });
 
-  /**
-   * find poster ans should say, if it is shown
-   * TODO
-   */
   it('should find the poster', async () => {
     const poster = element.shadowRoot!.querySelector('#poster') as HTMLElement;
     expect(poster.id).toBe('poster');
