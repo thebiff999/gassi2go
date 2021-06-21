@@ -21,9 +21,7 @@ router.post('/', async (req, res) => {
     res.status(400).json({ message });
   };
 
-  if (
-    !hasRequiredFields(req.body, ['email', 'screenName', 'firstName', 'lastName', 'password', 'passwordCheck'], errors)
-  ) {
+  if (!hasRequiredFields(req.body, ['email', 'firstName', 'lastName', 'password', 'passwordCheck'], errors)) {
     return sendErrorMessage(errors.join('\n'));
   }
 
@@ -37,7 +35,6 @@ router.post('/', async (req, res) => {
   }
 
   const createdUser = await userDAO.create({
-    screenName: req.body.screenName,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,

@@ -8,7 +8,6 @@ import { PageMixin } from '../page.mixin';
 
 interface Account {
   userId: number;
-  screenName: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -91,23 +90,6 @@ class AccountComponent extends PageMixin(LitElement) {
               <h1>Dein Account</h1>
 
               <!-- REGISTER TEXT FIELD 1 BEGIN -->
-
-              <form>
-                <fieldset id="register1">
-                  <div class="form-group">
-                    <label class="control-label" for="screenName">Nickname</label>
-                    <input
-                      class="form-control"
-                      type="text"
-                      autofocus
-                      required
-                      id="screenName"
-                      name="screenName"
-                      automcomplete="off"
-                    />
-                    <div class="valid-feedback">Sieht gut aus!</div>
-                    <div class="invalid-feedback">Ein Nickname ist erforderlich</div>
-                  </div>
 
                   <div class="form-group">
                     <label class="control-label" for="firstname">Vorname</label>

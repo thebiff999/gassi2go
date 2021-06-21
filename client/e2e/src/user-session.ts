@@ -7,7 +7,6 @@ import config from './config';
 
 //Autor: Martin Feldman
 export class UserSession {
-  screenName: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -23,7 +22,6 @@ export class UserSession {
 
   constructor(public context: BrowserContext) {
     const uuid = uuidv4();
-    this.screenName = `screenname_${uuid}`;
     this.firstName = `firstname_${uuid}`;
     this.lastName = `lastname_${uuid}`;
     this.email = `email_${uuid}@example.org`;
@@ -42,7 +40,6 @@ export class UserSession {
   //Autor: Martin Feldman
   signUpData() {
     return {
-      screenName: this.screenName,
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,

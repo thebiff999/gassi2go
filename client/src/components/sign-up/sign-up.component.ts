@@ -21,9 +21,6 @@ class SignUpComponent extends PageMixin(LitElement) {
   @query('form')
   private form!: HTMLFormElement;
 
-  @query('#screenName')
-  private screenNameElement!: HTMLInputElement;
-
   @query('#firstName')
   private firstNameElement!: HTMLInputElement;
 
@@ -86,22 +83,7 @@ class SignUpComponent extends PageMixin(LitElement) {
           <form>
             <fieldset id="register1">
               <div class="input-group col-md-14">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" for="screenName">Nickname</span>
-                </div>
-                <input
-                  class="form-control"
-                  type="text"
-                  autofocus
-                  required
-                  minlength="2"
-                  id="screenName"
-                  name="screenName"
-                  automcomplete="off"
-                />
-                <div class="valid-feedback">Sieht gut aus!</div>
-                <div class="invalid-feedback">Nickname ist erforderlich</div>
-              </div>
+    
               <div class="invalid-feedback">Vorname ist erforderlich</div>
               <div class="input-group col-md-14">
                 <div class="input-group-prepend">
@@ -224,7 +206,6 @@ class SignUpComponent extends PageMixin(LitElement) {
   async submit() {
     if (this.isFormValid()) {
       const accountData = {
-        screenName: this.screenNameElement.value,
         firstName: this.firstNameElement.value,
         lastName: this.lastNameElement.value,
         email: this.emailElement.value,
