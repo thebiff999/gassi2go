@@ -52,13 +52,4 @@ describe('app-sign-out', () => {
     const main = element.shadowRoot!.querySelector('#main') as HTMLElement;
     expect(main.className).toBe('main');
   });
-
-  /**
-   * find poster ans should say, if it is shown
-   * TODO
-   */
-  it('should find the poster', async () => {
-    const poster = element.shadowRoot!.querySelector('#poster') as HTMLElement;
-    expect(poster.id).toBe('poster');
-  });
 });

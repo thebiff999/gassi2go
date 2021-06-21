@@ -3,7 +3,6 @@ import { httpClient } from '../../http-client';
 import { router } from '../../router';
 import { PageMixin } from '../page.mixin';
 
-//const sharedCSS = require('../shared.scss');
 const componentCSS = require('./password.component.scss');
 
 @customElement('app-password')
@@ -121,8 +120,7 @@ class AccountComponent extends PageMixin(LitElement) {
                       automcomplete="off"
                     />
                     <small id="passwordHelpBlock" class="form-text text-muted">
-                      Dein Passwort muss 8-20 Zeichen lang sein. Es darf Buchstaben und Nummer enthalten, aber keine
-                      Leerzeichen oder Sonderzeichen.
+                      Dein Passwort muss mindestens 8 Zeichen lang sein
                     </small>
                     <div class="invalid-feedback">Passwort ist erforderlich und muss mind. 8 Zeichen lang sein</div>
                   </div>
