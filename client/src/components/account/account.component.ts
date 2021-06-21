@@ -202,6 +202,7 @@ class AccountComponent extends PageMixin(LitElement) {
    * save new user account data in DB
    */
   async submit() {
+    this.setNotification({ infoMessage: 'Die Kontoinformationen wurden aktualisiert' });
     if (this.isFormValid()) {
       const authData = {
         userId: this.id,
@@ -209,7 +210,7 @@ class AccountComponent extends PageMixin(LitElement) {
         password: this.passwordElement.value
       };
       try {
-        await httpClient.put('app/user/${id}', authData);
+        await httpClient.put('users/${id}', authData);
         router.navigate('app/user/account');
       } catch ({ message }) {
         this.setNotification({ errorMessage: message });

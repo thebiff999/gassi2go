@@ -172,13 +172,14 @@ class AccountComponent extends PageMixin(LitElement) {
   }
 
   async submit() {
+    this.setNotification({ infoMessage: 'Das Passwort wurde aktualisiert' });
     if (this.isFormValid()) {
       const authData = {
         email: this.emailElement.value,
         password: this.passwordElement.value
       };
       try {
-        await httpClient.post('app/user/update', authData);
+        await httpClient.post('/users/update', authData);
         router.navigate('app/user/account');
       } catch ({ message }) {
         this.setNotification({ errorMessage: message });

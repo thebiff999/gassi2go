@@ -17,7 +17,7 @@ class Footer extends LitElement {
       <div id="footer">
         <div class="col" id="left-col">
           <p id="copyright">&copy;${this.getYear()} Gassi2Go</p>
-          <p id="project">Ein Web-Enginerring Projekt von</p>
+          <p id="project">Ein Web-Engineering Projekt von</p>
           <span id="names">
             <p class="name">Simon Flathmann</p>
             <p class="name">Dennis Heuermann</p>
