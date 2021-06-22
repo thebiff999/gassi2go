@@ -126,9 +126,6 @@ class SignInComponent extends PageMixin(LitElement) {
     `;
   }
 
-  /**
-   * Button, which navigate to "user/sign-up"
-   */
   async navigateToSignUp() {
     try {
       router.navigate('user/sign-up');
@@ -137,9 +134,6 @@ class SignInComponent extends PageMixin(LitElement) {
     }
   }
 
-  /**
-   * Button, which navigate to "user/sign-in"
-   */
   async navigateToSignIn() {
     try {
       router.navigate('user/sign-in');
@@ -165,9 +159,6 @@ class SignInComponent extends PageMixin(LitElement) {
     }
   }
 
-  /**
-   * check if input fields are valid
-   */
   isFormValid() {
     return this.form.checkValidity();
   }
