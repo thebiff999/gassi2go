@@ -239,8 +239,7 @@ class AuftragsErstellungComponent extends PageMixin(LitElement) {
 
   /* Submit-Methode, die nach erfolgreicher Validierung, die Koordination der eingegebenen Adresse mithilfe
         der geocode-Methode ermittelt, den in der Form ausgewählten Hund aus der internalProperty hunde liest und
-        anschließend einen Post-Request an den Endpunkt /entries/ schickt. 
-    */
+        anschließend einen Post-Request an den Endpunkt /entries/ schickt.*/
   async submit() {
     if (this.checkInputs()) {
       try {

@@ -9,7 +9,6 @@ import http from 'http';
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
-// TODO: Routen importieren
 import entries from './routes/entries';
 import hunde from './routes/hunde';
 import users from './routes/users.js';

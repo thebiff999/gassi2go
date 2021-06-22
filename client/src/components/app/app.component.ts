@@ -31,7 +31,7 @@ class AppComponent extends LitElement {
     router.subscribe(() => this.requestUpdate());
   }
 
-  /* Router-Outler für den Main-Container */
+  /* Router-Outlet für den Main-Container */
   renderRouterOutlet() {
     return router.select(
       {

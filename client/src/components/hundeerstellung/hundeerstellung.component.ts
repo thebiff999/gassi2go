@@ -137,7 +137,7 @@ export class HundeerstellungComponent extends PageMixin(LitElement) {
         const response = await fetch(`${baseURL}hunde`, {
           method: 'post',
           body: formData,
-          credentials: 'include' //damit das jqt-token für den authService mitgeschickt werden kann
+          credentials: 'include' //damit das jwt-token für den authService mitgeschickt werden kann
         });
         if (response.ok) {
           this.setNotification({
