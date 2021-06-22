@@ -109,10 +109,6 @@ class AccountComponent extends PageMixin(LitElement) {
                   </div>
                 </fieldset>
 
-                <!-- REGISTER TEXT FIELD 1 END -->
-
-                <!-- REGISTER TEXT FIELD 2 START -->
-
                 <fieldset id="register2">
                   <div class="form-group">
                     <label class="control-label" for="email">Email</label>
@@ -169,29 +165,23 @@ class AccountComponent extends PageMixin(LitElement) {
     }
   }
 
-  /**
-   * get user account data with id
-   */
+  //get user account data with id
   async loadUser() {
     try {
-      /**
-       * get userId from /user/id
-       */
+      // get userId from /user/id
       const id = await httpClient.get('/user/id');
-      /**
-       * get user account data with id
-       */
+
+      //get user account data with id
+
       await httpClient.get('/user/account/id');
     } catch ({ message }) {
       this.setNotification({ errorMessage: message });
     }
   }
 
-  /**
-   * save new user account data in DB
-   */
+  //save new user account data in DB
+
   async submit() {
-    this.setNotification({ infoMessage: 'Die Kontoinformationen wurden aktualisiert' });
     if (this.isFormValid()) {
       const authData = {
         userId: this.id,

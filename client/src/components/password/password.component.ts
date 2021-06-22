@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { css, customElement, html, LitElement, query, unsafeCSS } from 'lit-element';
 import { httpClient } from '../../http-client';
 import { router } from '../../router';
@@ -172,7 +173,6 @@ class AccountComponent extends PageMixin(LitElement) {
   }
 
   async submit() {
-    this.setNotification({ infoMessage: 'Das Passwort wurde aktualisiert' });
     if (this.isFormValid()) {
       const authData = {
         email: this.emailElement.value,

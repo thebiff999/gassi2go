@@ -1,4 +1,4 @@
-/* Autor: Martin Feldman */
+/* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
 
 import fetch, { RequestInit, Response } from 'node-fetch';
 import { v4 as uuidv4 } from 'uuid';
