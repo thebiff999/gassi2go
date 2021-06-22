@@ -45,6 +45,21 @@ router.post('/', async (req, res) => {
   res.status(201).json(createdUser);
 });
 
+/*router.patch('/:id', authService.expressMiddleware, async (req, res) => {
+  console.log('PATCH-Request on /user/id/' + req.params.id);
+
+  try {
+    const userDAO: GenericDAO<User> = req.app.locals.taskDAO;
+
+  const user: GenericDAO<User> = { id: req.params.id };
+  if (cryptoService.encrypt(req.body.title)) {
+    userDAO.title = cryptoService.encrypt(req.body.title);
+  }
+  await userDAO.update(user);
+  res.status(200).end();
+});
+*/
+
 router.post('/sign-in', async (req, res) => {
   console.log('received post on /users/sign-in');
   const userDAO: GenericDAO<User> = req.app.locals.userDAO;
