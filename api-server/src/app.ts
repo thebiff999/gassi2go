@@ -17,9 +17,10 @@ import startDB from './db';
 import { corsService } from './services/cors.service';
 
 function configureApp(app: Express) {
-  app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-  app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+  //Limit für den Foto-Upload hochgesetzt. Autor: Simon Flathmann
+  app.use(bodyParser.json({ limit: '5mb' }));
+  app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
+  app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
   app.use(cookieParser());
   app.use(corsService.expressMiddleware);
   app.use('/api/entries', entries);
