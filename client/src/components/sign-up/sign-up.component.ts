@@ -138,7 +138,7 @@ class SignUpComponent extends PageMixin(LitElement) {
                   minlength="8"
                   id="password"
                   name="password"
-                  automcomplete="off"
+                  autocomplete="off"
                 />
                 <small id="passwordHelpBlock" class="form-text text-muted">
                   Dein Passwort muss mindestens 8 Zeichen lang sein
@@ -155,10 +155,10 @@ class SignUpComponent extends PageMixin(LitElement) {
                     class="form-control"
                     type="password"
                     required
-                    minlength="8"
+                    minlength="10"
                     id="password-check"
                     name="password-check"
-                    automcomplete="off"
+                    autocomplete="off"
                   />
                   <small id="passwordHelpBlock" class="form-text text-muted"> </small>
                   <div class="invalid-feedback">Beide Passwörter müssen gleich sein</div>

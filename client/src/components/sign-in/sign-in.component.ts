@@ -94,7 +94,7 @@ class SignInComponent extends PageMixin(LitElement) {
                     class="form-control"
                     type="password"
                     required
-                    minlength="8"
+                    minlength="10"
                     id="password"
                     name="password"
                     placeholder="Password"
