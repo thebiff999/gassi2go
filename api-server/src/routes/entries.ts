@@ -99,7 +99,7 @@ router.get('/assigned', authService.expressMiddleware, async (req, res) => {
 //creates a new entry
 router.post('/', authService.expressMiddleware, async (req, res) => {
   console.log('POST-Request on /entries');
-  if (req.body.pay > 0) {
+  if (req.body.pay >= 0) {
     res.status(400).json({ message: 'Die Entlohnung darf nicht negativ sein' }).end();
   }
   try {
