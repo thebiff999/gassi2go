@@ -145,7 +145,7 @@ class EntriesComponent extends PageMixin(LitElement) {
     //Create Google Map
     if (!window.google) {
       const loader = new Loader({
-        apiKey: 'AIzaSyApvgXYHn99FigrI9QuMMfrIbxHqiEY1yA',
+        apiKey: 'xyz123',
         version: 'weekly'
       });
       loader
